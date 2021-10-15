@@ -21,11 +21,10 @@ namespace test.CT_Hacks
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if (!PlayerMovement.Instance.grounded)
-                    {
-                        MethodInfo privMethod = PlayerMovement.Instance.GetType().GetMethod("ResetJump", BindingFlags.NonPublic | BindingFlags.Instance);
-                        privMethod.Invoke(PlayerMovement.Instance, new object[] {  });
-                    }
+                    typeof(PlayerStatus).GetField("CanJump", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(PlayerStatus.Instance, true);
+                    MethodInfo privMethod = PlayerMovement.Instance.GetType().GetMethod("ResetJump", BindingFlags.NonPublic | BindingFlags.Instance);
+                    privMethod.Invoke(PlayerMovement.Instance, new object[] {  });
+                    
                 }
             }
 
