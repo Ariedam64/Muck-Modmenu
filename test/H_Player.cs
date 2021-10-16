@@ -47,20 +47,30 @@ namespace test.CT_Hacks
 
             if (noclip)
             {
-                UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetPlayerCollider().enabled = false;
+                PlayerMovement.Instance.GetRb().velocity = new Vector3(0f, 0f, 0f);
+                float num = Input.GetKey(KeyCode.LeftControl) ? 0.5f : (Input.GetKey(InputManager.sprint) ? 1f : 0.5f);
+                if (Input.GetKey(InputManager.jump))
+                {
+                    PlayerStatus.Instance.transform.position = new Vector3(PlayerStatus.Instance.transform.position.x, PlayerStatus.Instance.transform.position.y + num, PlayerStatus.Instance.transform.position.z);
+                }
+                Vector3 position = PlayerStatus.Instance.transform.position;
+                if (Input.GetKey(InputManager.forward))
+                {
+                    PlayerStatus.Instance.transform.position = new Vector3(position.x + Camera.main.transform.forward.x * Camera.main.transform.up.y * num, position.y + Camera.main.transform.forward.y * num, position.z + Camera.main.transform.forward.z * Camera.main.transform.up.y * num);
+                }
+                if (Input.GetKey(InputManager.backwards))
+                {
+                    PlayerStatus.Instance.transform.position = new Vector3(position.x - Camera.main.transform.forward.x * Camera.main.transform.up.y * num, position.y - Camera.main.transform.forward.y * num, position.z - Camera.main.transform.forward.z * Camera.main.transform.up.y * num);
+                }
+                if (Input.GetKey(InputManager.right))
+                {
+                    PlayerStatus.Instance.transform.position = new Vector3(position.x + Camera.main.transform.right.x * num, position.y, position.z + Camera.main.transform.right.z * num);
+                }
+                if (Input.GetKey(InputManager.left))
+                {
+                    PlayerStatus.Instance.transform.position = new Vector3(position.x - Camera.main.transform.right.x * num, position.y, position.z - Camera.main.transform.right.z * num);
+                }
             }
-            else
-            {
-                UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetPlayerCollider().enabled = true;
-            }
-
-            
-            if (instantkill)
-            {
-                PlayerStatus.Instance.CanJump();
-                
-            }
-
 
         }
         public override void runWin(int id)
