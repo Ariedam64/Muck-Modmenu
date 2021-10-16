@@ -19,7 +19,7 @@ namespace test.CT_Hacks
             {
                 CManager.hk_Misc.isOpen = !CManager.hk_Misc.isOpen;
             }
-            GUILayout.Label("Created by Ariedam");
+            GUILayout.Label("Created by Romann");
             base.runWin(id);
         }
 
