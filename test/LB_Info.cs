@@ -9,10 +9,8 @@ namespace test.CT_System
     {
         public void Update()
         {
-            if (Variables.lPlayer == null || Variables.lPlayer.gameObject == null)
-            {
-                Variables.lPlayer = GameObject.FindObjectOfType<PlayerStatus>();
-            }
-        }
-    }
+
+		}
+
+	}
 }

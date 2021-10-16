@@ -1,10 +1,11 @@
-using System;
-using System.Reflection;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
+using Steamworks;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System;
+using System.Runtime.InteropServices;
 
 namespace test.CT_Hacks
 {
@@ -14,25 +15,24 @@ namespace test.CT_Hacks
         private bool invincible = false;
         private bool stamina = false;
         private bool hunger = false;
+        private bool noclip = false;
+        private bool clicktp = false;
 
-        public H_Player() : base(new Rect(10, 10, 200, 200), "Player Menu", 1, false) { }
+
+        public H_Player() : base(new Rect(220, 10, 200, 200), "Player Menu", 1, false) { }
 
         public void Update()
+
         {
-            if (fly)
+            if (clicktp && Input.GetKeyDown(KeyCode.Mouse1))
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    typeof(PlayerStatus).GetField("CanJump", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(PlayerStatus.Instance, true);
-                    MethodInfo privMethod = PlayerMovement.Instance.GetType().GetMethod("ResetJump", BindingFlags.NonPublic | BindingFlags.Instance);
-                    privMethod.Invoke(PlayerMovement.Instance, new object[] {  });
-                    
-                }
+                UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetRb().position = Variables.FindTpPos();
             }
 
             if (invincible)
             {
-                PlayerStatus.Instance.hp = PlayerStatus.Instance.maxHp;
+                PlayerStatus.Instance.hp = (float)PlayerStatus.Instance.maxHp;
+                PlayerStatus.Instance.shield = (float)PlayerStatus.Instance.maxShield;
             }
 
             if (stamina)
@@ -45,15 +45,25 @@ namespace test.CT_Hacks
                 PlayerStatus.Instance.hunger = PlayerStatus.Instance.maxHunger;
             }
 
+            if (noclip)
+            {
+                UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetPlayerCollider().enabled = false;
+            }
+            else
+            {
+                UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetPlayerCollider().enabled = true;
+            }
+
 
 
         }
         public override void runWin(int id)
         {
-            invincible = GUILayout.Toggle(invincible, "Invincible");
-            stamina = GUILayout.Toggle(stamina, "Stamina infini");
-            hunger = GUILayout.Toggle(hunger, "Faim infini");
-            fly = GUILayout.Toggle(fly, "Fly Hack");
+            invincible = GUILayout.Toggle(invincible, "Godmode");
+            stamina = GUILayout.Toggle(stamina, "Ininite stamina");
+            hunger = GUILayout.Toggle(hunger, "Infinir hunger");
+            clicktp = GUILayout.Toggle(clicktp, "Click Tp");
+            noclip = GUILayout.Toggle(noclip, "No Clip");
             base.runWin(id);
         }
 

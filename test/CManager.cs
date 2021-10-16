@@ -17,13 +17,13 @@ namespace test
         //HACK MODS
         public static H_Main hk_Main;
         public static H_Player hk_Player;
-        public static H_Misc hk_Misc;
+        public static H_ItemSpawner hk_itemSpawner;
 
         public static void injHacks(GameObject go)
         {
             hk_Main = go.AddComponent<H_Main>();
             hk_Player = go.AddComponent<H_Player>();
-            hk_Misc = go.AddComponent<H_Misc>();
+            hk_itemSpawner = go.AddComponent<H_ItemSpawner>();
         }
 
         public static void injSystem(GameObject go)

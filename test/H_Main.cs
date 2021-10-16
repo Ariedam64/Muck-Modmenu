@@ -15,9 +15,9 @@ namespace test.CT_Hacks
             {
                 CManager.hk_Player.isOpen = !CManager.hk_Player.isOpen;
             }
-            if (GUILayout.Button("Misc Menu"))
+            if (GUILayout.Button("Item spawner Menu"))
             {
-                CManager.hk_Misc.isOpen = !CManager.hk_Misc.isOpen;
+                CManager.hk_itemSpawner.isOpen = !CManager.hk_itemSpawner.isOpen;
             }
             GUILayout.Label("Created by Romann");
             base.runWin(id);

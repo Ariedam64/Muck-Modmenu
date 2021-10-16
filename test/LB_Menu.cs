@@ -14,7 +14,7 @@ namespace test.CT_System
         {
             menus.Add(CManager.hk_Main);
             menus.Add(CManager.hk_Player);
-            menus.Add(CManager.hk_Misc);
+            menus.Add(CManager.hk_itemSpawner);
         }
 
         public void Update()
