@@ -10,9 +10,8 @@ namespace test.CT_Hacks
 {
     public class H_ItemSpawner : Menu
     {
-        private int coin, prevCoin = 0;
         public static Vector2 ScrollPosition { get; set; } = Vector2.zero;
-        public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 125, 20);
+        public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 140, 20);
         public static readonly Rect ItemSpawnerlabel = new Rect(10, 20, 100, 20);
 
         public static readonly Rect ItemSpawnerScrollViewPosition = new Rect(100, 20, 500, 330);
@@ -21,9 +20,11 @@ namespace test.CT_Hacks
         public static ItemManager ItemManager = ItemManager.Instance;
         public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
 
+
         public string prevTooltip = "";
 
-        public H_ItemSpawner() : base(new Rect(500, 10, 600, 400), "Item spawners menu", 1, false) { }
+        public H_ItemSpawner() : base(new Rect(430, 10, 600, 400), "Item spawners menu", 2, false) { }
+
 
         public void Update()
         {
@@ -67,7 +68,8 @@ namespace test.CT_Hacks
                 prevTooltip = GUI.tooltip;
             }
 
-            GUI.Label(new Rect(10, 55, 140, 60), "Item : " + prevTooltip);
+            GUI.Box(new Rect(10, 55, 140, 23), prevTooltip);
+
 
             base.runWin(id);
         }
