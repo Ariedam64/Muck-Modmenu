@@ -14,13 +14,17 @@ namespace test.CT_Hacks
 
         public override void runWin(int id)
         {
-            if (GUILayout.Button("Player Menu"))
+            if (GUILayout.Button("Player"))
             {
                 CManager.hk_Player.isOpen = !CManager.hk_Player.isOpen;
             }
-            if (GUILayout.Button("Item spawner Menu"))
+            if (GUILayout.Button("Item spawner"))
             {
                 CManager.hk_itemSpawner.isOpen = !CManager.hk_itemSpawner.isOpen;
+            }
+            if (GUILayout.Button("Misc"))
+            {
+                CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
             }
             GUILayout.Label("Created by Romann");
             base.runWin(id);

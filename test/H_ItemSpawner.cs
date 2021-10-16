@@ -45,7 +45,6 @@ namespace test.CT_Hacks
             {
 
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name)))
-                   
                     
                     ClientSend.DropItem(item.id, ItemSpawnerAmount);
 

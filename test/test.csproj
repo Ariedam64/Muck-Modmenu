@@ -102,10 +102,10 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="CManager.cs" />
+    <Compile Include="H_Misc.cs" />
     <Compile Include="H_Main.cs" />
     <Compile Include="H_ItemSpawner.cs" />
     <Compile Include="H_Player.cs" />
-    <Compile Include="LB_Info.cs" />
     <Compile Include="LB_Menu.cs" />
     <Compile Include="Hook.cs" />
     <Compile Include="Menu.cs" />

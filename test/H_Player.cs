@@ -11,12 +11,12 @@ namespace test.CT_Hacks
 {
     public class H_Player : Menu
     {
-        private bool fly = false;
         private bool invincible = false;
         private bool stamina = false;
         private bool hunger = false;
         private bool noclip = false;
         private bool clicktp = false;
+        private bool instantkill = false;
 
 
         public H_Player() : base(new Rect(220, 10, 200, 200), "Player Menu", 1, false) { }
@@ -54,6 +54,12 @@ namespace test.CT_Hacks
                 UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetPlayerCollider().enabled = true;
             }
 
+            
+            if (instantkill)
+            {
+                PlayerStatus.Instance.CanJump();
+                
+            }
 
 
         }
