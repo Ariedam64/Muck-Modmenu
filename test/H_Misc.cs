@@ -21,8 +21,8 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
-
-            if (GUILayout.Button("Break all trees"))
+            GUILayout.Label("_________BREAK_________");
+            if (GUILayout.Button("All trees"))
             {
                 HitableTree[] array = UnityEngine.Object.FindObjectsOfType<HitableTree>();
                 for (int l = 0; l < array.Length; l++)
@@ -30,7 +30,7 @@ namespace test.CT_Hacks
                     array[l].Hit(9999, 9999f, 1, Vector3.zero, 1);
                 }
             }
-            if (GUILayout.Button("Break all rocks"))
+            if (GUILayout.Button("All rocks"))
             {
                 HitableRock[] array2 = UnityEngine.Object.FindObjectsOfType<HitableRock>();
                 for (int l = 0; l < array2.Length; l++)
@@ -38,7 +38,7 @@ namespace test.CT_Hacks
                     array2[l].Hit(9999, 9999f, 1, Vector3.zero, 1);
                 }
             }
-            if (GUILayout.Button("Break all resources"))
+            if (GUILayout.Button("All resources"))
             {
                 HitableResource[] array3 = UnityEngine.Object.FindObjectsOfType<HitableResource>();
                 for (int l = 0; l < array3.Length; l++)
@@ -46,7 +46,7 @@ namespace test.CT_Hacks
                     array3[l].Hit(9999, 9999f, 1, Vector3.zero, 1);
                 }
             }
-            if (GUILayout.Button("Break user chests"))
+            if (GUILayout.Button("User chests"))
             {
                 HitableChest[] array4 = UnityEngine.Object.FindObjectsOfType<HitableChest>();
                 for (int l = 0; l < array4.Length; l++)
@@ -54,7 +54,8 @@ namespace test.CT_Hacks
                     array4[l].Hit(9999, 9999f, 1, Vector3.zero, 1);
                 }
             }
-            if (GUILayout.Button("Kill all mobs"))
+            GUILayout.Label("__________KILL__________");
+            if (GUILayout.Button("All mobs"))
             {
                 HitableMob[] array6 = UnityEngine.Object.FindObjectsOfType<HitableMob>();
                 for (int l = 0; l < array6.Length; l++)
@@ -62,6 +63,24 @@ namespace test.CT_Hacks
                     array6[l].Hit(9999, 9999f, 1, Vector3.zero, 0);
                 }
             }
+            GUILayout.Label("__________USE__________");
+            if (GUILayout.Button("All shrines"))
+            {
+                ShrineInteractable[] array7 = UnityEngine.Object.FindObjectsOfType<ShrineInteractable>();
+                for (int l = 0; l < array7.Length; l++)
+                {
+                    array7[l].Interact();
+                }
+            }
+            if (GUILayout.Button("All chests"))
+            {
+                LootContainerInteract[] array8 = UnityEngine.Object.FindObjectsOfType<LootContainerInteract>();
+                for (int l = 0; l < array8.Length; l++)
+                {
+                    ClientSend.PickupInteract(array8[l].GetId());
+                }
+            }
+            GUILayout.Label("_________OTHERS_________");
             if (GUILayout.Button("Break/kill everything"))
             {
                 Hitable[] array5 = UnityEngine.Object.FindObjectsOfType<Hitable>();
@@ -70,32 +89,7 @@ namespace test.CT_Hacks
                     array5[l].Hit(9999, 9999f, 1, Vector3.zero, 0);
                 }
             }
-            if (GUILayout.Button("Use all shrines"))
-            {
-                ShrineInteractable[] array7 = UnityEngine.Object.FindObjectsOfType<ShrineInteractable>();
-                for (int l = 0; l < array7.Length; l++)
-                {
-                    array7[l].Interact();
-                }
-            }
-            if (GUILayout.Button("Use all chests"))
-            {
-                LootContainerInteract[] array8 = UnityEngine.Object.FindObjectsOfType<LootContainerInteract>();
-                for (int l = 0; l < array8.Length; l++)
-                {
-                    ClientSend.PickupInteract(array8[l].GetId());
-                }
-            }
-
-            if (GUILayout.Button("Spawn boss"))
-            {
-                if (this.spawnboss)
-                {
-                    MobType bossMob = GameLoop.Instance.bosses[0];
-                    GameLoop.Instance.StartBoss(bossMob);
-                    this.spawnboss = false;
-                }
-            }
+            
 
             base.runWin(id);
         }

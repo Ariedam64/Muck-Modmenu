@@ -20,13 +20,14 @@ namespace test.CT_Hacks
 
 
         public string prevTooltip = "";
+        public string description, description2, prevDescription;
 
         public H_PowerUp() : base(new Rect(1460, 10, 400, 400), "PowerUp menu", 5, false) { }
 
 
         public void Update()
         {
-
+            
         }
         public override void runWin(int id)
         {
@@ -43,9 +44,10 @@ namespace test.CT_Hacks
             {
                 Powerup powerup = ItemManager.allPowerups[i];
 
-                if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, "Spawn " + powerup.name)))
+                if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description)))
                     for (int j = 0; j < ItemSpawnerAmount; j++)
                         PowerupInventory.AddPowerup(powerup.name, powerup.id, ItemManager.GetNextId());
+                        
 
                 if (x == 360)
                 {
@@ -63,13 +65,22 @@ namespace test.CT_Hacks
 
             GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount.ToString());
             ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1.0f, 150.0f);
-            
+
+            description = GUI.tooltip;
+            description2 = description.Substring(description.IndexOf("$") + 1);
+
             if (GUI.tooltip.Length > 1)
             {
                 prevTooltip = GUI.tooltip;
+                prevDescription = description2;
             }
 
+
+            
             GUI.Box(new Rect(10, 55, 170, 23), prevTooltip);
+            GUI.Box(new Rect(10, 85, 170, 60), "Description");
+            GUI.Label(new Rect(15, 105, 165, 66), prevDescription);
+           
 
 
             base.runWin(id);
