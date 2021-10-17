@@ -26,6 +26,14 @@ namespace test.CT_Hacks
             {
                 CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
             }
+            if (GUILayout.Button("Day cycle"))
+            {
+                CManager.hk_daycycle.isOpen = !CManager.hk_daycycle.isOpen;
+            }
+            if (GUILayout.Button("PowerUp"))
+            {
+                CManager.hk_powerUp.isOpen = !CManager.hk_powerUp.isOpen;
+            }
             GUILayout.Label("Created by Romann");
             base.runWin(id);
         }

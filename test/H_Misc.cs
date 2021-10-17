@@ -17,7 +17,7 @@ namespace test.CT_Hacks
         public void Update()
 
         {
-            
+
         }
         public override void runWin(int id)
         {
@@ -86,6 +86,17 @@ namespace test.CT_Hacks
                     ClientSend.PickupInteract(array8[l].GetId());
                 }
             }
+
+            if (GUILayout.Button("Spawn boss"))
+            {
+                if (this.spawnboss)
+                {
+                    MobType bossMob = GameLoop.Instance.bosses[0];
+                    GameLoop.Instance.StartBoss(bossMob);
+                    this.spawnboss = false;
+                }
+            }
+
             base.runWin(id);
         }
 

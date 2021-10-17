@@ -16,7 +16,14 @@ namespace test.CT_Hacks
         private bool hunger = false;
         private bool noclip = false;
         private bool clicktp = false;
-        private bool instantkill = false;
+        private bool instarevive = false;
+        private bool mobteleporthit = false;
+        private bool instantKill = false;
+        private bool followplayer = false;
+        private float speedhack = 1.0f;
+        private float prevSpeedhack = 1.0f;
+        private float jumpforce = 1.0f;
+        private float prevJumpforce = 1.0f;
 
 
         public H_Player() : base(new Rect(220, 10, 200, 200), "Player Menu", 1, false) { }
@@ -70,7 +77,50 @@ namespace test.CT_Hacks
                 {
                     PlayerStatus.Instance.transform.position = new Vector3(position.x - Camera.main.transform.right.x * num, position.y, position.z - Camera.main.transform.right.z * num);
                 }
+
             }
+
+            if (instarevive && PlayerStatus.Instance.IsPlayerDead())
+            {
+                ClientSend.RevivePlayer(LocalClient.instance.myId, -1, false);
+            }
+
+            if (speedhack != prevSpeedhack)
+            {
+                PlayerStatus.Instance.currentSpeedArmorMultiplier = speedhack;
+                prevSpeedhack = speedhack;
+            }
+
+            if (jumpforce != prevJumpforce && Input.GetKeyDown(KeyCode.Space))
+            {
+                PlayerMovement.Instance.GetRb().AddRelativeForce(Vector3.up * jumpforce, ForceMode.Impulse);
+                prevJumpforce = jumpforce;
+            }
+
+            if (mobteleporthit && Input.GetKey(KeyCode.Mouse0))
+            {
+                foreach (Mob mob in UnityEngine.Object.FindObjectsOfType(typeof(Mob)) as Mob[])
+                {
+                    PlayerMovement.Instance.transform.position = mob.transform.position + new Vector3(0f, 0f, 3f);
+                }
+            }
+
+            if (followplayer)
+            {
+                foreach (OnlinePlayer onlinePlayer in UnityEngine.Object.FindObjectsOfType(typeof(OnlinePlayer)) as OnlinePlayer[])
+                {
+                    PlayerMovement.Instance.transform.position = onlinePlayer.transform.position;
+                }
+            }
+
+            if (instantKill)
+            {
+                 Hotbar.Instance.currentItem.attackDamage = 9999;
+                 Hotbar.Instance.currentItem.resourceDamage = 9999;
+                 Hotbar.Instance.currentItem.attackSpeed = 100f;
+            }
+
+
 
         }
         public override void runWin(int id)
@@ -78,8 +128,16 @@ namespace test.CT_Hacks
             invincible = GUILayout.Toggle(invincible, "Godmode");
             stamina = GUILayout.Toggle(stamina, "Ininite stamina");
             hunger = GUILayout.Toggle(hunger, "Infinir hunger");
+            instantKill = GUILayout.Toggle(instantKill, "Instant kill");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
+            instarevive = GUILayout.Toggle(instarevive, "Instant revive");
+            GUILayout.Label("Speed hack: " + speedhack);
+            speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1f, 100f), 1);
+            GUILayout.Label("Jump force: " + jumpforce);
+            jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1f, 20f), 1);
+            mobteleporthit = GUILayout.Toggle(mobteleporthit, "Teleport to mob");
+            followplayer = GUILayout.Toggle(followplayer, "Follow player");
             base.runWin(id);
         }
 
