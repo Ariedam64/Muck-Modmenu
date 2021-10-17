@@ -20,6 +20,7 @@ namespace test
         public static H_Misc hk_misc;
         public static H_DayCycle hk_daycycle;
         public static H_PowerUp hk_powerUp;
+        public static H_OtherPlayer hk_otherplayer;
 
         public static void injHacks(GameObject go)
         {
@@ -29,6 +30,7 @@ namespace test
             hk_misc = go.AddComponent<H_Misc>();
             hk_daycycle = go.AddComponent<H_DayCycle>();
             hk_powerUp = go.AddComponent<H_PowerUp>();
+            hk_otherplayer = go.AddComponent<H_OtherPlayer>();
         }
 
         public static void injSystem(GameObject go)

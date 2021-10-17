@@ -18,6 +18,7 @@ namespace test.CT_System
             menus.Add(CManager.hk_misc);
             menus.Add(CManager.hk_daycycle);
             menus.Add(CManager.hk_powerUp);
+            menus.Add(CManager.hk_otherplayer);
         }
 
         public void Update()

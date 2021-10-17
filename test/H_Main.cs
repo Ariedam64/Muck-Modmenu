@@ -34,6 +34,10 @@ namespace test.CT_Hacks
             {
                 CManager.hk_powerUp.isOpen = !CManager.hk_powerUp.isOpen;
             }
+            if (GUILayout.Button("Other player"))
+            {
+                CManager.hk_otherplayer.isOpen = !CManager.hk_otherplayer.isOpen;
+            }
             GUILayout.Label("Created by Romann");
             base.runWin(id);
         }

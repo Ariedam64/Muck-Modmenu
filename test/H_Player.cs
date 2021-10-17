@@ -128,7 +128,7 @@ namespace test.CT_Hacks
             invincible = GUILayout.Toggle(invincible, "Godmode");
             stamina = GUILayout.Toggle(stamina, "Ininite stamina");
             hunger = GUILayout.Toggle(hunger, "Infinir hunger");
-            instantKill = GUILayout.Toggle(instantKill, "Instant kill");
+            instantKill = GUILayout.Toggle(instantKill, "Boost weapon");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");

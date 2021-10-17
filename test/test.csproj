@@ -103,6 +103,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="CManager.cs" />
     <Compile Include="H_DayCycle.cs" />
+    <Compile Include="H_OtherPlayer.cs" />
     <Compile Include="H_PowerUp.cs" />
     <Compile Include="H_Misc.cs" />
     <Compile Include="H_Main.cs" />

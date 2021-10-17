@@ -7,6 +7,7 @@ using System.Text;
 using System;
 using System.Runtime.InteropServices;
 
+
 namespace test.CT_Hacks
 {
     public class H_Misc : Menu
@@ -89,7 +90,7 @@ namespace test.CT_Hacks
                     array5[l].Hit(9999, 9999f, 1, Vector3.zero, 0);
                 }
             }
-            
+
 
             base.runWin(id);
         }

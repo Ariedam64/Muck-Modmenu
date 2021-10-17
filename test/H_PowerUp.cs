@@ -46,9 +46,9 @@ namespace test.CT_Hacks
 
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description)))
                     for (int j = 0; j < ItemSpawnerAmount; j++)
-                        PowerupInventory.AddPowerup(powerup.name, powerup.id, ItemManager.GetNextId());
-                        
-
+                    {
+                        ClientSend.DropItem(powerup.id, ItemSpawnerAmount);
+                    }
                 if (x == 360)
                 {
                     x = 180; y += 60;
@@ -64,7 +64,7 @@ namespace test.CT_Hacks
             GUILayout.EndScrollView();
 
             GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount.ToString());
-            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1.0f, 150.0f);
+            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1.0f, 20.0f);
 
             description = GUI.tooltip;
             description2 = description.Substring(description.IndexOf("$") + 1);
