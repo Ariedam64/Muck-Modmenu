@@ -15,22 +15,28 @@ namespace test.CT_Hacks
         public H_OtherPlayer() : base(new Rect(430, 420, 600, 400), "Other Player menu", 6, false) { }
 
 		public static int SuPlayersButY, SuPlayerSelection;
-		public static bool follow;
-		public static PlayerManager[] array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
+		public static bool follow = false;
+		public static PlayerManager[] array;
+		public static Player[] array2;
+		public static Client client;
 
 
 		public void Update()
         {
 			if (follow)
-			{
+            {
 				PlayerMovement.Instance.transform.position = array[SuPlayerSelection].transform.position;
 			}
 		}
         public override void runWin(int id)
         {
-			GUI.Box(new Rect(10, 50, 120, 400), "Players");
 
-			PlayerManager[] array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
+			array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
+			array2 = UnityEngine.Object.FindObjectsOfType<Player>();
+
+
+			GUI.Box(new Rect(10, 50, 120, 400), "Players");
+			
 			for (int i = 0; i < array.Length; i++)
 			{
 				SuPlayersButY = i * 20 + 80;
@@ -45,15 +51,15 @@ namespace test.CT_Hacks
 			{
 				GUI.Label(new Rect(210, 60, 50, 20), array[SuPlayerSelection].username);
 			}
-			if (GUI.Button(new Rect(150, 80, 90, 15), "Kill[HOST]"))
+			if (GUI.Button(new Rect(150, 80, 90, 20), "Kill[HOST]"))
 			{
 				ServerSend.HitPlayer(LocalClient.instance.myId, 69420, 0f, array[SuPlayerSelection].id, 1, array[SuPlayerSelection].transform.position);
 			}
-			if (GUI.Button(new Rect(150, 100, 90, 15), "Kick[HOST]"))
+			if (GUI.Button(new Rect(150, 110, 90, 20), "Kick[HOST]"))
 			{
 				ServerSend.DisconnectPlayer(array[SuPlayerSelection].id);
 			}
-			if (GUI.Button(new Rect(150, 120, 90, 15), "Cage"))
+			if (GUI.Button(new Rect(150, 140, 90, 20), "Cage"))
 			{
 				Vector3 position = array[SuPlayerSelection].transform.position;
 				position.y += 5f;
@@ -76,15 +82,17 @@ namespace test.CT_Hacks
 				ClientSend.RequestBuild(41, vector2, 180);
 				ClientSend.RequestBuild(41, pos2, 180);
 			}
-			if (GUI.Button(new Rect(150, 140, 90, 15), "Tp me-player"))
+			if (GUI.Button(new Rect(150, 170, 90, 20), "Tp me-player"))
 			{
 				PlayerMovement.Instance.GetRb().position = array[SuPlayerSelection].transform.position;
 			}
-			GUI.Toggle(new Rect(150, 160, 90, 15), follow, "Follow");
 
-			
+			follow = GUI.Toggle(new Rect(150, 200, 90, 20), follow, "Follow player");
 
-
+			if (GUI.Button(new Rect(150, 230, 90, 20), "Tp player-me"))
+			{
+				array[SuPlayerSelection].SetDesiredPosition(PlayerMovement.Instance.GetRb().position);
+			}
 
 			base.runWin(id);
         }
