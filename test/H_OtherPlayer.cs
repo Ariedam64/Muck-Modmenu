@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace test.CT_Hacks
@@ -14,11 +15,13 @@ namespace test.CT_Hacks
 
         public H_OtherPlayer() : base(new Rect(430, 420, 600, 400), "Other Player menu", 6, false) { }
 
-		public static int SuPlayersButY, SuPlayerSelection;
+		public static int SuPlayersButY, SuPlayerSelection, playerMov;
 		public static bool follow = false;
 		public static PlayerManager[] array;
-		public static Player[] array2;
 		public static Client client;
+		public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
+		public static ItemManager ItemManager = ItemManager.Instance;
+		public static Player ply;
 
 
 		public void Update()
@@ -26,25 +29,24 @@ namespace test.CT_Hacks
 			if (follow)
             {
 				PlayerMovement.Instance.transform.position = array[SuPlayerSelection].transform.position;
+				
 			}
 		}
         public override void runWin(int id)
         {
 
 			array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
-			array2 = UnityEngine.Object.FindObjectsOfType<Player>();
-
 
 			GUI.Box(new Rect(10, 50, 120, 400), "Players");
 			
 			for (int i = 0; i < array.Length; i++)
 			{
 				SuPlayersButY = i * 20 + 80;
-				if (GUI.Button(new Rect(20f, (float)SuPlayersButY, 100f, 20f), array[i].username))
+				if (GUI.Button(new Rect(20f, (float)SuPlayersButY, 100, 20), array[i].username))
 				{
 					SuPlayerSelection = i;
 				}
-			}
+			} 
 
 			GUI.Label(new Rect(150, 60, 70, 20), "Selected:");
 			if (array[SuPlayerSelection].username == UnityEngine.Object.FindObjectOfType<PlayerManager>().username)
@@ -91,8 +93,10 @@ namespace test.CT_Hacks
 
 			if (GUI.Button(new Rect(150, 230, 90, 20), "Tp player-me"))
 			{
-				array[SuPlayerSelection].SetDesiredPosition(PlayerMovement.Instance.GetRb().position);
+				ply = 
 			}
+
+
 
 			base.runWin(id);
         }

@@ -19,7 +19,6 @@ namespace test.CT_Hacks
         private bool instarevive = false;
         private bool mobteleporthit = false;
         private bool instantKill = false;
-        private bool followplayer = false;
         private float speedhack = 1.0f;
         private float prevSpeedhack = 1.0f;
         private float jumpforce = 1.0f;
@@ -105,14 +104,6 @@ namespace test.CT_Hacks
                 }
             }
 
-            if (followplayer)
-            {
-                foreach (OnlinePlayer onlinePlayer in UnityEngine.Object.FindObjectsOfType(typeof(OnlinePlayer)) as OnlinePlayer[])
-                {
-                    PlayerMovement.Instance.transform.position = onlinePlayer.transform.position;
-                }
-            }
-
             if (instantKill)
             {
                  Hotbar.Instance.currentItem.attackDamage = 9999;
@@ -137,7 +128,6 @@ namespace test.CT_Hacks
             GUILayout.Label("Jump force: " + jumpforce);
             jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1f, 20f), 1);
             mobteleporthit = GUILayout.Toggle(mobteleporthit, "Teleport to mob");
-            followplayer = GUILayout.Toggle(followplayer, "Follow player");
             base.runWin(id);
         }
 

@@ -13,7 +13,7 @@ namespace test.CT_Hacks
         public static Vector2 ScrollPosition { get; set; } = Vector2.zero;
         public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 170, 20);
         public static readonly Rect ItemSpawnerlabel = new Rect(10, 20, 100, 20);
-        public static int ItemSpawnerAmount { get; set; } = 1;
+        public  int ItemSpawnerAmount = 1;
 
         public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
         public static ItemManager ItemManager = ItemManager.Instance;
@@ -44,11 +44,12 @@ namespace test.CT_Hacks
             {
                 Powerup powerup = ItemManager.allPowerups[i];
 
-                if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description)))
-                    for (int j = 0; j < ItemSpawnerAmount; j++)
-                    {
-                        ClientSend.DropItem(powerup.id, ItemSpawnerAmount);
+                if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description))){
+                    for (int j = 0; j < ItemSpawnerAmount; j++){
+                        PowerupInventory.Instance.AddPowerup(powerup.name, powerup.id, ItemManager.GetNextId());
                     }
+                }
+                    
                 if (x == 360)
                 {
                     x = 180; y += 60;
@@ -63,8 +64,9 @@ namespace test.CT_Hacks
             GUILayout.Space(buttonWidth); //Créer une line de scroll en plus psk elle affiche pas la dernière ligne d'item
             GUILayout.EndScrollView();
 
-            GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount.ToString());
-            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1.0f, 20.0f);
+            GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount);
+            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1, 50);
+    
 
             description = GUI.tooltip;
             description2 = description.Substring(description.IndexOf("$") + 1);
