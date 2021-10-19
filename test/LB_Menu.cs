@@ -19,6 +19,7 @@ namespace test.CT_System
             menus.Add(CManager.hk_daycycle);
             menus.Add(CManager.hk_powerUp);
             menus.Add(CManager.hk_otherplayer);
+            menus.Add(CManager.hk_mobspawner);
         }
 
         public void Update()

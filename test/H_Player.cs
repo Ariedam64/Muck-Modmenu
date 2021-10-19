@@ -92,8 +92,9 @@ namespace test.CT_Hacks
 
             if (jumpforce != prevJumpforce && Input.GetKeyDown(KeyCode.Space))
             {
-                PlayerMovement.Instance.GetRb().AddRelativeForce(Vector3.up * jumpforce, ForceMode.Impulse);
+                PlayerMovement.Instance.GetRb().AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
                 prevJumpforce = jumpforce;
+                Variables.sendMessage("Hack", "Cette option n'est pas encore disponible");
             }
 
             if (mobteleporthit && Input.GetKey(KeyCode.Mouse0))

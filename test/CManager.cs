@@ -21,9 +21,10 @@ namespace test
         public static H_DayCycle hk_daycycle;
         public static H_PowerUp hk_powerUp;
         public static H_OtherPlayer hk_otherplayer;
+        public static H_MobSpawner hk_mobspawner;
 
         public static void injHacks(GameObject go)
-        {
+        { 
             hk_Main = go.AddComponent<H_Main>();
             hk_Player = go.AddComponent<H_Player>();
             hk_itemSpawner = go.AddComponent<H_ItemSpawner>();
@@ -31,6 +32,7 @@ namespace test
             hk_daycycle = go.AddComponent<H_DayCycle>();
             hk_powerUp = go.AddComponent<H_PowerUp>();
             hk_otherplayer = go.AddComponent<H_OtherPlayer>();
+            hk_mobspawner = go.AddComponent<H_MobSpawner>();
         }
 
         public static void injSystem(GameObject go)

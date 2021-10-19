@@ -38,8 +38,12 @@ namespace test.CT_Hacks
             {
                 CManager.hk_otherplayer.isOpen = !CManager.hk_otherplayer.isOpen;
             }
+            if (GUILayout.Button("Mob Spawner"))
+            {
+                CManager.hk_mobspawner.isOpen = !CManager.hk_mobspawner.isOpen;
+            }
             GUILayout.Label("Created by Romann");
-            base.runWin(id);
+            base.runWin(id); 
         }
 
 

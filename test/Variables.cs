@@ -23,5 +23,12 @@ namespace test
 			return Vector3.zero;
 		}
 
+		public static void sendMessage(string username, string message)
+        {
+			ChatBox tchat = UnityEngine.Object.FindObjectOfType<ChatBox>();
+			tchat.AppendMessage(0, message, username);
+			ClientSend.SendChatMessage(message);
+		}
+
 	}
 }
