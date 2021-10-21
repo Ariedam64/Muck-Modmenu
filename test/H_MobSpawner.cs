@@ -14,18 +14,10 @@ namespace test.CT_Hacks
     public class H_MobSpawner : Menu
     {
         public static Vector2 ScrollPosition2 { get; set; } = Vector2.zero;
-        public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 140, 20);
-        public static readonly Rect ItemSpawnerlabel = new Rect(10, 20, 100, 20);
-        public static readonly Rect powerMultiplieSliderPosition = new Rect(10, 70, 140, 20);
-        public static readonly Rect powerMultiplierlabel = new Rect(10, 50, 140, 20);
-        public static readonly Rect multiBoss = new Rect(10, 100, 140, 20);
-        public static readonly Rect multiBosslabel = new Rect(10, 80, 140, 20);
         public int ItemSpawnerAmount = 1;
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
         public int speedAmount = 1;
-        public int finalSpeed;
-        public int mobStat;
         public int mobId;
 
         public string prevTooltip = "";
@@ -104,14 +96,14 @@ namespace test.CT_Hacks
 
 
             //Affichage stats
-            GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount);
-            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1, 100);
-            GUI.Label(powerMultiplierlabel, "Power + health : x" + powerMultiplierAmount);
-            powerMultiplierAmount = (int)GUI.HorizontalSlider(powerMultiplieSliderPosition, powerMultiplierAmount, 1, 50);
-            GUI.Label(multiBosslabel, "Speed : x" + speedAmount);
-            speedAmount = (int)GUI.HorizontalSlider(multiBoss, speedAmount, 1, 10);
+            GUI.Box(new Rect(10, 10, 140, 210), "Stats");
+            GUI.Label(new Rect(15, 30, 95, 20), "Quantity : x" + ItemSpawnerAmount);
+            ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 50, 130, 20), ItemSpawnerAmount, 1, 100);
+            GUI.Label(new Rect(15, 60, 140, 20), "Power + health : x" + powerMultiplierAmount);
+            powerMultiplierAmount = (int)GUI.HorizontalSlider(new Rect(15, 80, 130, 20), powerMultiplierAmount, 1, 50);
+            GUI.Label(new Rect(15, 90, 140, 20), "[Visual] Speed : x" + speedAmount);
+            speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 110, 130, 20), speedAmount, 1, 10);
 
-            GUI.Box(new Rect(10, 120, 140, 100), "Stats");
             GUI.Label(new Rect(15, 140, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
             GUI.Label(new Rect(15, 165, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
 

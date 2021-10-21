@@ -20,10 +20,7 @@ namespace test.CT_Hacks
 		public static bool follow = false;
 		public static bool spectate = false;
 		public static PlayerManager[] array;
-		public static LocalClient[] arrayTest;
-		public static ItemManager[] array2;
 		public static Client client;
-		public static OnlinePlayer[] oPlayer;
 		public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
 		public static ItemManager ItemManager = ItemManager.Instance;
 		public static Player ply;
@@ -40,13 +37,10 @@ namespace test.CT_Hacks
 				Variables.sendMessage("Hack", "Cette option n'est pas encore disponible");
 			}
 		}
-        public override void runWin(int id)
-        {
+		public override void runWin(int id)
+		{
 
 			array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
-			array2 = UnityEngine.Object.FindObjectsOfType <ItemManager>();
-			arrayTest = UnityEngine.Object.FindObjectsOfType<LocalClient>();
-			oPlayer = UnityEngine.Object.FindObjectsOfType(typeof(OnlinePlayer)) as OnlinePlayer[];
 
 			GUI.Box(new Rect(10, 50, 120, 400), "Players");
 			
@@ -103,12 +97,8 @@ namespace test.CT_Hacks
 
 			follow = GUI.Toggle(new Rect(150, 230, 90, 20), spectate, "Spectate player");
 
-			if (GUI.Button(new Rect(150, 260, 90, 20), "Tp player-me"))
+			if (GUI.Button(new Rect(150, 260, 90, 20), "TEST"))
 			{
-
-
-					//MobManager.Instance.mobs[i].SetDestination(PlayerMovement.Instance.GetRb().position);
-					MobManager.Instance.mobs[MobManager.Instance.mobs.Count() - 1].transform.position = PlayerMovement.Instance.GetRb().position;
 				
 
 			}

@@ -10,20 +10,20 @@ namespace test.CT_Hacks
 {
     public class H_PowerUp : Menu
     {
+
+        //========  VARIABLES
         public static Vector2 ScrollPosition { get; set; } = Vector2.zero;
-        public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 170, 20);
-        public static readonly Rect ItemSpawnerlabel = new Rect(10, 20, 100, 20);
-        public  int ItemSpawnerAmount = 1;
+        public static readonly Rect PowerUpSpawnerSliderPosition = new Rect(10, 40, 190, 20);
+        public static readonly Rect PowerUItemSpawnerlabel = new Rect(10, 20, 100, 20);
 
         public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
         public static ItemManager ItemManager = ItemManager.Instance;
 
-
+        public int PowerUpSpawnerAmount = 1;
         public string prevTooltip = "";
         public string description, description2, prevDescription;
 
-        public H_PowerUp() : base(new Rect(1460, 10, 400, 400), "PowerUp menu", 5, false) { }
-
+        public H_PowerUp() : base(new Rect(1460, 10, 210, 420), "PowerUp menu", 5, false) { }
 
         public void Update()
         {
@@ -31,43 +31,34 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
-            
-            ScrollPosition = GUILayout.BeginScrollView(ScrollPosition, false, true, GUILayout.Width(430), GUILayout.Height(350));
-            
 
-            int x = 180;
-            int y = 0;
 
-            int buttonWidth = 60;
+            //Bouton de spawn
+            int x = 25;
+            int y = 155;
 
+            ScrollPosition = GUI.BeginScrollView(new Rect(5,150,195,235), ScrollPosition, new Rect(20, 150, 175, 540), false, true);
+               
             for (int i = 0; i < ItemManager.allPowerups.Count(); i++)
             {
                 Powerup powerup = ItemManager.allPowerups[i];
 
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description))){
-                    for (int j = 0; j < ItemSpawnerAmount; j++){
+                    for (int j = 0; j < PowerUpSpawnerAmount; j++){
                         PowerupInventory.Instance.AddPowerup(powerup.name, powerup.id, ItemManager.GetNextId());
                     }
-                }
-                    
-                if (x == 360)
+                }          
+                if (x == 145)
                 {
-                    x = 180; y += 60;
-                    GUILayout.Space(buttonWidth);
+                    x = 25; y += 60;
                 }
                 else
                     x += 60;
+            }
 
-        }
+            GUI.EndScrollView();
 
-
-            GUILayout.Space(buttonWidth); //Créer une line de scroll en plus psk elle affiche pas la dernière ligne d'item
-            GUILayout.EndScrollView();
-
-            GUI.Label(ItemSpawnerlabel, "Quantity : x" + ItemSpawnerAmount);
-            ItemSpawnerAmount = (int)GUI.HorizontalSlider(ItemSpawnerSliderPosition, ItemSpawnerAmount, 1, 50);
-    
-
+            //Gestion du tooltip
             description = GUI.tooltip;
             description2 = description.Substring(description.IndexOf("$") + 1);
 
@@ -77,13 +68,23 @@ namespace test.CT_Hacks
                 prevDescription = description2;
             }
 
+            //Affichage
+            GUI.Label(PowerUItemSpawnerlabel, "Quantity : x" + PowerUpSpawnerAmount);
+            PowerUpSpawnerAmount = (int)GUI.HorizontalSlider(PowerUpSpawnerSliderPosition, PowerUpSpawnerAmount, 1, 50);
+            GUI.Box(new Rect(10, 55, 190, 23), prevTooltip);
+            GUI.Box(new Rect(10, 85, 190, 60), "Description");
+            GUI.Label(new Rect(15, 105, 180, 66), prevDescription);
 
-            
-            GUI.Box(new Rect(10, 55, 170, 23), prevTooltip);
-            GUI.Box(new Rect(10, 85, 170, 60), "Description");
-            GUI.Label(new Rect(15, 105, 165, 66), prevDescription);
-           
+            if (GUI.Button(new Rect(10, 390, 190, 20), "Exit"))
+            {
+                this.isOpen = false;
+            }
 
+
+        //========  AUTRES
+
+            //Pour virer le bug du dragWindow et la size de la box
+            GUILayout.Label("");
 
             base.runWin(id);
         }

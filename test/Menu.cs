@@ -22,13 +22,13 @@ namespace test
 
         public virtual void runWin(int id)
         {
-            if (id != 0)
+            if (id != 0 && id != 5)
             {
                 if (GUILayout.Button("Exit"))
-                {
-                    isOpen = false;
-                }
-            }
+                    {
+                        isOpen = false;
+                    }
+                }                        
             GUI.DragWindow();
         }
     }

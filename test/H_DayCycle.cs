@@ -44,7 +44,6 @@ namespace test.CT_Hacks
         public override void runWin(int id)
         {
 
-
             if (GUILayout.Button("Start Day"))
             {
                 DayCycle.time = startDay;
