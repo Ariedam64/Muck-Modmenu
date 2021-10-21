@@ -103,7 +103,15 @@ namespace test.CT_Hacks
 
 			follow = GUI.Toggle(new Rect(150, 230, 90, 20), spectate, "Spectate player");
 
+			if (GUI.Button(new Rect(150, 260, 90, 20), "Tp player-me"))
+			{
 
+
+					//MobManager.Instance.mobs[i].SetDestination(PlayerMovement.Instance.GetRb().position);
+					MobManager.Instance.mobs[MobManager.Instance.mobs.Count() - 1].transform.position = PlayerMovement.Instance.GetRb().position;
+				
+
+			}
 			base.runWin(id);
         }
 
