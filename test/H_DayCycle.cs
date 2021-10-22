@@ -16,8 +16,8 @@ namespace test.CT_Hacks
         private float middleDay = 0.25f;
         private float startNight = 0.5f;
         private float middleNight = 0.75f;
-        private float timeDay;
-        private float prevTimeDay;
+        private float speedTime = 1f;
+        private float prevSpeedTime = 1f;
         private bool frooze = false;
 
 
@@ -26,15 +26,19 @@ namespace test.CT_Hacks
         public void Update()
 
         {
-            if (timeDay != prevTimeDay)
-            {
-                DayCycle.time = timeDay/100;
-                prevTimeDay = timeDay;
-            }
 
             if (frooze)
             {
-
+                DayCycle.dayDuration = 99999f;
+            }
+            else
+            {
+                if (speedTime != prevSpeedTime)
+                {
+                    float timeSet = 100 / speedTime;
+                    prevSpeedTime = speedTime;
+                    DayCycle.dayDuration = timeSet;
+                }
             }
 
         }
@@ -45,7 +49,7 @@ namespace test.CT_Hacks
             {
                 DayCycle.time = startDay;
             }
-            if (GUILayout.Button("Middle ay"))
+            if (GUILayout.Button("Middle Day"))
             {
                 DayCycle.time = middleDay;
             }
@@ -58,11 +62,9 @@ namespace test.CT_Hacks
                 DayCycle.time = middleNight;
             }
 
-            GUILayout.Label("Day time: " + timeDay);
-            timeDay = (float)Math.Round(GUILayout.HorizontalSlider(timeDay, 0f, 100f), 1);
-
-
-            frooze = GUILayout.Toggle(frooze, "Frooze");
+            GUILayout.Label("Day time: " + speedTime);
+            speedTime = (float)Math.Round(GUILayout.HorizontalSlider(speedTime, 1f, 10000f), 1);
+            frooze = GUILayout.Toggle(frooze, "Freeze time");
 
             base.runWin(id);
         }
