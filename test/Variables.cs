@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
+using System.Linq;
 using UnityEngine;
 
 namespace test
 {
     public class Variables
     {
+
 		public static Vector3 FindTpPos()
 		{
 			Transform playerCam = PlayerMovement.Instance.playerCam;
@@ -28,6 +31,18 @@ namespace test
 			ChatBox tchat = UnityEngine.Object.FindObjectOfType<ChatBox>();
 			tchat.AppendMessage(0, message, username);
 			ClientSend.SendChatMessage(message);
+		}
+
+		internal static object GetInstanceField(Type type, object instance, string fieldName)
+		{
+			BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+			FieldInfo field = type.GetField(fieldName, bindFlags);
+			return field.GetValue(instance);
+		}
+
+		public static int getMobIntancied()
+        {
+			return (int)GetInstanceField(typeof(MobManager), MobManager.Instance, "mobId");
 		}
 
 	}

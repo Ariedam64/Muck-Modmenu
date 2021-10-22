@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Steamworks;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,7 +17,6 @@ namespace test.CT_Hacks
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
         public int speedAmount = 1;
-        public int mobId;
 
         public string prevTooltip = "";
         public string mobStats;
@@ -26,14 +24,6 @@ namespace test.CT_Hacks
         public string prevMobMaxAttackDistance ,maxAttackDistance;
         public string prevMobBoss, mobBoss;
         public string prevMobDefense, mobDefense;
-
-        internal static object GetInstanceField(Type type, object instance, string fieldName)
-        {
-            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                | BindingFlags.Static;
-            FieldInfo field = type.GetField(fieldName, bindFlags);
-            return field.GetValue(instance);
-        }
 
         public H_MobSpawner() : base(new Rect(1460, 420, 430, 200), "Mob Spawner menu", 7, false) { }
 
@@ -47,22 +37,18 @@ namespace test.CT_Hacks
 
             int x = 160;
             int y = 0;
-            int buttonWidth = 32;
+            int buttonWidth = 32;       
 
-            //Pour avoir le nombre de mob qui ont spawn
-            mobId = (int)GetInstanceField(typeof(MobManager), MobManager.Instance, "mobId");
-
-            for (int i = 0; i < MobSpawner.Instance.allMobs.Length; i++)
+            foreach (MobType mob in MobSpawner.Instance.allMobs)
             {
-                MobType mob = MobSpawner.Instance.allMobs[i];
                 if (GUI.Button(new Rect(x, y, 120, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
                 {
-                    for (int j = 0; j < ItemSpawnerAmount; j++){
+                    for (int j = 0; j < ItemSpawnerAmount; j++)
+                    {
                         MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
-                        MobManager.Instance.mobs[mobId].SetSpeed(mob.speed * speedAmount);
+                        MobManager.Instance.mobs[Variables.getMobIntancied()-1].SetSpeed(speedAmount);
                     }
                 }
-
                 if (x == 290)
                 {
                     x = 160; y += 32;
@@ -70,8 +56,8 @@ namespace test.CT_Hacks
                 }
                 else
                     x += 130;
-
             }
+
             GUILayout.Space(buttonWidth);
             GUILayout.EndScrollView();
 
@@ -96,7 +82,7 @@ namespace test.CT_Hacks
 
 
             //Affichage stats
-            GUI.Box(new Rect(10, 10, 140, 210), "Stats");
+            GUI.Box(new Rect(10, 10, 140, 210), "Stats ");
             GUI.Label(new Rect(15, 30, 95, 20), "Quantity : x" + ItemSpawnerAmount);
             ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 50, 130, 20), ItemSpawnerAmount, 1, 100);
             GUI.Label(new Rect(15, 60, 140, 20), "Power + health : x" + powerMultiplierAmount);

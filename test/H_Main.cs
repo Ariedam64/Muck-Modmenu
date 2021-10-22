@@ -42,6 +42,10 @@ namespace test.CT_Hacks
             {
                 CManager.hk_mobspawner.isOpen = !CManager.hk_mobspawner.isOpen;
             }
+            if (GUILayout.Button("ESP"))
+            {
+                CManager.hk_esp.isOpen = !CManager.hk_esp.isOpen;
+            }
             GUILayout.Label("Created by Romann");
             base.runWin(id); 
         }

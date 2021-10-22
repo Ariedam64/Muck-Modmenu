@@ -22,6 +22,7 @@ namespace test
         public static H_PowerUp hk_powerUp;
         public static H_OtherPlayer hk_otherplayer;
         public static H_MobSpawner hk_mobspawner;
+        public static H_ESP hk_esp;
 
         public static void injHacks(GameObject go)
         { 
@@ -33,6 +34,7 @@ namespace test
             hk_powerUp = go.AddComponent<H_PowerUp>();
             hk_otherplayer = go.AddComponent<H_OtherPlayer>();
             hk_mobspawner = go.AddComponent<H_MobSpawner>();
+            hk_esp = go.AddComponent<H_ESP>();
         }
 
         public static void injSystem(GameObject go)

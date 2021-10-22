@@ -20,16 +20,17 @@ namespace test.CT_Hacks
         public static ItemManager ItemManager = ItemManager.Instance;
 
         public bool itemItem = true;
-        public bool storageItem = true;
-        public bool foodItem = true;
-        public bool axeItem = true;
-        public bool bowItem = true;
-        public bool pickaxeItem = true;
-        public bool swordItem = true;
-        public bool shieldItem = true;
-        public bool shovelItem = true;
-        public bool stationItem = true;
-        public bool allItem = true;
+        public bool storageItem = false;
+        public bool foodItem = false;
+        public bool axeItem = false;
+        public bool bowItem = false;
+        public bool pickaxeItem = false;
+        public bool swordItem = false;
+        public bool shieldItem = false;
+        public bool shovelItem = false;
+        public bool stationItem = false;
+        public bool allItem = false;
+        public bool isDropped = true;
 
 
         public string prevTooltip = "";
@@ -53,114 +54,47 @@ namespace test.CT_Hacks
 
             int buttonWidth = 60;
 
-            foreach (InventoryItem item in ItemManager.allScriptableItems)
-            {
+            foreach (InventoryItem item in ItemManager.allScriptableItems){
                 if (axeItem){
-                    if (item.type == InventoryItem.ItemType.Axe){
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description))){
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Axe);
                 }
                 if (bowItem){
-                    if (item.type == InventoryItem.ItemType.Bow){
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description))){
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Bow);             
                 }
-                if (itemItem)
-                {
-                    if (item.type == InventoryItem.ItemType.Item)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                if (itemItem){
+                    showItem(item, InventoryItem.ItemType.Item);
                 }
                 if (shieldItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Shield)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Shield);
                 }
                 if (storageItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Storage)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Storage);
                 }
                 if (pickaxeItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Pickaxe)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Pickaxe);
                 }
                 if (stationItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Station)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Station);
                 }
                 if (shovelItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Shovel)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Shovel);
                 }
                 if (swordItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Sword)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Sword);
                 }
                 if (foodItem)
                 {
-                    if (item.type == InventoryItem.ItemType.Food)
-                    {
-                        if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
-                        {
-                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                        }
-                        addCollumn();
-                    }
+                    showItem(item, InventoryItem.ItemType.Food);
                 }
-
             }
+
+
             GUILayout.Space(buttonWidth); //Créer une line de scroll en plus psk elle affiche pas la dernière ligne d'item
             GUILayout.EndScrollView();
 
@@ -183,35 +117,50 @@ namespace test.CT_Hacks
             GUI.Box(new Rect(10, 85, 140, 75), "Description");
             GUI.Label(new Rect(15, 105, 135, 75), prevDescription);
             //Filters
-            GUI.Box(new Rect(10, 167, 140, 200), "Filters");
-            itemItem = GUI.Toggle(new Rect(20, 195, 80, 23), itemItem, "Item");
-            axeItem = GUI.Toggle(new Rect(90, 195, 80, 23), axeItem, "Axe");
+            GUI.Box(new Rect(10, 167, 140, 180), "Filters");
+            itemItem = GUI.Toggle(new Rect(20, 195, 60, 23), itemItem, "Item");
+            axeItem = GUI.Toggle(new Rect(90, 195, 60, 23), axeItem, "Axe");
+            pickaxeItem = GUI.Toggle(new Rect(20, 225, 65, 23), pickaxeItem, "Pickaxe");
+            swordItem = GUI.Toggle(new Rect(90, 225, 60, 23), swordItem, "Sword");
+            shieldItem = GUI.Toggle(new Rect(20, 255, 60, 23), shieldItem, "Shield");
+            shovelItem = GUI.Toggle(new Rect(90, 255, 60, 23), shovelItem, "Shovel");
+            stationItem = GUI.Toggle(new Rect(20, 285, 60, 23), stationItem, "Station");
+            foodItem = GUI.Toggle(new Rect(90, 285, 60, 23), foodItem, "Food");
+            storageItem = GUI.Toggle(new Rect(20, 315, 60, 23), storageItem, "Storage");
+            bowItem = GUI.Toggle(new Rect(90, 315, 60, 23), bowItem, "Bow");
 
-            pickaxeItem = GUI.Toggle(new Rect(20, 230, 80, 23), pickaxeItem, "Pickaxe");
-            swordItem = GUI.Toggle(new Rect(90, 230, 80, 23), swordItem, "Sword");
-
-            shieldItem = GUI.Toggle(new Rect(20, 265, 80, 23), shieldItem, "Shield");
-            shovelItem = GUI.Toggle(new Rect(90, 265, 80, 23), shovelItem, "Shovel");
-
-            stationItem = GUI.Toggle(new Rect(20, 300, 80, 23), stationItem, "Station");
-            foodItem = GUI.Toggle(new Rect(90, 300, 80, 23), foodItem, "Food");
-
-            storageItem = GUI.Toggle(new Rect(20, 335, 80, 23), storageItem, "Storage");
-            bowItem = GUI.Toggle(new Rect(90, 335, 80, 23), bowItem, "Bow");
-
+            isDropped = GUI.Toggle(new Rect(15, 350, 60, 23), isDropped, "Drop it");
 
 
             //Function
-            void addCollumn()
+
+            void showItem(InventoryItem item, InventoryItem.ItemType type)
             {
-                if (x == 510){
-                    x = 150; y += 60;
-                    GUILayout.Space(buttonWidth);
-                }
-                else{
-                    x += 60;
+                if (item.type == type)
+                {
+                    if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "\n $" + item.description)))
+                    {
+                        if (isDropped)
+                            ClientSend.DropItem(item.id, ItemSpawnerAmount);
+                        else
+                        {
+                            InventoryItem itemInventory = item;
+                            itemInventory.amount = (int)ItemSpawnerAmount;
+                            InventoryUI.Instance.AddItemToInventory(itemInventory);
+                        }
+                    }
+                    if (x == 510)
+                    {
+                        x = 150; y += 60;
+                        GUILayout.Space(buttonWidth);
+                    }
+                    else
+                    {
+                        x += 60;
+                    }
                 }
             }
+
             base.runWin(id);
         }
 

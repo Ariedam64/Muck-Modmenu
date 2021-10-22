@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Steamworks;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,9 +19,7 @@ namespace test.CT_Hacks
 		public static bool follow = false;
 		public static bool spectate = false;
 		public static PlayerManager[] array;
-		public static Client client;
-		public static PowerupInventory PowerupInventory = PowerupInventory.Instance;
-		public static ItemManager ItemManager = ItemManager.Instance;
+		public static OnlinePlayer[] clientArray;
 		public static Player ply;
 
 
@@ -41,6 +38,7 @@ namespace test.CT_Hacks
 		{
 
 			array = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
+			clientArray = UnityEngine.Object.FindObjectsOfType<OnlinePlayer>();
 
 			GUI.Box(new Rect(10, 50, 120, 400), "Players");
 			
@@ -97,10 +95,9 @@ namespace test.CT_Hacks
 
 			follow = GUI.Toggle(new Rect(150, 230, 90, 20), spectate, "Spectate player");
 
-			if (GUI.Button(new Rect(150, 260, 90, 20), "TEST"))
+			if (GUI.Button(new Rect(150, 260, 90, 20),""))
 			{
-				
-
+				array[SuPlayerSelection].transform.position = array[0].transform.position;
 			}
 			base.runWin(id);
         }

@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>D:\Program Files %28x86%29\Steam\steamapps\common\Muck\Muck_Data\Managed\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Muck|AnyCPU'">
+    <OutputPath>bin\Muck\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -104,6 +107,7 @@
     <Compile Include="CManager.cs" />
     <Compile Include="H_DayCycle.cs" />
     <Compile Include="H_MobSpawner.cs" />
+    <Compile Include="H_ESP.cs" />
     <Compile Include="H_OtherPlayer.cs" />
     <Compile Include="H_PowerUp.cs" />
     <Compile Include="H_Misc.cs" />
