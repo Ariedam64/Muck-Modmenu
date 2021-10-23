@@ -40,6 +40,13 @@ namespace test
 			return field.GetValue(instance);
 		}
 
+		internal static void instanceField(Type type, object instance, string fieldName, object value)
+		{
+			BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+			FieldInfo field = type.GetField(fieldName, bindFlags);
+			field.SetValue(instance, value);
+		}
+
 		public static int getMobIntancied()
         {
 			return (int)GetInstanceField(typeof(MobManager), MobManager.Instance, "mobId");

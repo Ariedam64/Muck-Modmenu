@@ -20,7 +20,7 @@ namespace test
         public static H_Misc hk_misc;
         public static H_DayCycle hk_daycycle;
         public static H_PowerUp hk_powerUp;
-        public static H_OtherPlayer hk_otherplayer;
+        public static H_Server hk_server;
         public static H_MobSpawner hk_mobspawner;
         public static H_ESP hk_esp;
 
@@ -32,7 +32,7 @@ namespace test
             hk_misc = go.AddComponent<H_Misc>();
             hk_daycycle = go.AddComponent<H_DayCycle>();
             hk_powerUp = go.AddComponent<H_PowerUp>();
-            hk_otherplayer = go.AddComponent<H_OtherPlayer>();
+            hk_server = go.AddComponent<H_Server>();
             hk_mobspawner = go.AddComponent<H_MobSpawner>();
             hk_esp = go.AddComponent<H_ESP>();
         }

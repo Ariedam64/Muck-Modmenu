@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Reflection;
 using System;
 using System.Runtime.InteropServices;
 
@@ -15,11 +16,16 @@ namespace test.CT_Hacks
         private bool hunger = false;
         private bool noclip = false;
         private bool clicktp = false;
+        private bool fly = false;
+        private bool third = false;
         private bool instarevive = false;
         private bool mobteleporthit = false;
         private bool instantKill = false;
+        private bool freecam = false;
         private float speedhack = 1.0f;
         private float prevSpeedhack = 1.0f;
+        private float gravity = 1.0f;
+        private float prevGravity = 1.0f;
         private float jumpforce = 1.0f;
         private float prevJumpforce = 1.0f;
 
@@ -34,8 +40,15 @@ namespace test.CT_Hacks
                 UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetRb().position = Variables.FindTpPos();
             }
 
-            if (invincible)
+            if (fly)
             {
+                typeof(PlayerMovement).GetField("jumpCounterResetTime", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0);
+                typeof(PlayerMovement).GetField("jumpCooldown", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0f);
+                typeof(PlayerMovement).GetField("grounded", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, true);
+            }
+
+            if (invincible)
+            {             
                 PlayerStatus.Instance.hp = (float)PlayerStatus.Instance.maxHp;
                 PlayerStatus.Instance.shield = (float)PlayerStatus.Instance.maxShield;
             }
@@ -43,6 +56,25 @@ namespace test.CT_Hacks
             if (stamina)
             {
                 PlayerStatus.Instance.stamina = PlayerStatus.Instance.maxStamina;
+            }
+
+            if (third)
+            {
+                MoveCamera.Instance.state = MoveCamera.CameraState.Spectate;
+            }
+            else
+            {              
+                MoveCamera.Instance.state = MoveCamera.CameraState.Player;
+            }
+
+            if (freecam)
+            {
+                PlayerMovement.Instance.GetRb().velocity = new Vector3(0f, 0f, 0f);
+                MoveCamera.Instance.state = MoveCamera.CameraState.Freecam;
+            }
+            else
+            {
+                MoveCamera.Instance.state = MoveCamera.CameraState.Player;
             }
 
             if (hunger)
@@ -85,15 +117,28 @@ namespace test.CT_Hacks
 
             if (speedhack != prevSpeedhack)
             {
-                PlayerStatus.Instance.currentSpeedArmorMultiplier = speedhack;
+                float maxSpeed = 5.5f + speedhack;
+                float maxRunSpeed = 12 + speedhack;
+                float maxWalkSpeed = 5.5f + speedhack;
+                typeof(PlayerMovement).GetField("maxSpeed", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, maxSpeed);
+                typeof(PlayerMovement).GetField("maxWalkSpeed", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, maxWalkSpeed);
+                typeof(PlayerMovement).GetField("maxRunSpeed", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, maxRunSpeed);
                 prevSpeedhack = speedhack;
             }
 
-            if (jumpforce != prevJumpforce && Input.GetKeyDown(KeyCode.Space))
+            if (gravity != prevGravity)
             {
-                PlayerMovement.Instance.GetRb().AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
+                float grav = 4 + gravity;
+                PlayerMovement.Instance.extraGravity = grav;
+                prevGravity = gravity;
+            }
+
+            if (jumpforce != prevJumpforce)
+            {
+                float force = 11 + jumpforce;
+                typeof(PlayerMovement).GetField("jumpForce", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, force);
                 prevJumpforce = jumpforce;
-                Variables.sendMessage("Hack", "Cette option n'est pas encore disponible");
+               // Variables.sendMessage("Hack", "Cette option n'est pas encore disponible");
             }
 
             if (mobteleporthit && Input.GetKey(KeyCode.Mouse0))
@@ -110,9 +155,6 @@ namespace test.CT_Hacks
                  Hotbar.Instance.currentItem.resourceDamage = 9999;
                  Hotbar.Instance.currentItem.attackSpeed = 100f;
             }
-
-
-
         }
         public override void runWin(int id)
         {
@@ -122,14 +164,18 @@ namespace test.CT_Hacks
             instantKill = GUILayout.Toggle(instantKill, "Boost weapon");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
+            third = GUILayout.Toggle(third, "Third Person");
+            freecam = GUILayout.Toggle(freecam, "Freecam");
+            fly = GUILayout.Toggle(fly, "Fly");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");
+            GUILayout.Label("Gravity: " + gravity);
+            gravity = (float)Math.Round(GUILayout.HorizontalSlider(gravity, -50, 50), 1);
             GUILayout.Label("Speed hack: " + speedhack);
-            speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1f, 100f), 1);
+            speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1, 100), 1);
             GUILayout.Label("Jump force: " + jumpforce);
-            jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1f, 20f), 1);
+            jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1, 50), 1);
             mobteleporthit = GUILayout.Toggle(mobteleporthit, "Teleport to mob");
             base.runWin(id);
         }
-
     }
 }

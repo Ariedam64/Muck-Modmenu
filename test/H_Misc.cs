@@ -15,7 +15,6 @@ namespace test.CT_Hacks
         public H_Misc() : base(new Rect(1040, 10, 200, 200), "Misc menu", 3, false) { }
 
         public void Update()
-
         {
 
         }
@@ -90,6 +89,18 @@ namespace test.CT_Hacks
                 }
             }
 
+            if (GUILayout.Button("Unlock all achievements"))
+            {
+                foreach (Steamworks.Data.Achievement achievement in Steamworks.SteamUserStats.Achievements)
+                {
+                    achievement.Trigger(true);
+                }
+                Steamworks.SteamUserStats.StoreStats();
+            }
+            if (GUILayout.Button("Reset all achievements"))
+            {
+                Steamworks.SteamUserStats.ResetAll(true);
+            }
 
             base.runWin(id);
         }

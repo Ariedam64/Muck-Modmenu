@@ -80,12 +80,6 @@ namespace test.CT_Hacks
                 this.isOpen = false;
             }
 
-
-        //========  AUTRES
-
-            //Pour virer le bug du dragWindow et la size de la box
-            GUILayout.Label("");
-
             base.runWin(id);
         }
 
