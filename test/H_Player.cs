@@ -17,6 +17,7 @@ namespace test.CT_Hacks
         private bool noclip = false;
         private bool clicktp = false;
         private bool fly = false;
+        private float fly_Y = 0f;
         private bool third = false;
         private bool instarevive = false;
         private bool mobteleporthit = false;
@@ -42,9 +43,9 @@ namespace test.CT_Hacks
 
             if (fly)
             {
-                typeof(PlayerMovement).GetField("jumpCounterResetTime", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0);
-                typeof(PlayerMovement).GetField("jumpCooldown", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0f);
-                typeof(PlayerMovement).GetField("grounded", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, true);
+               typeof(PlayerMovement).GetField("jumpCounterResetTime", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0);
+               typeof(PlayerMovement).GetField("jumpCooldown", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0f);
+               typeof(PlayerMovement).GetField("grounded", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, true);
             }
 
             if (invincible)
@@ -56,15 +57,6 @@ namespace test.CT_Hacks
             if (stamina)
             {
                 PlayerStatus.Instance.stamina = PlayerStatus.Instance.maxStamina;
-            }
-
-            if (third)
-            {
-                MoveCamera.Instance.state = MoveCamera.CameraState.Spectate;
-            }
-            else
-            {              
-                MoveCamera.Instance.state = MoveCamera.CameraState.Player;
             }
 
             if (freecam)
@@ -164,7 +156,6 @@ namespace test.CT_Hacks
             instantKill = GUILayout.Toggle(instantKill, "Boost weapon");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
-            third = GUILayout.Toggle(third, "Third Person");
             freecam = GUILayout.Toggle(freecam, "Freecam");
             fly = GUILayout.Toggle(fly, "Fly");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");

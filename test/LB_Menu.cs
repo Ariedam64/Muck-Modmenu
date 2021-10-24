@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using test.CT_Hacks;
 using UnityEngine;
 
 namespace test.CT_System
@@ -9,6 +11,8 @@ namespace test.CT_System
     {
         private bool isOpen = false;
         private List<Menu> menus = new List<Menu>();
+        public static PlayerManager[] listeJoueur = new PlayerManager[0];
+        public static MenuUI[] listeMenu = new MenuUI[0];
 
         public void Start()
         {
@@ -25,18 +29,40 @@ namespace test.CT_System
 
         public void Update()
         {
+
+            listeMenu = UnityEngine.Object.FindObjectsOfType<MenuUI>();
+
+            if (listeMenu.Length != 0)
+            {
+                listeJoueur = new PlayerManager[0];
+            }
+            if (listeMenu.Length == 0 && listeJoueur.Length == 0)
+            {
+                listeJoueur = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
+            }
+            
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                isOpen = !isOpen;
-                if (!isOpen)
+                if (listeMenu.Length != 0)
                 {
-                    Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Confined;
+                    if (isOpen)
+                    {
+                        isOpen = !isOpen;
+                    }
+                        StatusMessage.Instance.DisplayMessage("You look forward to cheat, try to start a game :)");
                 }
-                else
-                {
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.None;
+                else {
+                    isOpen = !isOpen;
+                    if (!isOpen)
+                    {
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Confined;
+                    }
+                    else
+                    {
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+                    }
                 }
             }
         }

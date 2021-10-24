@@ -87,7 +87,7 @@ namespace test.CT_Hacks
             ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 50, 130, 20), ItemSpawnerAmount, 1, 100);
             GUI.Label(new Rect(15, 60, 140, 20), "Power + health : x" + powerMultiplierAmount);
             powerMultiplierAmount = (int)GUI.HorizontalSlider(new Rect(15, 80, 130, 20), powerMultiplierAmount, 1, 50);
-            GUI.Label(new Rect(15, 90, 140, 20), "[Visual] Speed : x" + speedAmount);
+            GUI.Label(new Rect(15, 90, 140, 20), "[Client] Speed : x" + speedAmount);
             speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 110, 130, 20), speedAmount, 1, 10);
 
             GUI.Label(new Rect(15, 140, 250, 60), "Speed : " + floatMobSpeed * speedAmount);

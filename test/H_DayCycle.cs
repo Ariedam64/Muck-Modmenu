@@ -61,8 +61,7 @@ namespace test.CT_Hacks
             {
                 DayCycle.time = middleNight;
             }
-
-            GUILayout.Label("Day time: " + speedTime);
+            GUILayout.Label("Time multiplier: " + speedTime);
             speedTime = (float)Math.Round(GUILayout.HorizontalSlider(speedTime, 1f, 10000f), 1);
             frooze = GUILayout.Toggle(frooze, "Freeze time");
 
