@@ -35,6 +35,10 @@ namespace test.CT_System
             if (listeMenu.Length != 0)
             {
                 listeJoueur = new PlayerManager[0];
+                if (isOpen)
+                {
+                    isOpen = !isOpen;
+                }
             }
             if (listeMenu.Length == 0 && listeJoueur.Length == 0)
             {
@@ -45,11 +49,7 @@ namespace test.CT_System
             {
                 if (listeMenu.Length != 0)
                 {
-                    if (isOpen)
-                    {
-                        isOpen = !isOpen;
-                    }
-                        StatusMessage.Instance.DisplayMessage("You look forward to cheat, try to start a game :)");
+                        StatusMessage.Instance.DisplayMessage("You look forward to cheat, try to start a game first :)");
                 }
                 else {
                     isOpen = !isOpen;

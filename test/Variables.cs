@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace test
@@ -51,6 +52,46 @@ namespace test
         {
 			return (int)GetInstanceField(typeof(MobManager), MobManager.Instance, "mobId");
 		}
+
+		public static float stringToFloat(string leStringAConvertir)
+        {
+			float floatConvert;
+			float.TryParse(leStringAConvertir, out floatConvert);
+			return floatConvert;
+		}
+
+		public static float stringToInt(string leStringAConvertir)
+		{
+			int intConvert;
+			int.TryParse(leStringAConvertir, out intConvert);
+			return (int)intConvert;
+		}
+
+		public static String deleteAllAfter(String laChaineACouper, String leCaractere)
+        {
+			string leNouveauString;
+			leNouveauString = laChaineACouper.Substring(laChaineACouper.IndexOf(leCaractere) + 1);
+			int index = laChaineACouper.LastIndexOf(leCaractere);
+			if (index >= 0)
+			{
+				leNouveauString = laChaineACouper.Substring(0, index);
+			}
+			return leNouveauString;
+		}
+
+		public static String deleteAllBefore(String laChaineACouper, String leCaractere)
+        {
+			String leNouveauString = laChaineACouper.Substring(laChaineACouper.IndexOf(leCaractere) + 1);
+			return leNouveauString;
+		}
+
+		public static String deleteAllBeetween(String caractereAGauche, String laChaineACouper, String caractereADroite)
+		{
+			String leNouveauString = deleteAllBefore(laChaineACouper, caractereAGauche);
+			leNouveauString = deleteAllAfter(leNouveauString, caractereADroite);
+			return leNouveauString;
+		}
+
 
 	}
 }

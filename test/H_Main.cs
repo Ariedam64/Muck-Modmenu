@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace test.CT_Hacks
 {

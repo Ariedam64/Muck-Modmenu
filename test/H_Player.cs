@@ -17,10 +17,7 @@ namespace test.CT_Hacks
         private bool noclip = false;
         private bool clicktp = false;
         private bool fly = false;
-        private float fly_Y = 0f;
-        private bool third = false;
         private bool instarevive = false;
-        private bool mobteleporthit = false;
         private bool instantKill = false;
         private bool freecam = false;
         private float speedhack = 1.0f;
@@ -29,6 +26,10 @@ namespace test.CT_Hacks
         private float prevGravity = 1.0f;
         private float jumpforce = 1.0f;
         private float prevJumpforce = 1.0f;
+        private float healingRate = 5.0f;
+        private float prevHealingRate = 5.0f;
+        private int strength = 1;
+        private int prevStrength = 1;
 
 
         public H_Player() : base(new Rect(220, 10, 200, 200), "Player Menu", 1, false) { }
@@ -125,20 +126,26 @@ namespace test.CT_Hacks
                 prevGravity = gravity;
             }
 
+            if (healingRate != prevHealingRate)
+            {
+                typeof(PlayerStatus).GetField("healingRate", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerStatus.Instance, healingRate);
+                typeof(PlayerStatus).GetField("healingDrainMultiplier", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerStatus.Instance, healingRate);
+                typeof(PlayerStatus).GetMethod("Healing", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).Invoke(PlayerStatus.Instance, null);
+                prevHealingRate = healingRate;
+
+            }
+
             if (jumpforce != prevJumpforce)
             {
                 float force = 11 + jumpforce;
                 typeof(PlayerMovement).GetField("jumpForce", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, force);
                 prevJumpforce = jumpforce;
-               // Variables.sendMessage("Hack", "Cette option n'est pas encore disponible");
             }
 
-            if (mobteleporthit && Input.GetKey(KeyCode.Mouse0))
+            if (strength != prevStrength)
             {
-                foreach (Mob mob in UnityEngine.Object.FindObjectsOfType(typeof(Mob)) as Mob[])
-                {
-                    PlayerMovement.Instance.transform.position = mob.transform.position + new Vector3(0f, 0f, 3f);
-                }
+                PlayerStatus.Instance.strength = strength;
+                prevStrength = strength;
             }
 
             if (instantKill)
@@ -165,7 +172,10 @@ namespace test.CT_Hacks
             speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1, 100), 1);
             GUILayout.Label("Jump force: " + jumpforce);
             jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1, 50), 1);
-            mobteleporthit = GUILayout.Toggle(mobteleporthit, "Teleport to mob");
+            GUILayout.Label("Healing rate: " + healingRate);
+            healingRate = (float)Math.Round(GUILayout.HorizontalSlider(healingRate, 5, 500), 1);
+            GUILayout.Label("Strength: " + strength + PlayerStatus.Instance.strength.ToString());
+            strength = (int)Math.Round(GUILayout.HorizontalSlider(strength, 1, 100), 1);
             base.runWin(id);
         }
     }
