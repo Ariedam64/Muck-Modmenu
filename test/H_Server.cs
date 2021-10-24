@@ -21,6 +21,7 @@ namespace test.CT_Hacks
 		public static bool follow = false;
 		public static bool spectate = false;
 		public static int playersInt = 0;
+		public static Vector3 PrevVelocity;
 		public static PlayerManager[] array = new PlayerManager[0];
 		public int toolbarInt = 0;
 		public string[] toolbarStrings = { "Actions", "Spawner", "Fun" };
@@ -33,16 +34,18 @@ namespace test.CT_Hacks
 			}
 			if (spectate)
 			{
-				PlayerMovement.Instance.GetRb().velocity = new Vector3(0f, 0f, 0f);
+				
+				PPController.Instance.Reset();
 				typeof(MoveCamera).GetField("playerTarget", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(MoveCamera.Instance, array[SuPlayerSelection].transform);
 				typeof(MoveCamera).GetField("spectatingId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(MoveCamera.Instance, array[SuPlayerSelection].id);
 				MoveCamera.Instance.state = MoveCamera.CameraState.Spectate;
 			}
             else
             {
+				PPController.Instance.Reset();
 				typeof(MoveCamera).GetField("playerTarget", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(MoveCamera.Instance, null);
 				typeof(MoveCamera).GetField("spectatingId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(MoveCamera.Instance, null);
-				MoveCamera.Instance.state = MoveCamera.CameraState.Player;
+				MoveCamera.Instance.PlayerRespawn(PlayerMovement.Instance.transform.position);
 			}
 		}
 		public override void runWin(int id)
@@ -76,16 +79,20 @@ namespace test.CT_Hacks
 					{
 						ServerSend.DisconnectPlayer(array[SuPlayerSelection].id);
 					}
-					if (GUI.Button(new Rect(150, 160, 130, 30), "Tp me-player"))
+					if (GUI.Button(new Rect(150, 160, 130, 30), "Tp to player"))
 					{
 						PlayerMovement.Instance.GetRb().position = array[SuPlayerSelection].transform.position;	
 					}
-					if (GUI.Button(new Rect(150, 200, 130, 30), "Instant revive"))
+					if (GUI.Button(new Rect(150, 200, 130, 30), "Tp player to boat"))
+					{
+						ServerSend.RevivePlayer(Server.clients[array[SuPlayerSelection].id].id, array[SuPlayerSelection].id, false, -1);
+					}
+					if (GUI.Button(new Rect(150, 240, 130, 30), "Instant revive"))
 					{
 						ClientSend.RevivePlayer(array[SuPlayerSelection].id, array[SuPlayerSelection].graveId, false);
 					}
-					follow = GUI.Toggle(new Rect(150, 240, 130, 20), follow, "Follow player");
-					spectate = GUI.Toggle(new Rect(150, 270, 130, 20), spectate, "Spectate player");
+					follow = GUI.Toggle(new Rect(150, 280, 130, 20), follow, "Follow player");
+					spectate = GUI.Toggle(new Rect(150, 320, 130, 20), spectate, "Spectate player");
 					break;
 				case 1:
 					break;
