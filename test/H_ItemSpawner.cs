@@ -11,13 +11,18 @@ namespace test.CT_Hacks
 {
     public class H_ItemSpawner : Menu
     {
+
+        //Menu
         public static Vector2 ScrollPosition { get; set; } = Vector2.zero;
-        public static readonly Rect ItemSpawnerSliderPosition = new Rect(10, 40, 140, 20);
-        public static readonly Rect ItemSpawnerlabel = new Rect(10, 20, 100, 20);
-        public static readonly Rect ItemSpawnerScrollViewPosition = new Rect(100, 20, 500, 330);
-        public static readonly Rect ItemSpawnerScrollViewBounds = new Rect(100, 20, 360, 500);
+        public readonly Color prevColorGUI = GUI.backgroundColor;
+        public string[] toolbarStrings = { "Main", "Stats" };
+        public int toolbarInt = 0;
+        public bool allItem = false;
+        public bool isDropped = false;
         public static int ItemSpawnerAmount { get; set; } = 1;
         public static ItemManager ItemManager = ItemManager.Instance;
+
+        //Filtres
         public bool itemItem = true;
         public bool storageItem = false;
         public bool foodItem = false;
@@ -38,19 +43,21 @@ namespace test.CT_Hacks
         public bool prevShieldItem = false;
         public bool prevShovelItem = false;
         public bool prevStationItem = false;
-        public string[] toolbarStrings = { "Main", "Stats"};
-        public int toolbarInt = 0;
-        public bool allItem = false;
-        public bool isDropped = false;
-        public readonly Color prevColorGUI = GUI.backgroundColor;
 
-        public GUIStyle style123 = null;
+
+        //ToolTip
         public string prevTooltip = "";
-        public string tooltipString, description, prevDescription;
-        public string titleItem, prevTitle;
+        public string tooltipString;
+        public string description;
+        public string prevDescription;
+        public string titleItem;
+        public string prevTitle;
         public string itemName;
 
-        
+
+        //Items
+        public InventoryItem itemSelected;
+
         public int attackMultiplier = 1;
         public int prevAttackMultiplier = 1;
 
@@ -72,20 +79,10 @@ namespace test.CT_Hacks
         public float prevItemHeal;
         public int prevItemArmor;
 
-        public InventoryItem itemSelected;
-        
-        
-
-        public int testAttack;
-
 
         public H_ItemSpawner() : base(new Rect(430, 10, 600, 400), "Item spawners menu", 2, false) { }
 
 
-        public void Update()
-        {
-
-        }
         public override void runWin(int id)
         {
             ScrollPosition = GUILayout.BeginScrollView(ScrollPosition, false, true, GUILayout.Width(580), GUILayout.Height(350));
@@ -246,12 +243,7 @@ namespace test.CT_Hacks
                         if (isDropped)
                         {
                             ClientSend.DropItem(itemSelected.id, ItemSpawnerAmount);
-                            itemSelected.armor = prevItemArmor;
-                            itemSelected.heal = prevItemHeal;
-                            itemSelected.attackSpeed = prevAttackSpeed;
-                            itemSelected.attackRange = prevAttackRange;
-                            itemSelected.attackDamage = prevAttackDamage;
-                            attackMultiplier = prevAttackMultiplier;
+                            resetItemStats();
                             showAllItems();
                         }
                         else
@@ -259,12 +251,7 @@ namespace test.CT_Hacks
                             InventoryItem itemInventory = itemSelected;
                             itemInventory.amount = (int)ItemSpawnerAmount;
                             InventoryUI.Instance.AddItemToInventory(itemInventory);
-                            itemSelected.armor = prevItemArmor;
-                            itemSelected.heal = prevItemHeal;
-                            itemSelected.attackSpeed = prevAttackSpeed;
-                            itemSelected.attackRange = prevAttackRange;
-                            itemSelected.attackDamage = prevAttackDamage;
-                            attackMultiplier = prevAttackMultiplier;
+                            resetItemStats();
                             showAllItems();
                         }
                     }
@@ -385,14 +372,19 @@ namespace test.CT_Hacks
 
             }
 
-            void showAllItems()
+            void resetItemStats()
             {
-                attackMultiplier = prevAttackMultiplier;
                 itemSelected.armor = prevItemArmor;
                 itemSelected.heal = prevItemHeal;
                 itemSelected.attackSpeed = prevAttackSpeed;
                 itemSelected.attackRange = prevAttackRange;
                 itemSelected.attackDamage = prevAttackDamage;
+                attackMultiplier = prevAttackMultiplier;
+            }
+
+            void showAllItems()
+            {
+                resetItemStats();
                 itemSelected = null;
                 itemName = "None selected";
                 if (prevItemItem)
