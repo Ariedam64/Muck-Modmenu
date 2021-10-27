@@ -42,6 +42,7 @@ namespace test.CT_Hacks
         public int toolbarInt = 0;
         public bool allItem = false;
         public bool isDropped = false;
+        public readonly Color prevColorGUI = GUI.backgroundColor;
 
         public GUIStyle style123 = null;
         public string prevTooltip = "";
@@ -52,15 +53,18 @@ namespace test.CT_Hacks
         public int attackDamage = 0;
         public String attackRangeString;
         public String attackSpeedString;
-        public int attackSpeed = 1;
-        public int attackRange = 0;
+        public String itemHealString;
+        public float attackSpeed;
+        public float attackRange;
+        public float itemHeal;
         public int attackMultiplier = 1;
         public int prevAttackMultiplier = 1;
         public InventoryItem itemSelected;
         public int recupAttackDamage;
         public int prevAttackDamage;
-        public int prevAttackRange;
-        public int prevAttackSpeed;
+        public float prevAttackRange;
+        public float prevAttackSpeed;
+        public float prevItemHeal;
         public int testAttack;
         public int test123 = 0;
         public String attackDamageString, prevAttackDamageString;
@@ -134,9 +138,11 @@ namespace test.CT_Hacks
             attackDamageString = Variables.deleteAllBeetween("é", tooltipString, "è");
             attackDamage = (int)Variables.stringToInt(attackDamageString);
             attackRangeString = Variables.deleteAllBeetween("è", tooltipString, "ç");
-            attackRange = (int)Variables.stringToInt(attackRangeString);
+            attackRange = Variables.stringToFloat(attackRangeString); 
             attackSpeedString = Variables.deleteAllBeetween("ç", tooltipString, "(");
-            attackSpeed = (int)Variables.stringToInt(attackSpeedString);
+            attackSpeed = Variables.stringToFloat(attackSpeedString);
+            itemHealString = Variables.deleteAllBeetween("(", tooltipString, ")");
+            itemHeal = Variables.stringToFloat(itemHealString);
 
             if (GUI.tooltip.Length > 1)
             {
@@ -145,6 +151,7 @@ namespace test.CT_Hacks
                 prevAttackDamage = attackDamage;
                 prevAttackRange = attackRange;
                 prevAttackSpeed = attackSpeed;
+                prevItemHeal = itemHeal;
             }
 
             toolbarInt = GUI.Toolbar(new Rect(10, 25, 143, 23), toolbarInt, toolbarStrings);
@@ -179,27 +186,42 @@ namespace test.CT_Hacks
                     if (itemSelected==null)
                     {
                         //Item non selectionné
-                        GUI.Label(new Rect(10, 170, 135, 23), "Multiplier: " + attackMultiplier);
-                        GUI.HorizontalSlider(new Rect(10, 190, 135, 23), attackMultiplier, 1, 100);
-                        GUI.Label(new Rect(10, 200, 135, 23), "Attack damage: " + prevAttackDamage);
-                        GUI.HorizontalSlider(new Rect(10, 220, 135, 23), prevAttackDamage, 0, 300);
-                        GUI.Label(new Rect(10, 230, 135, 23), "Attack range: " + prevAttackRange);
-                        GUI.HorizontalSlider(new Rect(10, 250, 135, 23), prevAttackRange, 0, 100);
-                        GUI.Label(new Rect(10, 260, 135, 23), "Attack speed: " + prevAttackSpeed);
-                        GUI.HorizontalSlider(new Rect(10, 280, 135, 23), prevAttackSpeed, 0, 100);
+                        if (prevItemHeal == 0)
+                        {
+                            GUI.Label(new Rect(10, 170, 135, 23), "Attack damage: " + prevAttackDamage);
+                            GUI.HorizontalSlider(new Rect(10, 190, 135, 23), prevAttackDamage, 0, 300);
+                            GUI.Label(new Rect(10, 200, 135, 23), "Attack range: " + prevAttackRange);
+                            GUI.HorizontalSlider(new Rect(10, 220, 135, 23), prevAttackRange, 0f, 100f);
+                            GUI.Label(new Rect(10, 230, 135, 23), "Attack speed: " + prevAttackSpeed);
+                            GUI.HorizontalSlider(new Rect(10, 250, 135, 23), prevAttackSpeed, 0f, 100f);                         
+                        }
+                        if (prevItemHeal > 1)
+                        {
+                            GUI.Label(new Rect(10, 170, 135, 23), "Heal: " + prevItemHeal);
+                            GUI.HorizontalSlider(new Rect(10, 190, 135, 23), prevItemHeal, 0f, 100f);
+                        }
 
                     }
                     else
                     {
-                        //Item selectionné
                         GUI.Label(new Rect(10, 170, 135, 23), "Multiplier: " + attackMultiplier);
                         attackMultiplier = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 190, 135, 23), attackMultiplier, 1, 10), 1);
-                        GUI.Label(new Rect(10, 200, 135, 23), "Attack damage: " + itemSelected.attackDamage);
-                        itemSelected.attackDamage = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 220, 135, 23), itemSelected.attackDamage, 0, 300 * attackMultiplier), 1);
-                        GUI.Label(new Rect(10, 230, 135, 23), "Attack range: " + itemSelected.attackRange);
-                        itemSelected.attackRange = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 250, 135, 23), itemSelected.attackRange, 0, 100 * attackMultiplier), 1);
-                        GUI.Label(new Rect(10, 260, 135, 23), "Attack speed: " + itemSelected.attackSpeed);
-                        itemSelected.attackSpeed = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 280, 135, 23), itemSelected.attackSpeed, 0, 100 * attackMultiplier), 1);
+                        //Item selectionné
+                        if (itemSelected.heal == 0 && itemSelected.stamina == 0 && itemSelected.armor == 0)
+                        {                        
+                            GUI.Label(new Rect(10, 200, 135, 23), "Attack damage: " + itemSelected.attackDamage);
+                            itemSelected.attackDamage = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 220, 135, 23), itemSelected.attackDamage, 0, 300 * attackMultiplier), 1);
+                            GUI.Label(new Rect(10, 230, 135, 23), "Attack range: " + itemSelected.attackRange);
+                            itemSelected.attackRange = (float)Math.Round(GUI.HorizontalSlider(new Rect(10, 250, 135, 23), itemSelected.attackRange, 0f, 100f * attackMultiplier), 1);
+                            GUI.Label(new Rect(10, 260, 135, 23), "Attack speed: " + itemSelected.attackSpeed);
+                            itemSelected.attackSpeed = (float)Math.Round(GUI.HorizontalSlider(new Rect(10, 280, 135, 23), itemSelected.attackSpeed, 0f, 100f * attackMultiplier), 1);
+                            
+                        }
+                        if (itemSelected.armor > 1 || itemSelected.heal > 1 || itemSelected.stamina > 1)
+                        {
+                            GUI.Label(new Rect(10, 200, 135, 23), "Heal: " + itemSelected.heal);
+                            itemSelected.heal = (float)Math.Round(GUI.HorizontalSlider(new Rect(10, 220, 135, 23), itemSelected.heal, 0, 100 * attackMultiplier), 1);
+                        }
                     }
 
                     if (GUI.Button(new Rect(10, 330, 140, 40), "Spawn \n" + itemName))
@@ -207,20 +229,24 @@ namespace test.CT_Hacks
                         if (isDropped)
                         {
                             ClientSend.DropItem(itemSelected.id, ItemSpawnerAmount);
+                            itemSelected.heal = prevItemHeal;
                             itemSelected.attackSpeed = prevAttackSpeed;
                             itemSelected.attackRange = prevAttackRange;
                             itemSelected.attackDamage = prevAttackDamage;
                             attackMultiplier = prevAttackMultiplier;
+                            showAllItems();
                         }
                         else
                         {
                             InventoryItem itemInventory = itemSelected;
                             itemInventory.amount = (int)ItemSpawnerAmount;
                             InventoryUI.Instance.AddItemToInventory(itemInventory);
+                            itemSelected.heal = prevItemHeal;
                             itemSelected.attackSpeed = prevAttackSpeed;
                             itemSelected.attackRange = prevAttackRange;
                             itemSelected.attackDamage = prevAttackDamage;
                             attackMultiplier = prevAttackMultiplier;
+                            showAllItems();
                         }
                     }
                     break;
@@ -246,7 +272,7 @@ namespace test.CT_Hacks
             {
                 if (item.type == type)
                 {                   
-                    if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description +"é"+ item.attackDamage + "è" + item.attackRange + "ç" + item.attackSpeed + "(")))
+                    if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description +"é"+ item.attackDamage + "è" + item.attackRange + "ç" + item.attackSpeed + "(" + item.heal + ")" )))
                     {
                         if (toolbarInt == 0)
                         {
@@ -331,67 +357,75 @@ namespace test.CT_Hacks
                     stationItem = false;
                     prevStationItem = true;
                 }
-                var prevColor = GUI.backgroundColor;
+                
                 GUI.backgroundColor = Color.green;
                 if (GUI.Button(new Rect(160, 20, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description + "é" + item.attackDamage + "è")))
                 {
-                    attackMultiplier = prevAttackMultiplier;
-                    itemSelected.attackDamage = prevAttackDamage;
-                    itemSelected = null;
-                    itemName = "None selected";
-                    if (prevItemItem)
-                    {
-                        itemItem = true;
-                        prevItemItem = false;
-                    }
-                    if (prevStationItem)
-                    {
-                        storageItem = true;
-                        prevStorageItem = false;
-                    }
-                    if (prevFoodItem)
-                    {
-                        foodItem = true;
-                        prevFoodItem = false;
-                    }
-                    if (prevAxeItem)
-                    {
-                        axeItem = true;
-                        prevAxeItem = false;
-                    }
-                    if (prevBowItem)
-                    {
-                        bowItem = true;
-                        prevBowItem = false;
-                    }
-                    if (prevPickaxeItem)
-                    {
-                        pickaxeItem = true;
-                        prevPickaxeItem = false;
-                    }
-                    if (prevSwordItem)
-                    {
-                        swordItem = true;
-                        prevSwordItem = false;
-                    }
-                    if (prevShieldItem)
-                    {
-                        shieldItem = true;
-                        prevShieldItem = false;
-                    }
-                    if (prevShovelItem)
-                    {
-                        shovelItem = true;
-                        prevShovelItem = false;
-                    }
-                    if (prevStationItem)
-                    {
-                        stationItem = true;
-                        prevStationItem = false;
-                    }
-                    GUI.backgroundColor = prevColor;
+                    showAllItems();
                 }
 
+            }
+
+            void showAllItems()
+            {
+                attackMultiplier = prevAttackMultiplier;
+                itemSelected.heal = prevItemHeal;
+                itemSelected.attackSpeed = prevAttackSpeed;
+                itemSelected.attackRange = prevAttackRange;
+                itemSelected.attackDamage = prevAttackDamage;
+                itemSelected = null;
+                itemName = "None selected";
+                if (prevItemItem)
+                {
+                    itemItem = true;
+                    prevItemItem = false;
+                }
+                if (prevStationItem)
+                {
+                    storageItem = true;
+                    prevStorageItem = false;
+                }
+                if (prevFoodItem)
+                {
+                    foodItem = true;
+                    prevFoodItem = false;
+                }
+                if (prevAxeItem)
+                {
+                    axeItem = true;
+                    prevAxeItem = false;
+                }
+                if (prevBowItem)
+                {
+                    bowItem = true;
+                    prevBowItem = false;
+                }
+                if (prevPickaxeItem)
+                {
+                    pickaxeItem = true;
+                    prevPickaxeItem = false;
+                }
+                if (prevSwordItem)
+                {
+                    swordItem = true;
+                    prevSwordItem = false;
+                }
+                if (prevShieldItem)
+                {
+                    shieldItem = true;
+                    prevShieldItem = false;
+                }
+                if (prevShovelItem)
+                {
+                    shovelItem = true;
+                    prevShovelItem = false;
+                }
+                if (prevStationItem)
+                {
+                    stationItem = true;
+                    prevStationItem = false;
+                }
+                GUI.backgroundColor = prevColorGUI;
             }
 
             base.runWin(id);
