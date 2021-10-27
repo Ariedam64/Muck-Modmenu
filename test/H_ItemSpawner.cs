@@ -49,25 +49,35 @@ namespace test.CT_Hacks
         public string tooltipString, description, prevDescription;
         public string titleItem, prevTitle;
         public string itemName;
-        public readonly int test;
-        public int attackDamage = 0;
+
+        
+        public int attackMultiplier = 1;
+        public int prevAttackMultiplier = 1;
+
+        public String attackDamageString;
         public String attackRangeString;
         public String attackSpeedString;
         public String itemHealString;
+        public String itemArmorString;
+
+        public int attackDamage;
         public float attackSpeed;
         public float attackRange;
         public float itemHeal;
-        public int attackMultiplier = 1;
-        public int prevAttackMultiplier = 1;
-        public InventoryItem itemSelected;
-        public int recupAttackDamage;
+        public int itemArmor;
+
         public int prevAttackDamage;
         public float prevAttackRange;
         public float prevAttackSpeed;
         public float prevItemHeal;
+        public int prevItemArmor;
+
+        public InventoryItem itemSelected;
+        
+        
+
         public int testAttack;
-        public int test123 = 0;
-        public String attackDamageString, prevAttackDamageString;
+
 
         public H_ItemSpawner() : base(new Rect(430, 10, 600, 400), "Item spawners menu", 2, false) { }
 
@@ -143,6 +153,8 @@ namespace test.CT_Hacks
             attackSpeed = Variables.stringToFloat(attackSpeedString);
             itemHealString = Variables.deleteAllBeetween("(", tooltipString, ")");
             itemHeal = Variables.stringToFloat(itemHealString);
+            itemArmorString = Variables.deleteAllBeetween(")", tooltipString, "=");
+            itemArmor = (int)Variables.stringToInt(itemArmorString);
 
             if (GUI.tooltip.Length > 1)
             {
@@ -152,6 +164,7 @@ namespace test.CT_Hacks
                 prevAttackRange = attackRange;
                 prevAttackSpeed = attackSpeed;
                 prevItemHeal = itemHeal;
+                prevItemArmor = itemArmor;
             }
 
             toolbarInt = GUI.Toolbar(new Rect(10, 25, 143, 23), toolbarInt, toolbarStrings);
@@ -186,7 +199,7 @@ namespace test.CT_Hacks
                     if (itemSelected==null)
                     {
                         //Item non selectionné
-                        if (prevItemHeal == 0)
+                        if (prevItemHeal == 0 && prevItemArmor == 0)
                         {
                             GUI.Label(new Rect(10, 170, 135, 23), "Attack damage: " + prevAttackDamage);
                             GUI.HorizontalSlider(new Rect(10, 190, 135, 23), prevAttackDamage, 0, 300);
@@ -195,10 +208,12 @@ namespace test.CT_Hacks
                             GUI.Label(new Rect(10, 230, 135, 23), "Attack speed: " + prevAttackSpeed);
                             GUI.HorizontalSlider(new Rect(10, 250, 135, 23), prevAttackSpeed, 0f, 100f);                         
                         }
-                        if (prevItemHeal > 1)
+                        if (prevItemHeal > 1 || prevItemArmor > 1)
                         {
                             GUI.Label(new Rect(10, 170, 135, 23), "Heal: " + prevItemHeal);
                             GUI.HorizontalSlider(new Rect(10, 190, 135, 23), prevItemHeal, 0f, 100f);
+                            GUI.Label(new Rect(10, 200, 135, 23), "Armor: " + prevItemArmor);
+                            GUI.HorizontalSlider(new Rect(10, 220, 135, 23), prevItemArmor, 0, 100);
                         }
 
                     }
@@ -221,6 +236,8 @@ namespace test.CT_Hacks
                         {
                             GUI.Label(new Rect(10, 200, 135, 23), "Heal: " + itemSelected.heal);
                             itemSelected.heal = (float)Math.Round(GUI.HorizontalSlider(new Rect(10, 220, 135, 23), itemSelected.heal, 0, 100 * attackMultiplier), 1);
+                            GUI.Label(new Rect(10, 230, 135, 23), "Armor: " + itemSelected.armor);
+                            itemSelected.armor = (int)Math.Round(GUI.HorizontalSlider(new Rect(10, 250, 135, 23), itemSelected.armor, 0, 100 * attackMultiplier), 1);
                         }
                     }
 
@@ -229,6 +246,7 @@ namespace test.CT_Hacks
                         if (isDropped)
                         {
                             ClientSend.DropItem(itemSelected.id, ItemSpawnerAmount);
+                            itemSelected.armor = prevItemArmor;
                             itemSelected.heal = prevItemHeal;
                             itemSelected.attackSpeed = prevAttackSpeed;
                             itemSelected.attackRange = prevAttackRange;
@@ -241,6 +259,7 @@ namespace test.CT_Hacks
                             InventoryItem itemInventory = itemSelected;
                             itemInventory.amount = (int)ItemSpawnerAmount;
                             InventoryUI.Instance.AddItemToInventory(itemInventory);
+                            itemSelected.armor = prevItemArmor;
                             itemSelected.heal = prevItemHeal;
                             itemSelected.attackSpeed = prevAttackSpeed;
                             itemSelected.attackRange = prevAttackRange;
@@ -272,7 +291,7 @@ namespace test.CT_Hacks
             {
                 if (item.type == type)
                 {                   
-                    if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description +"é"+ item.attackDamage + "è" + item.attackRange + "ç" + item.attackSpeed + "(" + item.heal + ")" )))
+                    if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description +"é"+ item.attackDamage + "è" + item.attackRange + "ç" + item.attackSpeed + "(" + item.heal + ")" + item.armor + "=")))
                     {
                         if (toolbarInt == 0)
                         {
@@ -369,6 +388,7 @@ namespace test.CT_Hacks
             void showAllItems()
             {
                 attackMultiplier = prevAttackMultiplier;
+                itemSelected.armor = prevItemArmor;
                 itemSelected.heal = prevItemHeal;
                 itemSelected.attackSpeed = prevAttackSpeed;
                 itemSelected.attackRange = prevAttackRange;
