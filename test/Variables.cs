@@ -60,11 +60,18 @@ namespace test
 			return floatConvert;
 		}
 
-		public static float stringToInt(string leStringAConvertir)
+		public static int stringToInt(string leStringAConvertir)
 		{
 			int intConvert;
 			int.TryParse(leStringAConvertir, out intConvert);
-			return (int)intConvert;
+			return intConvert;
+		}
+
+		public static bool stringToBool(string leStringAConvertir)
+		{
+			bool boolConvert;
+			bool.TryParse(leStringAConvertir, out boolConvert);
+			return boolConvert;
 		}
 
 		public static String deleteAllAfter(String laChaineACouper, String leCaractere)
