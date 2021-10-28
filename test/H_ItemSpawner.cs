@@ -24,6 +24,7 @@ namespace test.CT_Hacks
         public int toolbarInt = 0;
         public bool allItem = false;
         public bool isDropped = false;
+        public bool isInventory = true;
         public static int ItemSpawnerAmount { get; set; } = 1;
         public static ItemManager ItemManager = ItemManager.Instance;
 
@@ -228,7 +229,7 @@ namespace test.CT_Hacks
                     bowItem = GUI.Toggle(new Rect(90, 205, 60, 23), bowItem, "Bow");
                     GUI.Box(new Rect(10, 240, 143, 50), "Drop it");
                     isDropped = GUI.Toggle(new Rect(20, 263, 60, 23), isDropped, "floor");
-                    isDropped = GUI.Toggle(new Rect(70, 263, 70, 23), !isDropped, "inventory");
+                    isInventory = GUI.Toggle(new Rect(70, 263, 70, 23), isInventory, "inventory");
                     GUI.Label(new Rect(10, 296, 100, 20), "Quantity : x" + ItemSpawnerAmount.ToString());
                     ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(10, 316, 140, 20), ItemSpawnerAmount, 1.0f, 100.0f);
 
@@ -339,14 +340,22 @@ namespace test.CT_Hacks
                             itemSelected.stackable = true;
                             itemSelected.max = ItemSpawnerAmount;
                         }
-
-                        if (isDropped)
+                        if (isDropped && isInventory)
+                        {
+                            ClientSend.DropItem(itemSelected.id, ItemSpawnerAmount);
+                            InventoryItem itemInventory = itemSelected;
+                            itemInventory.amount = (int)ItemSpawnerAmount;
+                            InventoryUI.Instance.AddItemToInventory(itemInventory);
+                            resetItemStats();
+                            showAllItems();
+                        }
+                        else if (isDropped)
                         {
                             ClientSend.DropItem(itemSelected.id, ItemSpawnerAmount);
                             resetItemStats();
                             showAllItems();
                         }
-                        else
+                        else if (isInventory)
                         {
                             InventoryItem itemInventory = itemSelected;
                             itemInventory.amount = (int)ItemSpawnerAmount;
@@ -354,6 +363,7 @@ namespace test.CT_Hacks
                             resetItemStats();
                             showAllItems();
                         }
+                        
                         itemSelected.stackable = prevItemStackable;
                         itemSelected.max = prevItemMax;
 
@@ -394,13 +404,18 @@ namespace test.CT_Hacks
 
                         if (toolbarInt == 0)
                         {
-                           if (isDropped)
+                            if (isDropped && isInventory)
+                            {
+                                ClientSend.DropItem(item.id, ItemSpawnerAmount);
+                                InventoryItem itemInventory = item;
+                                itemInventory.amount = (int)ItemSpawnerAmount;
+                                InventoryUI.Instance.AddItemToInventory(itemInventory);
+                            }
+                            else if (isDropped)
                             {        
                                 ClientSend.DropItem(item.id, ItemSpawnerAmount);
-                                item.stackable = prevItemStackable;
-                                item.max = prevItemMax;
                             }
-                            else
+                            else if (isInventory)
                             {
                                 InventoryItem itemInventory = item;
                                 itemInventory.amount = (int)ItemSpawnerAmount;

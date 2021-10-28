@@ -82,16 +82,16 @@ namespace test.CT_Hacks
 
 
             //Affichage stats
-            GUI.Box(new Rect(10, 10, 140, 210), "Stats ");
-            GUI.Label(new Rect(15, 30, 95, 20), "Quantity : x" + ItemSpawnerAmount);
-            ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 50, 130, 20), ItemSpawnerAmount, 1, 100);
-            GUI.Label(new Rect(15, 60, 140, 20), "Power + health : x" + powerMultiplierAmount);
-            powerMultiplierAmount = (int)GUI.HorizontalSlider(new Rect(15, 80, 130, 20), powerMultiplierAmount, 1, 50);
-            GUI.Label(new Rect(15, 90, 140, 20), "[Client] Speed : x" + speedAmount);
-            speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 110, 130, 20), speedAmount, 1, 10);
+            GUI.Box(new Rect(10, 25, 140, 190), "Stats ");
+            GUI.Label(new Rect(15, 45, 95, 20), "Quantity : x" + ItemSpawnerAmount);
+            ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 65, 130, 20), ItemSpawnerAmount, 1, 100);
+            GUI.Label(new Rect(15, 75, 140, 20), "Power + health : x" + powerMultiplierAmount);
+            powerMultiplierAmount = (int)GUI.HorizontalSlider(new Rect(15, 95, 130, 20), powerMultiplierAmount, 1, 50);
+            GUI.Label(new Rect(15, 105, 140, 20), "[Client] Speed : x" + speedAmount);
+            speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 125, 130, 20), speedAmount, 1, 10);
 
-            GUI.Label(new Rect(15, 140, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
-            GUI.Label(new Rect(15, 165, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
+            GUI.Label(new Rect(15, 155, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
+            GUI.Label(new Rect(15, 180, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
 
 
 
