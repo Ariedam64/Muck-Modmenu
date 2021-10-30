@@ -27,7 +27,7 @@ namespace test.CT_Hacks
 		public static MenuUI[] array3 = new MenuUI[0];
 		public static PlayerManager[] arrayPlayer = new PlayerManager[0];
 		public int toolbarInt = 0;
-		public string[] toolbarStrings = { "Actions", "Spawner", "Fun" };
+		public string[] toolbarStrings = { "Actions", "Spawner (soon)", "Fun" };
 
 		public void Update()
         {

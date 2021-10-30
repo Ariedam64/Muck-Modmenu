@@ -23,6 +23,7 @@ namespace test
         public static H_Server hk_server;
         public static H_MobSpawner hk_mobspawner;
         public static H_ESP hk_esp;
+        public static H_Waypoints hk_waypoints;
 
         public static void injHacks(GameObject go)
         { 
@@ -35,6 +36,7 @@ namespace test
             hk_server = go.AddComponent<H_Server>();
             hk_mobspawner = go.AddComponent<H_MobSpawner>();
             hk_esp = go.AddComponent<H_ESP>();
+            hk_waypoints = go.AddComponent<H_Waypoints>();
         }
 
         public static void injSystem(GameObject go)

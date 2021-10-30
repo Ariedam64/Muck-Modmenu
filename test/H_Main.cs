@@ -44,6 +44,10 @@ namespace test.CT_Hacks
             {
                 CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
             }
+            if (GUILayout.Button("Waypoints"))
+            {
+                CManager.hk_waypoints.isOpen = !CManager.hk_waypoints.isOpen;
+            }
 
             GUILayout.Label("Created by Romann");
             base.runWin(id); 

@@ -25,6 +25,7 @@ namespace test.CT_System
             menus.Add(CManager.hk_server);
             menus.Add(CManager.hk_mobspawner);
             menus.Add(CManager.hk_esp);
+            menus.Add(CManager.hk_waypoints);
         }
 
         public void Update()

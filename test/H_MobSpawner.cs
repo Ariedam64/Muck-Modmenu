@@ -18,6 +18,8 @@ namespace test.CT_Hacks
         public int multiBossAmount = 1;
         public int speedAmount = 1;
 
+        public string[] toolbarStrings = { "Me", "Cursor" };
+        public int toolbarInt = 0;
         public string prevTooltip = "";
         public string mobStats;
         public string prevMobSpeed, mobSpeed;
@@ -25,7 +27,7 @@ namespace test.CT_Hacks
         public string prevMobBoss, mobBoss;
         public string prevMobDefense, mobDefense;
 
-        public H_MobSpawner() : base(new Rect(1460, 420, 430, 200), "Mob Spawner menu", 7, false) { }
+        public H_MobSpawner() : base(new Rect(1040, 420, 430, 200), "Mob Spawner menu", 7, false) { }
 
         public void Update()
         {
@@ -36,18 +38,30 @@ namespace test.CT_Hacks
             ScrollPosition2 = GUILayout.BeginScrollView(ScrollPosition2, false, true, GUILayout.Width(430), GUILayout.Height(200));
 
             int x = 160;
-            int y = 0;
+            int y = 5;
             int buttonWidth = 32;       
 
             foreach (MobType mob in MobSpawner.Instance.allMobs)
             {
                 if (GUI.Button(new Rect(x, y, 120, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
                 {
-                    for (int j = 0; j < ItemSpawnerAmount; j++)
+                    switch (toolbarInt)
                     {
-                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
-                        MobManager.Instance.mobs[Variables.getMobIntancied()-1].SetSpeed(speedAmount);
-                    }
+                        case 0:
+                            for (int j = 0; j < ItemSpawnerAmount; j++)
+                            {
+                                MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                                MobManager.Instance.mobs[Variables.getMobIntancied() - 1].SetSpeed(speedAmount);
+                            }
+                            break;
+                        case 1:
+                            for (int j = 0; j < ItemSpawnerAmount; j++)
+                            {
+                                MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, Variables.FindTpPos(), powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                                MobManager.Instance.mobs[Variables.getMobIntancied() - 1].SetSpeed(speedAmount);
+                            }
+                            break;
+                    }       
                 }
                 if (x == 290)
                 {
@@ -60,6 +74,8 @@ namespace test.CT_Hacks
 
             GUILayout.Space(buttonWidth);
             GUILayout.EndScrollView();
+
+            
 
             mobStats = GUI.tooltip;
             mobSpeed = mobStats.Substring(mobStats.IndexOf("$1") + 1);
@@ -82,7 +98,7 @@ namespace test.CT_Hacks
 
 
             //Affichage stats
-            GUI.Box(new Rect(10, 25, 140, 190), "Stats ");
+            GUI.Box(new Rect(10, 25, 145, 150), "Stats ");
             GUI.Label(new Rect(15, 45, 95, 20), "Quantity : x" + ItemSpawnerAmount);
             ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 65, 130, 20), ItemSpawnerAmount, 1, 100);
             GUI.Label(new Rect(15, 75, 140, 20), "Power + health : x" + powerMultiplierAmount);
@@ -90,8 +106,11 @@ namespace test.CT_Hacks
             GUI.Label(new Rect(15, 105, 140, 20), "[Client] Speed : x" + speedAmount);
             speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 125, 130, 20), speedAmount, 1, 10);
 
-            GUI.Label(new Rect(15, 155, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
-            GUI.Label(new Rect(15, 180, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
+            GUI.Label(new Rect(15, 135, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
+            GUI.Label(new Rect(15, 155, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
+
+            GUI.Label(new Rect(15, 175, 250, 23), "Spawn on: ");
+            toolbarInt = GUI.Toolbar(new Rect(10, 195, 143, 23), toolbarInt, toolbarStrings);
 
 
 
