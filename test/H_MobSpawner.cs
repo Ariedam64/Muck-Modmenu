@@ -27,7 +27,7 @@ namespace test.CT_Hacks
         public string prevMobBoss, mobBoss;
         public string prevMobDefense, mobDefense;
 
-        public H_MobSpawner() : base(new Rect(1040, 420, 430, 200), "Mob Spawner menu", 7, false) { }
+        public H_MobSpawner() : base(new Rect(1000, 420, 430, 200), "Mob Spawner menu", 7, false) { }
 
         public void Update()
         {

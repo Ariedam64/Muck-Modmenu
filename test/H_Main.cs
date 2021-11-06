@@ -7,7 +7,7 @@ namespace test.CT_Hacks
 {
     public class H_Main : Menu
     {
-        public H_Main() : base(new Rect(10, 10, 200, 200), "ModMenu un peu nul", 0, true) { }
+        public H_Main() : base(new Rect(10, 10, 200, 200), "MAH 0.1", 0, true) { }
 
         public override void runWin(int id)
         {
@@ -20,7 +20,7 @@ namespace test.CT_Hacks
             {
                 CManager.hk_server.isOpen = !CManager.hk_server.isOpen;
             }
-            if (GUILayout.Button("ESP"))
+            if (GUILayout.Button("ESP (soon)"))
             {
                 CManager.hk_esp.isOpen = !CManager.hk_esp.isOpen;
             }
@@ -40,16 +40,17 @@ namespace test.CT_Hacks
             {
                 CManager.hk_daycycle.isOpen = !CManager.hk_daycycle.isOpen;
             }
-            if (GUILayout.Button("Misc"))
-            {
-                CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
-            }
             if (GUILayout.Button("Waypoints"))
             {
                 CManager.hk_waypoints.isOpen = !CManager.hk_waypoints.isOpen;
             }
+            if (GUILayout.Button("Misc"))
+            {
+                CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
+            }
 
-            GUILayout.Label("Created by Romann");
+
+            GUILayout.Label("Created by Ariedam");
             base.runWin(id); 
         }
 

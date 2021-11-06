@@ -25,7 +25,7 @@ namespace test.CT_Hacks
         public Texture2D flag;
         
 
-        public H_Waypoints() : base(new Rect(1460, 420, 230, 200), "Waypoints menu", 9, false) { }
+        public H_Waypoints() : base(new Rect(1680, 420, 230, 150), "Waypoints menu", 9, false) { }
 
         public void Update()
         {

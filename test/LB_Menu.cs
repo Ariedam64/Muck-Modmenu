@@ -30,7 +30,10 @@ namespace test.CT_System
 
         public void Update()
         {
-
+            if (UnityEngine.Object.FindObjectsOfType<Tutorial>().Length >= 1)
+            {
+                UnityEngine.Object.Destroy(Tutorial.Instance.gameObject);
+            }
             listeMenu = UnityEngine.Object.FindObjectsOfType<MenuUI>();
 
             if (listeMenu.Length != 0)

@@ -26,10 +26,6 @@ namespace test.CT_Hacks
         private float prevGravity = 1.0f;
         private float jumpforce = 1.0f;
         private float prevJumpforce = 1.0f;
-        private float healingRate = 5.0f;
-        private float prevHealingRate = 5.0f;
-        private int strength = 1;
-        private int prevStrength = 1;
 
 
         public H_Player() : base(new Rect(220, 10, 200, 200), "Player Menu", 1, false) { }
@@ -37,6 +33,7 @@ namespace test.CT_Hacks
         public void Update()
 
         {
+
             if (clicktp && Input.GetKeyDown(KeyCode.Mouse1))
             {
                 UnityEngine.Object.FindObjectOfType<PlayerMovement>().GetRb().position = Variables.FindTpPos();
@@ -62,7 +59,6 @@ namespace test.CT_Hacks
 
             if (freecam)
             {
-                PlayerMovement.Instance.GetRb().velocity = new Vector3(0f, 0f, 0f);
                 MoveCamera.Instance.state = MoveCamera.CameraState.Freecam;
             }
             else
@@ -126,15 +122,6 @@ namespace test.CT_Hacks
                 prevGravity = gravity;
             }
 
-            if (healingRate != prevHealingRate)
-            {
-                typeof(PlayerStatus).GetField("healingRate", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerStatus.Instance, healingRate);
-                typeof(PlayerStatus).GetField("healingDrainMultiplier", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerStatus.Instance, healingRate);
-                typeof(PlayerStatus).GetMethod("Healing", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).Invoke(PlayerStatus.Instance, null);
-                prevHealingRate = healingRate;
-
-            }
-
             if (jumpforce != prevJumpforce)
             {
                 float force = 11 + jumpforce;
@@ -142,28 +129,21 @@ namespace test.CT_Hacks
                 prevJumpforce = jumpforce;
             }
 
-            if (strength != prevStrength)
-            {
-                PlayerStatus.Instance.strength = strength;
-                prevStrength = strength;
-            }
-
             if (instantKill)
             {
-                 Hotbar.Instance.currentItem.attackDamage = 9999;
-                 Hotbar.Instance.currentItem.resourceDamage = 9999;
-                 Hotbar.Instance.currentItem.attackSpeed = 100f;
+                 Hotbar.Instance.currentItem.attackDamage = 999999;
+                 Hotbar.Instance.currentItem.resourceDamage = 999999;
             }
         }
         public override void runWin(int id)
         {
             invincible = GUILayout.Toggle(invincible, "Godmode");
             stamina = GUILayout.Toggle(stamina, "Ininite stamina");
-            hunger = GUILayout.Toggle(hunger, "Infinir hunger");
-            instantKill = GUILayout.Toggle(instantKill, "Boost weapon");
+            hunger = GUILayout.Toggle(hunger, "Infinie hunger");
+            instantKill = GUILayout.Toggle(instantKill, "Instant kill");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
-            freecam = GUILayout.Toggle(freecam, "Freecam");
+            freecam = GUILayout.Toggle(freecam, "Freecam (soon)");
             fly = GUILayout.Toggle(fly, "Fly");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");
             GUILayout.Label("Gravity: " + gravity);
@@ -172,10 +152,6 @@ namespace test.CT_Hacks
             speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1, 100), 1);
             GUILayout.Label("Jump force: " + jumpforce);
             jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1, 50), 1);
-            GUILayout.Label("Healing rate: " + healingRate);
-            healingRate = (float)Math.Round(GUILayout.HorizontalSlider(healingRate, 5, 500), 1);
-            GUILayout.Label("Strength: " + strength + PlayerStatus.Instance.strength.ToString());
-            strength = (int)Math.Round(GUILayout.HorizontalSlider(strength, 1, 100), 1);
             base.runWin(id);
         }
     }
