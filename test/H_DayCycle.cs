@@ -18,15 +18,13 @@ namespace test.CT_Hacks
         private float middleNight = 0.75f;
         private float speedTime = 1f;
         private float prevSpeedTime = 1f;
+        public int currentDay=0;
         private bool frooze = false;
-
-
+        public static DayCycle dayCycleInstance;
         public H_DayCycle() : base(new Rect(1250, 10, 200, 200), "Day Cycle menu", 4, false) { }
 
         public void Update()
-
         {
-
             if (frooze)
             {
                 DayCycle.dayDuration = 99999f;
@@ -40,11 +38,9 @@ namespace test.CT_Hacks
                     DayCycle.dayDuration = timeSet;
                 }
             }
-
         }
         public override void runWin(int id)
         {
-
             if (GUILayout.Button("Start Day"))
             {
                 DayCycle.time = startDay;
@@ -63,10 +59,17 @@ namespace test.CT_Hacks
             }
             GUILayout.Label("Time multiplier: " + speedTime);
             speedTime = (float)Math.Round(GUILayout.HorizontalSlider(speedTime, 1f, 10000f), 1);
+            GUILayout.Label("Current day: " + currentDay);
+            currentDay = (int)Math.Round(GUILayout.HorizontalSlider(currentDay, 0, 1000), 1);
+            if (GUILayout.Button("Set day"))
+            {
+                GameManager.instance.UpdateDay(currentDay);
+            }
             frooze = GUILayout.Toggle(frooze, "Freeze time");
+
+
 
             base.runWin(id);
         }
-
     }
 }

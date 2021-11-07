@@ -7,8 +7,8 @@
     <ProjectGuid>{BD2D5B3F-1665-4893-B8D6-1DCC4E53B22F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>test</RootNamespace>
-    <AssemblyName>test</AssemblyName>
+    <RootNamespace>MAH</RootNamespace>
+    <AssemblyName>MAH</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
