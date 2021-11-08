@@ -116,7 +116,7 @@ namespace test.CT_Hacks
 						}
 						if (GUI.Button(new Rect(150, 200, 130, 30), "Tp player to boat"))
 						{
-							ServerSend.RevivePlayer(Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].id, 1, false, -1);
+							ServerSend.RevivePlayer(Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].id, LB_Menu.listeJoueur[joueurSelectionne].id, false, -1);
 						}
 						if (GUI.Button(new Rect(150, 240, 130, 30), "Instant revive"))
 						{

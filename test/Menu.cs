@@ -22,7 +22,7 @@ namespace test
 
         public virtual void runWin(int id)
         {
-            if (id != 0 && id != 5 && id != 6 && id != 2)
+            if (id != 0 && id != 5 && id != 6 && id != 2 && id != 7)
             {
                 if (GUILayout.Button("Exit"))
                     {

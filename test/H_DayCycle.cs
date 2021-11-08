@@ -66,7 +66,10 @@ namespace test.CT_Hacks
                 GameManager.instance.UpdateDay(currentDay);
             }
             frooze = GUILayout.Toggle(frooze, "Freeze time");
-
+            if (GUILayout.Button("test"))
+            {
+                
+            }
 
 
             base.runWin(id);

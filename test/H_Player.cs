@@ -6,6 +6,7 @@ using System.Text;
 using System.Reflection;
 using System;
 using System.Runtime.InteropServices;
+using test.CT_System;
 
 namespace test.CT_Hacks
 {
@@ -47,7 +48,7 @@ namespace test.CT_Hacks
             }
 
             if (invincible)
-            {             
+            {
                 PlayerStatus.Instance.hp = (float)PlayerStatus.Instance.maxHp;
                 PlayerStatus.Instance.shield = (float)PlayerStatus.Instance.maxShield;
             }
