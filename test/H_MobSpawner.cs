@@ -22,8 +22,10 @@ namespace test.CT_Hacks
         public bool isList = false;
         public List<mobList> mobListTab = new List<mobList>();
 
-        public string[] toolbarStrings = { "Mobs", "Stats", "Spawn position", "List" };
-        public int toolbarInt = 0;
+        public string[] toolbarStringsMenu = { "Mobs", "Stats", "Spawn position", "List" };
+        public string[] toolbarStringsSelectionMode = { "Selection", "Spawn"};
+        public int tolbarIntMenu = 0;
+        public int tolbarIntSelectionMode = 0;
         public string prevTooltip = "";
         public string mobStats;
         public string prevMobSpeed, mobSpeed;
@@ -39,75 +41,50 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
-            toolbarInt = GUI.Toolbar(new Rect(10, 20, 410, 23), toolbarInt, toolbarStrings);
-            switch (toolbarInt)
+            tolbarIntMenu = GUI.Toolbar(new Rect(10, 20, 410, 23), tolbarIntMenu, toolbarStringsMenu);
+            GUI.Box(new Rect(150, 50, 250, 230), "Mobs list");
+            ScrollPosition2 = GUI.BeginScrollView(new Rect(160, 80, 260, 200), ScrollPosition2, new Rect(140, 50, 240, 290), false, true);
+
+            int x = 140;
+            int y = 50;
+            int buttonWidth = 32;
+
+            foreach (MobType mob in MobSpawner.Instance.allMobs)
+            {
+                if (GUI.Button(new Rect(x, y, 110, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
+                {
+                    if (isList)
+                    {
+                        new mobList() { id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount };
+                    }
+                    else
+                    {
+                        for (int j = 0; j < ItemSpawnerAmount; j++)
+                        {
+                            MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                        }
+                    }
+                }
+                if (x == 260)
+                {
+                    x = 140; y += 32;
+                    GUILayout.Space(buttonWidth);
+                }
+                else
+                    x += 120;
+            }
+
+            GUILayout.Space(buttonWidth);
+            GUILayout.EndScrollView();
+            switch (tolbarIntMenu)
             {
                 case 0:
-                    GUI.Box(new Rect(150, 50, 250, 230), "Mobs list");
-                    ScrollPosition2 = GUI.BeginScrollView(new Rect(160,80,260,200), ScrollPosition2, new Rect(140, 50, 240, 290), false, true);
 
-                    int x = 140;
-                    int y = 50;
-                    int buttonWidth = 32;
-
-                    foreach (MobType mob in MobSpawner.Instance.allMobs)
-                    {
-                        if (GUI.Button(new Rect(x, y, 110, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
-                        {
-                            if (isList)
-                            {
-                                new mobList() { id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount };
-                            }
-                            else
-                            {
-                                for (int j = 0; j < ItemSpawnerAmount; j++)
-                                {
-                                    MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
-                                }
-                            } 
-                        }
-                        if (x == 260)
-                        {
-                            x = 140; y += 32;
-                            GUILayout.Space(buttonWidth);
-                        }
-                        else
-                            x += 120;
-                    }
-
-                    GUILayout.Space(buttonWidth);
-                    GUILayout.EndScrollView();
-
-                    mobStats = GUI.tooltip;
-                    mobSpeed = mobStats.Substring(mobStats.IndexOf("$1") + 1);
-                    int index = mobStats.LastIndexOf("$1");
-                    if (index >= 0)
-                    {
-                        maxAttackDistance = mobStats.Substring(0, index);
-                    }
-
-                    if (GUI.tooltip.Length > 1)
-                    {
-                        prevTooltip = GUI.tooltip;
-                        prevMobSpeed = mobSpeed;
-                        prevMobMaxAttackDistance = maxAttackDistance;
-                    }
-
-                    //Convertir le speed en float
-                    float floatMobSpeed;
-                    float.TryParse(prevMobSpeed, out floatMobSpeed);
-
-
-                    //Affichage stats
-                    GUI.Label(new Rect(15, 45, 95, 20), "Quantity : x" + ItemSpawnerAmount);
+                    GUI.Box(new Rect(10, 50, 115, 60), "Mode");
+                    GUI.Label(new Rect(15, 100, 95, 20), "Quantity : x" + ItemSpawnerAmount);
                     ItemSpawnerAmount = (int)GUI.HorizontalSlider(new Rect(15, 65, 130, 20), ItemSpawnerAmount, 1, 100);
-                    GUI.Label(new Rect(15, 75, 140, 20), "Power + health : x" + powerMultiplierAmount);
+                    GUI.Label(new Rect(15, 125, 140, 20), "Power + health : x" + powerMultiplierAmount);
                     powerMultiplierAmount = (int)GUI.HorizontalSlider(new Rect(15, 95, 130, 20), powerMultiplierAmount, 1, 50);
-                    GUI.Label(new Rect(15, 105, 140, 20), "[Client] Speed : x" + speedAmount);
-                    speedAmount = (int)GUI.HorizontalSlider(new Rect(15, 125, 130, 20), speedAmount, 1, 10);
-
-                    GUI.Label(new Rect(15, 135, 250, 60), "Speed : " + floatMobSpeed * speedAmount);
-                    GUI.Label(new Rect(15, 155, 140, 25), "Attack distance : " + prevMobMaxAttackDistance + "m");
 
                     break;
 
