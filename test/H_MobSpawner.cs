@@ -20,7 +20,7 @@ namespace test.CT_Hacks
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
         public int speedAmount = 1;
-        public int yScroll = 1;
+        public int yScroll = 20;
         public bool isList = false;
         public List<mobList> mobListTab = new List<mobList>();
 
@@ -28,7 +28,7 @@ namespace test.CT_Hacks
         public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
         public string[] toolbarStringsSpawnMode = { "Normal", "List" };
         public string[] toolbarStringsListMode = { "Show", "Delete" };
-        public GUIStyle centeredStyle;
+        public GUIStyle centeredStyle, centeredStyle2;
         public int tolbarIntMenu = 0;
         public int tolbarListMode = 0;
         public int tolbarIntAdvancedMode = 0;
@@ -48,6 +48,11 @@ namespace test.CT_Hacks
             centeredStyle.alignment = TextAnchor.UpperCenter;
             centeredStyle.normal.textColor = Color.white;
             centeredStyle.normal.background = Texture2D.grayTexture;
+
+            centeredStyle2.alignment = TextAnchor.UpperCenter;
+            centeredStyle2.normal.textColor = Color.white;
+            centeredStyle2.fontStyle = FontStyle.Bold;
+            centeredStyle2.normal.background = Texture2D.grayTexture;
 
             if (tolbarIntAdvancedMode == 1 && tolbarIntPosition == 0 && tolbarIntList == 0)
             {
@@ -103,7 +108,7 @@ namespace test.CT_Hacks
                case 1:
                     switch (tolbarIntMenu)
                     {
-                        //Mobs
+                        //Mobs menu
                         case 0:
                             tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
                             GUI.Box(new Rect(10, 50, 135, 55), "Mode");
@@ -119,13 +124,13 @@ namespace test.CT_Hacks
                             showMobsAdvanced();
                             break;
 
-                        //Stats
+                        //Stats menu
                         case 1:
                             tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
                             showMobsAdvanced();
                             break;
 
-                        //Position / List
+                        //Position menu / List menu
                         case 2:
                             if(tolbarIntPosition == 1)
                             {
@@ -150,7 +155,7 @@ namespace test.CT_Hacks
                                 break;
                             }
                             
-                        //List
+                        //List menu
                         case 3:
                             showListMenu();
                             switch (tolbarListMode)
@@ -182,15 +187,20 @@ namespace test.CT_Hacks
             tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
             GUI.Box(new Rect(10, 50, 135, 55), "Mode");
             tolbarListMode = GUI.Toolbar(new Rect(15, 75, 125, 23), tolbarListMode, toolbarStringsListMode);
-            if (GUI.Button(new Rect(10, 110, 135, 25), "Spawn all"))
+            GUI.Box(new Rect(10, 110, 135, 90), "Actions");
+            if (GUI.Button(new Rect(15, 135, 125, 25), "Spawn all"))
             {
                 foreach (mobList mob in mobListTab)
                 {
                     for (int j = 0; j < mob.quantity; j++)
                     {
-                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, mob.multiplier, 1, Mob.BossType.None, -1);
                     }
                 }
+                mobListTab.Clear();
+            }
+            if (GUI.Button(new Rect(15, 165, 125, 25), "Clear list"))
+            {
                 mobListTab.Clear();
             }
         }
@@ -199,11 +209,12 @@ namespace test.CT_Hacks
         {
             GUI.Box(new Rect(150, 50, 250, 230), "Mobs added");
             mobListinListScrollPosition = GUI.BeginScrollView(new Rect(155, 80, 265, 190), mobListinListScrollPosition, new Rect(155, 80, 180, yScroll), false, true);
-
             int y = 80;
+            GUI.Label(new Rect(160, y, 230, 17), "  Mob name  | Multiplier | Quantity   ", centeredStyle2);
+            y += 20;
             foreach (mobList mob in mobListTab)
             {
-                GUI.Label(new Rect(160, y, 230, 17), mob.name + " | Quantity x" + mob.quantity, centeredStyle);
+                GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity, centeredStyle);
                 y += 20;
             }
             GUI.EndScrollView();
@@ -213,11 +224,12 @@ namespace test.CT_Hacks
         {
             GUI.Box(new Rect(150, 50, 250, 230), "Mobs added");
             mobListinListScrollPosition = GUI.BeginScrollView(new Rect(155, 80, 265, 190), mobListinListScrollPosition, new Rect(155, 80, 180, yScroll), false, true);
-
             int y = 80;
+            GUI.Label(new Rect(160, y, 230, 17), "  Mob name  | Multiplier | Quantity   ", centeredStyle2);
+            y += 20;
             foreach (mobList mob in mobListTab)
             {
-                if(GUI.Button(new Rect(160, y, 230, 17), mob.name + " | Quantity x" + mob.quantity))
+                if(GUI.Button(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
                 {
                     mobListTab.Remove(mob);
                 }
@@ -236,11 +248,12 @@ namespace test.CT_Hacks
             {
                 if (GUI.Button(new Rect(x2, y2, 110, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
                 {
+                    //If list
                     if (tolbarIntList == 1)
                     {
-                        if(mobListTab.Exists(x => x.id == mob.id))
+                        if(mobListTab.Exists(x => x.id == mob.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
                         {
-                            var sameMob = mobListTab.Find(x => x.id == mob.id);
+                            var sameMob = mobListTab.Find(x => (x.id == mob.id) && (x.multiplier == powerMultiplierAmount)); 
                             sameMob.quantity += ItemSpawnerAmount;
                         }
                         else
@@ -249,6 +262,7 @@ namespace test.CT_Hacks
                             yScroll += 20;
                         }                  
                     }
+                    //If normal
                     else
                     {
                         for (int j = 0; j < ItemSpawnerAmount; j++)
