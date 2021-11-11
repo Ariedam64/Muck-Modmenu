@@ -22,11 +22,12 @@ namespace test
         public static H_PowerUp hk_powerUp;
         public static H_Server hk_server;
         public static H_MobSpawner hk_mobspawner;
-        public static H_ESP hk_esp;
+        public static H_GUIColors hk_guicolors;
         public static H_Waypoints hk_waypoints;
 
         public static void injHacks(GameObject go)
-        { 
+        {
+            
             hk_Main = go.AddComponent<H_Main>();
             hk_Player = go.AddComponent<H_Player>();
             hk_itemSpawner = go.AddComponent<H_ItemSpawner>();
@@ -35,7 +36,7 @@ namespace test
             hk_powerUp = go.AddComponent<H_PowerUp>();
             hk_server = go.AddComponent<H_Server>();
             hk_mobspawner = go.AddComponent<H_MobSpawner>();
-            hk_esp = go.AddComponent<H_ESP>();
+            hk_guicolors = go.AddComponent<H_GUIColors>();
             hk_waypoints = go.AddComponent<H_Waypoints>();
         }
 

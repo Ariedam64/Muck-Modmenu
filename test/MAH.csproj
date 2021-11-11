@@ -111,7 +111,7 @@
     <Compile Include="H_DayCycle.cs" />
     <Compile Include="H_Waypoints.cs" />
     <Compile Include="H_MobSpawner.cs" />
-    <Compile Include="H_ESP.cs" />
+    <Compile Include="H_GUIColors.cs" />
     <Compile Include="H_Server.cs" />
     <Compile Include="H_PowerUp.cs" />
     <Compile Include="H_Misc.cs" />

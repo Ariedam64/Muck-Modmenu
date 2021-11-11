@@ -18,6 +18,7 @@ namespace test.CT_Hacks
         private bool noclip = false;
         private bool clicktp = false;
         private bool fly = false;
+        public int itemId;
         private bool instarevive = false;
         private bool instantKill = false;
         private bool freecam = false;
@@ -45,6 +46,8 @@ namespace test.CT_Hacks
                typeof(PlayerMovement).GetField("jumpCounterResetTime", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0);
                typeof(PlayerMovement).GetField("jumpCooldown", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, 0f);
                typeof(PlayerMovement).GetField("grounded", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).SetValue(PlayerMovement.Instance, true);
+                PlayerStatus.Instance.stamina = PlayerStatus.Instance.maxStamina;
+                PlayerStatus.Instance.hunger = PlayerStatus.Instance.maxHunger;
             }
 
             if (invincible)
@@ -97,7 +100,8 @@ namespace test.CT_Hacks
                 {
                     PlayerStatus.Instance.transform.position = new Vector3(position.x - Camera.main.transform.right.x * num, position.y, position.z - Camera.main.transform.right.z * num);
                 }
-
+                PlayerStatus.Instance.stamina = PlayerStatus.Instance.maxStamina;
+                PlayerStatus.Instance.hunger = PlayerStatus.Instance.maxHunger;
             }
 
             if (instarevive && PlayerStatus.Instance.IsPlayerDead())
@@ -131,13 +135,20 @@ namespace test.CT_Hacks
             }
 
             if (instantKill)
-            {
+            {    
                  Hotbar.Instance.currentItem.attackDamage = 999999;
                  Hotbar.Instance.currentItem.resourceDamage = 999999;
+            }
+            else
+            {
+                itemId = Hotbar.Instance.currentItem.id;
+                Hotbar.Instance.currentItem.attackDamage = ItemManager.Instance.allItems[itemId].attackDamage;
             }
         }
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
             invincible = GUILayout.Toggle(invincible, "Godmode");
             stamina = GUILayout.Toggle(stamina, "Ininite stamina");
             hunger = GUILayout.Toggle(hunger, "Infinite hunger");

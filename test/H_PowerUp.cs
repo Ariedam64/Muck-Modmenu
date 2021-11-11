@@ -31,6 +31,8 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
 
             GUILayout.Label("");
             //Bouton de spawn

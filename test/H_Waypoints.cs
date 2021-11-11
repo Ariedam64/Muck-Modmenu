@@ -50,6 +50,8 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
             GUILayout.Label("");
             GUI.Box(new Rect(10, 25, 155, 55), "Mode");
             toolbarIntWaypoints = GUI.Toolbar(new Rect(15, 50, 145, 23), toolbarIntWaypoints, toolbarStringsWaypoints);
@@ -84,6 +86,10 @@ namespace test.CT_Hacks
                 case 2:
                     GUI.Box(new Rect(10, 85, 155, 55), "Others");
                     if(GUI.Button(new Rect(20, 110, 135, 23), "Clear list")){
+                        foreach (waypoint waypoint in waypointsList)
+                        {
+                            removeMyMarker(waypoint);
+                        }
                         waypointsList.Clear();
                         yScroll = 0;
                     }

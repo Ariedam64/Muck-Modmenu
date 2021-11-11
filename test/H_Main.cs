@@ -7,10 +7,12 @@ namespace test.CT_Hacks
 {
     public class H_Main : Menu
     {
-        public H_Main() : base(new Rect(10, 10, 200, 100), "MAH 0.2", 0, true) { }
+        public H_Main() : base(new Rect(10, 10, 200, 100), "MAH v0.2", 0, true) { }
 
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
             if (GUILayout.Button("Player"))
             {
                 CManager.hk_Player.isOpen = !CManager.hk_Player.isOpen;
@@ -19,10 +21,7 @@ namespace test.CT_Hacks
             {
                 CManager.hk_server.isOpen = !CManager.hk_server.isOpen;
             }
-            if (GUILayout.Button("ESP (soon)"))
-            {
-                //CManager.hk_esp.isOpen = !CManager.hk_esp.isOpen;
-            }
+
             if (GUILayout.Button("Mob Spawner [HOST]"))
             {
                 CManager.hk_mobspawner.isOpen = !CManager.hk_mobspawner.isOpen;
@@ -46,6 +45,10 @@ namespace test.CT_Hacks
             if (GUILayout.Button("Misc"))
             {
                 CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
+            }
+            if (GUILayout.Button("GUI Colors"))
+            {
+                CManager.hk_guicolors.isOpen = !CManager.hk_guicolors.isOpen;
             }
             GUILayout.Label("Created by Ariedam");
 

@@ -20,6 +20,8 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
             GUILayout.Label("_________BREAK_________");
             if (GUILayout.Button("All trees"))
             {

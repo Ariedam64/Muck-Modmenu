@@ -112,8 +112,9 @@ namespace test.CT_Hacks
 
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
 
-           
 
             ScrollPosition = GUILayout.BeginScrollView(ScrollPosition, false, true, GUILayout.Width(580), GUILayout.Height(350));
 
@@ -390,7 +391,9 @@ namespace test.CT_Hacks
             void showItem(InventoryItem item, InventoryItem.ItemType type)
             {
                 if (item.type == type)
-                {                   
+                {
+                    GUI.backgroundColor = H_GUIColors.GUIOriginalbackgroundColor;
+                    GUI.contentColor = H_GUIColors.GUIOriginalContentColor;
                     if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description +"é"+ item.attackDamage + "è" + item.attackRange + "ç" + item.attackSpeed + "(" + item.heal + ")" + item.armor + "=" + item.stamina + "+" + item.hunger + "-" + item.resourceDamage + "*" + item.sharpness + "/" + item.processTime + "ù" + item.buildable + "$")))
                     {
                         prevItemStackable = item.stackable;
@@ -432,6 +435,8 @@ namespace test.CT_Hacks
                         }
                                 
                     }
+                    GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                    GUI.contentColor = H_GUIColors.GUIFrontColor;
                     if (x == 510)
                     {
                         x = 150; y += 60;
@@ -511,12 +516,15 @@ namespace test.CT_Hacks
                     stationItem = false;
                     prevStationItem = true;
                 }
-                
-                GUI.backgroundColor = Color.green;
+
+                GUI.backgroundColor = H_GUIColors.GUIOriginalbackgroundColor;
+                GUI.contentColor = H_GUIColors.GUIOriginalContentColor;
                 if (GUI.Button(new Rect(160, 20, 50, 50), new GUIContent(item.sprite.texture, item.name + "à" + item.description + "é" + item.attackDamage + "è")))
                 {
                     showAllItems();
                 }
+                GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                GUI.contentColor = H_GUIColors.GUIFrontColor;
 
             }
 
@@ -575,7 +583,6 @@ namespace test.CT_Hacks
                     stationItem = true;
                     prevStationItem = false;
                 }
-                GUI.backgroundColor = prevColorGUI;
             }
 
             base.runWin(id);

@@ -58,6 +58,8 @@ namespace test.CT_Hacks
 		}
 		public override void runWin(int id)
 		{
+			GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+			GUI.contentColor = H_GUIColors.GUIFrontColor;
 			GUILayout.Label("");
 			GUI.Box(new Rect(10, 25, 120, 265), LB_Menu.listeJoueur.Length.ToString() + "/10 Players");
 			playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 60, 130, 220), playerListScrollPosition, new Rect(10, 60, 50, yPlayer), false, false); ;

@@ -180,6 +180,8 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+            GUI.contentColor = H_GUIColors.GUIFrontColor;
             GUILayout.Label("");
             switch (tolbarIntAdvancedMode)
             {
@@ -233,9 +235,11 @@ namespace test.CT_Hacks
                                 }
                                 else
                                 {
-                                    GUI.color = Color.black;
+                                    GUI.backgroundColor = Color.black;
+                                    GUI.contentColor = Color.black;
                                     GUI.Button(new Rect(10, 245, 135, 35), "Spawn \n" + "None");
-                                    GUI.color = GUIOriginalColor;
+                                    GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                    GUI.contentColor = H_GUIColors.GUIFrontColor;
                                 }
                             }
                             else
@@ -260,9 +264,11 @@ namespace test.CT_Hacks
                                 }
                                 else
                                 {
-                                    GUI.color = Color.black;
+                                    GUI.backgroundColor = Color.black;
+                                    GUI.contentColor = Color.black;
                                     GUI.Button(new Rect(10, 245, 135, 35), "Add to list \n" + "None");
-                                    GUI.color = GUIOriginalColor;
+                                    GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                    GUI.contentColor = H_GUIColors.GUIFrontColor;
                                 }
                             }
                             
@@ -281,25 +287,33 @@ namespace test.CT_Hacks
                                     case 0:
                                         
                                         showPositionPlayer();
-                                        GUI.color = Color.black;                                     
+                                        GUI.backgroundColor = Color.black;
+                                        GUI.contentColor = Color.black;
                                         showPositionWaypoint();
                                         showPositionOther();
-                                        GUI.color = GUIOriginalColor;
+                                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                        GUI.contentColor = H_GUIColors.GUIFrontColor;
                                         break;
                                     case 1:
-                                        GUI.color = Color.black;
+                                        GUI.backgroundColor = Color.black;
+                                        GUI.contentColor = Color.black;
                                         showPositionPlayer();
-                                        GUI.color = GUIOriginalColor;
+                                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                        GUI.contentColor = H_GUIColors.GUIFrontColor;
                                         showPositionWaypoint();
-                                        GUI.color = Color.black;
+                                        GUI.backgroundColor = Color.black;
+                                        GUI.contentColor = Color.black;
                                         showPositionOther();
-                                        GUI.color = GUIOriginalColor;
+                                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                        GUI.contentColor = H_GUIColors.GUIFrontColor;
                                         break;
                                     case 2:
-                                        GUI.color = Color.black;
+                                        GUI.backgroundColor = Color.black;
+                                        GUI.contentColor = Color.black;
                                         showPositionPlayer();                                     
                                         showPositionWaypoint();
-                                        GUI.color = GUIOriginalColor;
+                                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                                        GUI.contentColor = H_GUIColors.GUIFrontColor;
                                         showPositionOther();  
                                         break;
                                 }
@@ -517,7 +531,7 @@ namespace test.CT_Hacks
                         {
                             buttonSetting(mob);
                         }
-                        GUI.backgroundColor = GUIOriginalColor;
+                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
                         if (x2 == 260)
                         {
                             x2 = 140; y2 += 32;
@@ -532,7 +546,7 @@ namespace test.CT_Hacks
                         {
                             buttonSetting(mob);
                         }
-                        GUI.backgroundColor = GUIOriginalColor;
+                        GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
                         if (x2 == 260)
                         {
                             x2 = 140; y2 += 32;

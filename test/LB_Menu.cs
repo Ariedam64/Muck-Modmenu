@@ -24,7 +24,7 @@ namespace test.CT_System
             menus.Add(CManager.hk_powerUp);
             menus.Add(CManager.hk_server);
             menus.Add(CManager.hk_mobspawner);
-            menus.Add(CManager.hk_esp);
+            menus.Add(CManager.hk_guicolors);
             menus.Add(CManager.hk_waypoints);
         }
 

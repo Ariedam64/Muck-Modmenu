@@ -14,6 +14,7 @@ namespace test
 
         public Menu(Rect window, string title, int wID, bool isOpen)
         {
+            GUI.color = Color.green;
             this.isOpen = isOpen;
             this.title = title;
             this.window = window;
@@ -22,7 +23,7 @@ namespace test
 
         public virtual void runWin(int id)
         {
-            if (id != 0 && id != 5 && id != 6 && id != 2 && id != 7 && id != 9)
+            if (id != 0 && id != 5 && id != 6 && id != 2 && id != 7 && id != 9 && id != 8)
             {
                 if (GUILayout.Button("Exit"))
                     {

@@ -12,7 +12,7 @@ namespace test
         private static GameObject go_System;
 
         public void Start()
-        {
+        {      
             go_Hacks = new GameObject();
             go_System = new GameObject();
 
