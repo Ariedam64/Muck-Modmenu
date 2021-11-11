@@ -18,26 +18,19 @@ namespace test.CT_Hacks
         public static Vector2 mobListinListScrollPosition { get; set; } = Vector2.zero;
         public static Vector2 playerListScrollPosition { get; set; } = Vector2.zero;
         public static Vector2 waypointListScrollView { get; set; } = Vector2.zero;
+        public static Vector2 mobStatsListScrollPosition { get; set; } = Vector2.zero;
+        
+        public List<mobList> mobListTab = new List<mobList>();
+
+        public readonly Color GUIOriginalColor = GUI.color;
+        public GUIStyle centeredStyle, centeredStyle2, styleForStats;
+        public Vector3 spawnPosition;
+
         public int ItemSpawnerAmount = 1;
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
         public int speedAmount = 1;
         public int yScroll = 20;
-        public bool isList = false;
-        public List<mobList> mobListTab = new List<mobList>();
-        public string[] playerList;
-
-        public readonly Color GUIOriginalColor = GUI.color;
-        public string[] toolbarStringsAdvMenuCurrent;
-        public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
-        public string[] toolbarStringsOthersMode = { "Look at"};
-        public string[] toolbarStringsSpawnMode = { "Normal", "List" };
-        public string[] toolbarStringsListMode = { "Show", "Delete" };
-        public string[] toolbarStringsPositionMode = { "Players", "Waypoints", "Others" };
-        public string[] waypointsListString;
-        public string[] playersListString;
-        public GUIStyle centeredStyle, centeredStyle2;
-        public Vector3 spawnPosition;
         public int tolbarIntMenu = 0;
         public int yWaypoints;
         public int yPlayer;
@@ -49,22 +42,63 @@ namespace test.CT_Hacks
         public int tolbarIntPosition = 0;
         public int tolbarIntList = 0;
         public int tolbarIntPositionMode = 0;
+
+        public string[] playerList;
+        public string[] toolbarStringsAdvMenuCurrent;
+        public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
+        public string[] toolbarStringsOthersMode = { "Look at"};
+        public string[] toolbarStringsSpawnMode = { "Normal", "List" };
+        public string[] toolbarStringsListMode = { "Show", "Delete" };
+        public string[] toolbarStringsPositionMode = { "Players", "Waypoints", "Others" };
+        public string[] waypointsListString;
+        public string[] playersListString;
+
+        //Stats
+        public string prevRangedString, rangedString;
+        public string prevMobMaxAttackDistanceString, maxAttackDistanceString;
+        public string prevRangedCooldownString, rangedCooldownString;
+        public string prevStartAttackDistanceString, startAttackDistanceString;
+        public string prevStartRangedAttackDistanceString, startRangedAttackDistanceString;
+        public string prevSpeedString, speedString;
+        public string prevMinAttackAngleString, minAttackAngleString;
+        public string prevSharpDefenseString, sharpDefenseString;
+        public string prevDefenseString, defenseString;
+        public string prevKnockbackThresholdString, knockbackThresholdString;
+        public string prevIgnoreBuildsString, ignoreBuildsString;
+        public string prevFollowPlayerDistanceString, followPlayerDistanceString;
+        public string prevFollowPlayerAccuracyString, followPlayerAccuracyString;
+        public string prevOnlyRangedInRangedPatternString, onlyRangedInRangedPatternString;
+        public string prevBossString, bossString;
+
+        public bool prevRanged, ranged;
+        public float prevRangedCooldown, rangedCooldown;
+        public float prevStartAttackDistance, startAttackDistance;
+        public float prevStartRangedAttackDistance, startRangedAttackDistance;
+        public float prevMaxAttackDistance, maxAttackDistance;
+        public float prevSpeed, speed;
+        public float prevMinAttackAngle, minAttackAngle;
+        public float prevSharpDefense, sharpDefense;
+        public float prevDefense, defense;
+        public float prevKnockbackThreshold, knockbackThreshold;
+        public bool prevIgnoreBuilds, ignoreBuilds;
+        public float prevFollowPlayerDistance, followPlayerDistance;
+        public float prevFollowPlayerAccuracy, followPlayerAccuracy;
+        public bool prevOnlyRangedInRangedPattern, onlyRangedInRangedPattern;
+        public bool prevBoss, boss;
+
+
+
+        //ToolTip
         public string prevTooltip = "";
-        public string mobStats;
-        public string prevMobSpeed, mobSpeed;
-        public string prevMobMaxAttackDistance ,maxAttackDistance;
-        public string prevMobBoss, mobBoss;
-        public string prevMobDefense, mobDefense;
+        public string tooltipString;
+
+        public MobType mobSelected = null;
+
 
         public H_MobSpawner() : base(new Rect(1000, 420, 430, 320), "Mob Spawner menu", 7, false) { }
 
         public void Update()
         {
-
-
-
-
-
             //Position
             waypointsListString = H_Waypoints.waypointsList.Select(x => x.name).ToArray();
             playersListString = LB_Menu.listeJoueur.Select(x => x.username).ToArray();
@@ -98,6 +132,9 @@ namespace test.CT_Hacks
             //-------
 
             //List
+            styleForStats.normal.textColor = Color.white;
+            styleForStats.fontSize = 10;
+
             centeredStyle.alignment = TextAnchor.UpperCenter;
             centeredStyle.normal.textColor = Color.white;
             centeredStyle.normal.background = Texture2D.grayTexture;
@@ -158,7 +195,7 @@ namespace test.CT_Hacks
                     break;
 
                 //Advanced mode
-               case 1:
+               case 1:                
                     switch (tolbarIntMenu)
                     {
                         //Mobs menu
@@ -179,8 +216,56 @@ namespace test.CT_Hacks
 
                         //Stats menu
                         case 1:
-                            tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
+                            GUI.Box(new Rect(10, 50, 135, 190), "Stats");
                             showMobsAdvanced();
+                            loadMobStats();
+                            if(tolbarIntList == 0)
+                            {
+                                if (mobSelected != null)
+                                {
+                                    mobStatsEdit();
+                                    if (GUI.Button(new Rect(10,245,135, 35), "Spawn \n" + mobSelected.name))
+                                    {
+                                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mobSelected.id, spawnPosition, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);                                       
+                                        resetMobStats();
+                                    }      
+                                }
+                                else
+                                {
+                                    GUI.color = Color.black;
+                                    GUI.Button(new Rect(10, 245, 135, 35), "Spawn \n" + "None");
+                                    GUI.color = GUIOriginalColor;
+                                }
+                            }
+                            else
+                            {
+                                if (mobSelected != null)
+                                {
+                                    if (GUI.Button(new Rect(10, 245, 135, 35), "Add to list \n" + mobSelected.name))
+                                    {
+                                        if (mobListTab.Exists(x => x.id == mobSelected.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
+                                        {
+                                            var sameMob = mobListTab.Find(x => (x.id == mobSelected.id) && (x.multiplier == powerMultiplierAmount));
+                                            sameMob.quantity += ItemSpawnerAmount;
+                                        }
+                                        else
+                                        {
+                                            mobListTab.Add(new mobList() { name = mobSelected.name, id = mobSelected.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount });
+                                        }
+                                        
+                                        mobSelected = null;
+                                        yScroll += 20;
+                                    }
+                                }
+                                else
+                                {
+                                    GUI.color = Color.black;
+                                    GUI.Button(new Rect(10, 245, 135, 35), "Add to list \n" + "None");
+                                    GUI.color = GUIOriginalColor;
+                                }
+                            }
+                            
+                            tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);         
                             break;
 
                          
@@ -322,7 +407,7 @@ namespace test.CT_Hacks
             y += 20;
             foreach (mobList mob in mobListTab)
             {
-                GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity, centeredStyle);
+                GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity, centeredStyle);     
                 y += 20;
             }
             GUI.EndScrollView();
@@ -338,57 +423,315 @@ namespace test.CT_Hacks
             y += 20;
             foreach (mobList mob in mobListTab)
             {
-                if(GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
+
+                if (GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
                 {
                     mobListTab.Remove(mob);
                     yScroll -= 20;
                 }
+                
                 y += 20;
             }
             GUI.EndScrollView();
         }
 
+        void buttonSetting(MobType mob)
+        {
+            //If list enabled
+            if (tolbarIntList == 1)
+            {
+                //if in List menu
+                if (tolbarIntMenu == 1)
+                {
+                    if (mobSelected == mob)
+                    {
+                        mobSelected = null;
+                    }
+                    else
+                    {
+                        mobSelected = mob;
+                    }
+                }
+                //if in first menu
+                else
+                {
+                    //If mob is already in list modify it quantity
+                    if (mobListTab.Exists(x => x.id == mob.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
+                    {
+                        var sameMob = mobListTab.Find(x => (x.id == mob.id) && (x.multiplier == powerMultiplierAmount));
+                        sameMob.quantity += ItemSpawnerAmount;
+                    }
+                    //if is not already in list add it
+                    else
+                    {
+                        mobListTab.Add(new mobList() { name = mob.name, id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount }); ;
+                        yScroll += 20;
+                    }
+                }
+            }
+            //If list is disabled
+            else
+            {
+                //if in list menu
+                if (tolbarIntMenu == 1)
+                {
+                    if (mobSelected == mob)
+                    {
+                        mobSelected = null;
+                    }
+                    else
+                    {
+                        mobSelected = mob;
+                    }
+                }
+                //if in first menu
+                else
+                {
+                    for (int j = 0; j < ItemSpawnerAmount; j++)
+                    {
+                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                    }
+                }
+            }
+
+        }
+
         void showMobsAdvanced()
         {
+            
             GUI.Box(new Rect(150, 50, 250, 230), "Mobs list");
             mobListScrollPositition = GUI.BeginScrollView(new Rect(160, 80, 260, 200), mobListScrollPositition, new Rect(140, 50, 240, 290), false, true);
             int x2 = 140;
             int y2 = 50;
             foreach (MobType mob in MobSpawner.Instance.allMobs)
             {
-                if (GUI.Button(new Rect(x2, y2, 110, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
+                //mob Selected
+                if (mobSelected != null)
                 {
-                    //If list
-                    if (tolbarIntList == 1)
+                    //mob selected is the same as mob element
+                    if(mob.name == mobSelected.name)
                     {
-                        if(mobListTab.Exists(x => x.id == mob.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
+                        GUI.backgroundColor = Color.green;
+                        if (GUI.Button(new Rect(x2, y2, 110, 22), new GUIContent(mob.name, mob.ranged + "$" +mob.rangedCooldown + "=" +mob.startAttackDistance + ")" +mob.startRangedAttackDistance + "à" +mob.maxAttackDistance + "ç" +mob.speed + "_" +mob.minAttackAngle + "è" + mob.sharpDefense + "-" +mob.defense + "(" +mob.knockbackThreshold + "'" +mob.ignoreBuilds + "é" +mob.followPlayerDistance + "&" +mob.followPlayerAccuracy + "²" +mob.onlyRangedInRangedPattern + "*" +mob.boss + "/")))
                         {
-                            var sameMob = mobListTab.Find(x => (x.id == mob.id) && (x.multiplier == powerMultiplierAmount)); 
-                            sameMob.quantity += ItemSpawnerAmount;
+                            buttonSetting(mob);
+                        }
+                        GUI.backgroundColor = GUIOriginalColor;
+                        if (x2 == 260)
+                        {
+                            x2 = 140; y2 += 32;
                         }
                         else
-                        {
-                            mobListTab.Add(new mobList() { name = mob.name, id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount });
-                            yScroll += 20;
-                        }                  
+                            x2 += 120;
                     }
-                    //If normal
+                    //mob selected is not the same as mob element
                     else
                     {
-                        for (int j = 0; j < ItemSpawnerAmount; j++)
+                        if (GUI.Button(new Rect(x2, y2, 110, 22), new GUIContent(mob.name, mob.ranged + "$" + mob.rangedCooldown + "=" + mob.startAttackDistance + ")" + mob.startRangedAttackDistance + "à" + mob.maxAttackDistance + "ç" + mob.speed + "_" + mob.minAttackAngle + "è" + mob.sharpDefense + "-" + mob.defense + "(" + mob.knockbackThreshold + "'" + mob.ignoreBuilds + "é" + mob.followPlayerDistance + "&" + mob.followPlayerAccuracy + "²" + mob.onlyRangedInRangedPattern + "*" + mob.boss + "/")))
                         {
-                            MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                            buttonSetting(mob);
                         }
+                        GUI.backgroundColor = GUIOriginalColor;
+                        if (x2 == 260)
+                        {
+                            x2 = 140; y2 += 32;
+                        }
+                        else
+                            x2 += 120;
                     }
                 }
-                if (x2 == 260)
-                {
-                    x2 = 140; y2 += 32;
-                }
+                //No mob selected
                 else
-                    x2 += 120;
+                {
+                    if (GUI.Button(new Rect(x2, y2, 110, 22), new GUIContent(mob.name, mob.ranged + "$" + mob.rangedCooldown + "=" + mob.startAttackDistance + ")" + mob.startRangedAttackDistance + "à" + mob.maxAttackDistance + "ç" + mob.speed + "_" + mob.minAttackAngle + "è" + mob.sharpDefense + "-" + mob.defense + "(" + mob.knockbackThreshold + "'" + mob.ignoreBuilds + "é" + mob.followPlayerDistance + "&" + mob.followPlayerAccuracy + "²" + mob.onlyRangedInRangedPattern + "*" + mob.boss + "/")))
+                    {
+                        buttonSetting(mob);
+                    }
+                    if (x2 == 260)
+                    {
+                        x2 = 140; y2 += 32;
+                    }
+                    else
+                        x2 += 120;
+                }  
             }
             GUI.EndScrollView();
+        }
+
+
+        void mobStatsEdit()
+        {
+            mobStatsListScrollPosition = GUI.BeginScrollView(new Rect(15, 80, 125, 155), mobStatsListScrollPosition, new Rect(15, 80, 100, 415), false, true);
+
+            mobSelected.ranged =  GUI.Toggle(new Rect(15, 80, 105, 23), mobSelected.ranged, "Ranged");
+            mobSelected.onlyRangedInRangedPattern = GUI.Toggle(new Rect(15, 100, 105, 23), mobSelected.onlyRangedInRangedPattern, "Ranged Pattern");
+            mobSelected.boss = GUI.Toggle(new Rect(15, 120, 105, 23), mobSelected.boss, "Boss");
+            mobSelected.ignoreBuilds = GUI.Toggle(new Rect(15, 140, 105, 23), mobSelected.ignoreBuilds, "Ignore build");
+            GUI.Label(new Rect(15, 166, 100, 23), "Ranged cooldown: " + mobSelected.rangedCooldown, styleForStats);
+            mobSelected.rangedCooldown = GUI.HorizontalSlider(new Rect(15, 180, 100, 23), mobSelected.rangedCooldown, 0f, 100f);
+            GUI.Label(new Rect(15, 196, 100, 23), "Start atk. dist: " + mobSelected.startAttackDistance, styleForStats);
+            mobSelected.startAttackDistance = GUI.HorizontalSlider(new Rect(15, 210, 100, 23), mobSelected.startAttackDistance, 0f, 100f);
+            GUI.Label(new Rect(15, 226, 100, 23), "Start rang. atk. dist: " + mobSelected.startRangedAttackDistance, styleForStats);
+            mobSelected.startRangedAttackDistance = GUI.HorizontalSlider(new Rect(15, 240, 100, 23), mobSelected.startRangedAttackDistance, 0f, 100f);
+            GUI.Label(new Rect(15, 256, 100, 23), "Max atk dist: " + mobSelected.maxAttackDistance, styleForStats);
+            mobSelected.maxAttackDistance = GUI.HorizontalSlider(new Rect(15, 270, 100, 23), mobSelected.maxAttackDistance, 0f, 300f);
+            GUI.Label(new Rect(15, 286, 100, 23), "Speed: " + mobSelected.speed, styleForStats);
+            mobSelected.speed = GUI.HorizontalSlider(new Rect(15, 300, 100, 23), mobSelected.speed, 0f, 100f);
+            GUI.Label(new Rect(15, 316, 100, 23), "Min atk angle: " + mobSelected.minAttackAngle, styleForStats);
+            mobSelected.minAttackAngle = GUI.HorizontalSlider(new Rect(15, 330, 100, 23), mobSelected.minAttackAngle, 0f, 300f);
+            GUI.Label(new Rect(15, 346, 100, 23), "Sharp defense: " + mobSelected.sharpDefense, styleForStats);
+            mobSelected.sharpDefense = GUI.HorizontalSlider(new Rect(15, 360, 100, 23), mobSelected.sharpDefense, 0f, 100f);
+            GUI.Label(new Rect(15, 376, 100, 23), "Defense: " + mobSelected.defense, styleForStats);
+            mobSelected.defense = GUI.HorizontalSlider(new Rect(15, 390, 100, 23), mobSelected.defense, 0f, 100f);
+            GUI.Label(new Rect(15, 406, 100, 23), "KB Treshold: " + mobSelected.knockbackThreshold, styleForStats);
+            mobSelected.knockbackThreshold = GUI.HorizontalSlider(new Rect(15, 420, 105, 23), mobSelected.knockbackThreshold, 0f, 100f);
+            GUI.Label(new Rect(15, 436, 100, 23), "Follow player Dist: " + mobSelected.followPlayerDistance, styleForStats);
+            mobSelected.followPlayerDistance = GUI.HorizontalSlider(new Rect(15, 450, 105, 23), mobSelected.followPlayerDistance, 0f, 100f);
+            GUI.Label(new Rect(15, 466, 100, 23), "Follow player Acc: " + mobSelected.followPlayerAccuracy, styleForStats);
+            mobSelected.followPlayerAccuracy = GUI.HorizontalSlider(new Rect(15, 480, 105, 23), mobSelected.followPlayerAccuracy, 0f, 100f);
+
+            GUI.EndScrollView();
+        }
+
+        void loadMobStats()
+        {
+            tooltipString = GUI.tooltip;
+            rangedString = Variables.deleteAllAfter(tooltipString, "$");           
+            ranged = Variables.stringToBool(rangedString);
+            rangedCooldownString = Variables.deleteAllBeetween("$", tooltipString, "=");
+            rangedCooldown = Variables.stringToFloat(rangedCooldownString);
+            startAttackDistanceString = Variables.deleteAllBeetween("=", tooltipString, ")");
+            startAttackDistance = Variables.stringToFloat(startAttackDistanceString);
+            startRangedAttackDistanceString = Variables.deleteAllBeetween(")", tooltipString, "à");
+            startRangedAttackDistance = Variables.stringToFloat(startRangedAttackDistanceString);
+            maxAttackDistanceString = Variables.deleteAllBeetween("à", tooltipString, "ç");
+            maxAttackDistance = Variables.stringToFloat(maxAttackDistanceString);
+            speedString = Variables.deleteAllBeetween("ç", tooltipString, "_");
+            speed = Variables.stringToFloat(speedString);
+            minAttackAngleString = Variables.deleteAllBeetween("_", tooltipString, "è");
+            minAttackAngle = Variables.stringToFloat(minAttackAngleString);
+            sharpDefenseString = Variables.deleteAllBeetween("è", tooltipString, "-");
+            sharpDefense = Variables.stringToFloat(sharpDefenseString);
+            defenseString = Variables.deleteAllBeetween("-", tooltipString, "(");
+            defense = Variables.stringToFloat(defenseString);
+            knockbackThresholdString = Variables.deleteAllBeetween("(", tooltipString, "'");
+            knockbackThreshold = Variables.stringToFloat(knockbackThresholdString);
+            ignoreBuildsString = Variables.deleteAllBeetween("'", tooltipString, "é");
+            ignoreBuilds = Variables.stringToBool(ignoreBuildsString);
+            followPlayerDistanceString = Variables.deleteAllBeetween("é", tooltipString, "&");
+            followPlayerDistance = Variables.stringToFloat(followPlayerDistanceString);
+            followPlayerAccuracyString = Variables.deleteAllBeetween("&", tooltipString, "²");
+            followPlayerAccuracy = Variables.stringToFloat(followPlayerAccuracyString);
+            onlyRangedInRangedPatternString = Variables.deleteAllBeetween("²", tooltipString, "*");
+            onlyRangedInRangedPattern = Variables.stringToBool(onlyRangedInRangedPatternString);
+            bossString = Variables.deleteAllBeetween("*", tooltipString, "/");
+            boss = Variables.stringToBool(bossString);
+
+            if (GUI.tooltip.Length > 1)
+            {
+                prevRanged = ranged;
+                prevRangedCooldown = rangedCooldown;
+                prevStartAttackDistance = startAttackDistance;
+                prevStartRangedAttackDistance = startRangedAttackDistance;
+                prevMaxAttackDistance = maxAttackDistance;
+                prevSpeed = speed;
+                prevMinAttackAngle = minAttackAngle;
+                prevSharpDefense = sharpDefense;
+                prevDefense = defense;
+                prevKnockbackThreshold = knockbackThreshold;
+                prevIgnoreBuilds = ignoreBuilds;
+                prevFollowPlayerDistance = followPlayerDistance;
+                prevFollowPlayerAccuracy = followPlayerAccuracy;
+                prevOnlyRangedInRangedPattern = onlyRangedInRangedPattern;
+                prevBoss = boss;
+            }
+
+            mobStatsListScrollPosition = GUI.BeginScrollView(new Rect(15, 80, 125, 155), mobStatsListScrollPosition, new Rect(15, 80, 100, 415), false, true);
+            if (tolbarIntList == 1)
+            {
+                GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
+                GUI.Toggle(new Rect(15, 100, 105, 23), prevOnlyRangedInRangedPattern, "Ranged Pattern");
+                GUI.Toggle(new Rect(15, 120, 105, 23), prevBoss, "Boss");
+                GUI.Toggle(new Rect(15, 140, 105, 23), prevIgnoreBuilds, "Ignore build");
+                GUI.Label(new Rect(15, 166, 100, 23), "Ranged cooldown: " + prevRangedCooldown, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 180, 100, 23), prevRangedCooldown, 0f, 100f);
+                GUI.Label(new Rect(15, 196, 100, 23), "Start atk. dist: " + prevStartAttackDistance, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 210, 100, 23), prevStartAttackDistance, 0f, 100f);
+                GUI.Label(new Rect(15, 226, 100, 23), "Start rang. atk. dist: " + prevStartRangedAttackDistance, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 240, 100, 23), prevStartRangedAttackDistance, 0f, 100f);
+                GUI.Label(new Rect(15, 256, 100, 23), "Max atk dist: " + prevMaxAttackDistance, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 270, 100, 23), prevMaxAttackDistance, 0f, 300f);
+                GUI.Label(new Rect(15, 286, 100, 23), "Speed: " + prevSpeed, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 300, 100, 23), prevSpeed, 0f, 100f);
+                GUI.Label(new Rect(15, 316, 100, 23), "Min atk angle: " + prevMinAttackAngle, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 330, 100, 23), prevMinAttackAngle, 0f, 300f);
+                GUI.Label(new Rect(15, 346, 100, 23), "Sharp defense: " + prevSharpDefense, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 360, 100, 23), prevSharpDefense, 0f, 100f);
+                GUI.Label(new Rect(15, 376, 100, 23), "Defense: " + prevDefense, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 390, 100, 23), prevDefense, 0f, 100f);
+                GUI.Label(new Rect(15, 406, 100, 23), "KB Treshold: " + prevKnockbackThreshold, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 420, 105, 23), prevKnockbackThreshold, 0f, 100f);
+                GUI.Label(new Rect(15, 436, 100, 23), "Follow player Dist: " + prevFollowPlayerDistance, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 450, 105, 23), prevFollowPlayerDistance, 0f, 100f);
+                GUI.Label(new Rect(15, 466, 100, 23), "Follow player Acc: " + prevFollowPlayerAccuracy, styleForStats);
+                GUI.HorizontalSlider(new Rect(15, 480, 105, 23), prevFollowPlayerAccuracy, 0f, 100f);
+            }
+            else
+            {
+                if (mobSelected == null)
+                {
+                    GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
+                    GUI.Toggle(new Rect(15, 100, 105, 23), prevOnlyRangedInRangedPattern, "Ranged Pattern");
+                    GUI.Toggle(new Rect(15, 120, 105, 23), prevBoss, "Boss");
+                    GUI.Toggle(new Rect(15, 140, 105, 23), prevIgnoreBuilds, "Ignore build");
+                    GUI.Label(new Rect(15, 166, 100, 23), "Ranged cooldown: " + prevRangedCooldown, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 180, 100, 23), prevRangedCooldown, 0f, 100f);
+                    GUI.Label(new Rect(15, 196, 100, 23), "Start atk. dist: " + prevStartAttackDistance, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 210, 100, 23), prevStartAttackDistance, 0f, 100f);
+                    GUI.Label(new Rect(15, 226, 100, 23), "Start rang. atk. dist: " + prevStartRangedAttackDistance, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 240, 100, 23), prevStartRangedAttackDistance, 0f, 100f);
+                    GUI.Label(new Rect(15, 256, 100, 23), "Max atk dist: " + prevMaxAttackDistance, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 270, 100, 23), prevMaxAttackDistance, 0f, 300f);
+                    GUI.Label(new Rect(15, 286, 100, 23), "Speed: " + prevSpeed, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 300, 100, 23), prevSpeed, 0f, 100f);
+                    GUI.Label(new Rect(15, 316, 100, 23), "Min atk angle: " + prevMinAttackAngle, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 330, 100, 23), prevMinAttackAngle, 0f, 300f);
+                    GUI.Label(new Rect(15, 346, 100, 23), "Sharp defense: " + prevSharpDefense, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 360, 100, 23), prevSharpDefense, 0f, 100f);
+                    GUI.Label(new Rect(15, 376, 100, 23), "Defense: " + prevDefense, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 390, 100, 23), prevDefense, 0f, 100f);
+                    GUI.Label(new Rect(15, 406, 100, 23), "KB Treshold: " + prevKnockbackThreshold, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 420, 105, 23), prevKnockbackThreshold, 0f, 100f);
+                    GUI.Label(new Rect(15, 436, 100, 23), "Follow player Dist: " + prevFollowPlayerDistance, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 450, 105, 23), prevFollowPlayerDistance, 0f, 100f);
+                    GUI.Label(new Rect(15, 466, 100, 23), "Follow player Acc: " + prevFollowPlayerAccuracy, styleForStats);
+                    GUI.HorizontalSlider(new Rect(15, 480, 105, 23), prevFollowPlayerAccuracy, 0f, 100f);
+
+                }
+            }
+            
+            GUI.EndScrollView();
+        }
+
+        void resetMobStats()
+        {
+            mobSelected.ranged = prevRanged;
+            mobSelected.rangedCooldown = prevRangedCooldown;
+            mobSelected.startAttackDistance = prevStartAttackDistance;
+            mobSelected.startRangedAttackDistance = prevStartRangedAttackDistance;
+            mobSelected.maxAttackDistance = prevMaxAttackDistance;
+            mobSelected.speed = prevSpeed;
+            mobSelected.minAttackAngle = prevMinAttackAngle;
+            mobSelected.sharpDefense = prevSharpDefense;
+            mobSelected.defense = prevDefense;
+            mobSelected.knockbackThreshold = prevKnockbackThreshold;
+            mobSelected.ignoreBuilds = prevIgnoreBuilds;
+            mobSelected.followPlayerDistance = prevFollowPlayerDistance;
+            mobSelected.followPlayerAccuracy = prevFollowPlayerAccuracy;
+            mobSelected.onlyRangedInRangedPattern = prevOnlyRangedInRangedPattern;
+            mobSelected.boss = prevBoss;
+
+            mobSelected = null;
         }
 
         void showMobNormal()
@@ -399,7 +742,7 @@ namespace test.CT_Hacks
             int y = 25;
             foreach (MobType mob in MobSpawner.Instance.allMobs)
             {
-                if (GUI.Button(new Rect(x, y, 110, 22), new GUIContent(mob.name, mob.maxAttackDistance + "$1" + mob.speed)))
+                if (GUI.Button(new Rect(x, y, 110, 22), mob.name))
                 {
                     for (int j = 0; j < ItemSpawnerAmount; j++)
                     {
@@ -437,5 +780,21 @@ namespace test.CT_Hacks
         public Vector3 position { get; set; }
         public float multiplier { get; set; }
         public float quantity { get; set; }
+        public bool statsEdited { get; set; }
+        public bool ranged { get; set; }
+        public float rangedCooldown { get; set; }
+        public float startAttackDistance { get; set; }
+        public float startRangedAttackDistance { get; set; }
+        public float maxAttackDistance { get; set; }
+        public float speed { get; set; }
+        public float minAttackAngle { get; set; }
+        public float sharpDefense { get; set; }
+        public float defense { get; set; }
+        public float knockbackThreshold { get; set; }
+        public bool ignoreBuilds { get; set; }
+        public float followPlayerDistance { get; set; }
+        public float followPlayerAccuracy { get; set; }
+        public bool onlyRangedInRangedPattern { get; set; }
+        public bool boss { get; set; }
     }
 }
