@@ -7,11 +7,10 @@ namespace test.CT_Hacks
 {
     public class H_Main : Menu
     {
-        public H_Main() : base(new Rect(10, 10, 200, 200), "MAH 0.1", 0, true) { }
+        public H_Main() : base(new Rect(10, 10, 200, 100), "MAH 0.2", 0, true) { }
 
         public override void runWin(int id)
         {
-
             if (GUILayout.Button("Player"))
             {
                 CManager.hk_Player.isOpen = !CManager.hk_Player.isOpen;
@@ -22,9 +21,9 @@ namespace test.CT_Hacks
             }
             if (GUILayout.Button("ESP (soon)"))
             {
-                CManager.hk_esp.isOpen = !CManager.hk_esp.isOpen;
+                //CManager.hk_esp.isOpen = !CManager.hk_esp.isOpen;
             }
-            if (GUILayout.Button("Mob Spawner"))
+            if (GUILayout.Button("Mob Spawner [HOST]"))
             {
                 CManager.hk_mobspawner.isOpen = !CManager.hk_mobspawner.isOpen;
             }
@@ -48,9 +47,12 @@ namespace test.CT_Hacks
             {
                 CManager.hk_misc.isOpen = !CManager.hk_misc.isOpen;
             }
-
-
             GUILayout.Label("Created by Ariedam");
+
+            if(GUILayout.Button("Join discord"))
+            {
+                Application.OpenURL("https://discord.gg/ccysRb2dgt");
+            }
             base.runWin(id); 
         }
 

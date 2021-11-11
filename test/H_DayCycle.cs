@@ -18,6 +18,7 @@ namespace test.CT_Hacks
         private float middleNight = 0.75f;
         private float speedTime = 1f;
         private float prevSpeedTime = 1f;
+        private float timeSet;
         public int currentDay=0;
         private bool frooze = false;
         public static DayCycle dayCycleInstance;
@@ -31,12 +32,22 @@ namespace test.CT_Hacks
             }
             else
             {
-                if (speedTime != prevSpeedTime)
+                
+                if(speedTime == 1)
                 {
-                    float timeSet = 100 / speedTime;
-                    prevSpeedTime = speedTime;
+                    DayCycle.dayDuration= 100f;
+                }
+                else
+                {
+                    if (speedTime != prevSpeedTime)
+                    {
+                        timeSet = 100 / speedTime;
+                        prevSpeedTime = speedTime;
+                    }
                     DayCycle.dayDuration = timeSet;
                 }
+
+                
             }
         }
         public override void runWin(int id)

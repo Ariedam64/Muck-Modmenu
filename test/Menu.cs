@@ -29,10 +29,6 @@ namespace test
                         isOpen = false;
                     }
             }
-            else
-            {
-                GUILayout.Label("");
-            }
                 
             GUI.DragWindow();
         }

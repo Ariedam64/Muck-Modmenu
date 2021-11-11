@@ -140,11 +140,11 @@ namespace test.CT_Hacks
         {
             invincible = GUILayout.Toggle(invincible, "Godmode");
             stamina = GUILayout.Toggle(stamina, "Ininite stamina");
-            hunger = GUILayout.Toggle(hunger, "Infinie hunger");
+            hunger = GUILayout.Toggle(hunger, "Infinite hunger");
             instantKill = GUILayout.Toggle(instantKill, "Instant kill");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");
             noclip = GUILayout.Toggle(noclip, "No Clip");
-            freecam = GUILayout.Toggle(freecam, "Freecam (soon)");
+            //freecam = GUILayout.Toggle(freecam, "Freecam (soon)");
             fly = GUILayout.Toggle(fly, "Fly");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");
             GUILayout.Label("Gravity: " + gravity);

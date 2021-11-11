@@ -95,7 +95,7 @@ namespace test.CT_Hacks
         public MobType mobSelected = null;
 
 
-        public H_MobSpawner() : base(new Rect(1000, 420, 430, 320), "Mob Spawner menu", 7, false) { }
+        public H_MobSpawner() : base(new Rect(430, 420, 430, 320), "Mob Spawner menu", 7, false) { }
 
         public void Update()
         {
@@ -180,6 +180,7 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUILayout.Label("");
             switch (tolbarIntAdvancedMode)
             {
                 //Normal mode

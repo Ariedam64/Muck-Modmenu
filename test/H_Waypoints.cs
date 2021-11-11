@@ -23,7 +23,7 @@ namespace test.CT_Hacks
         public bool isDisplayOnMap = true;
         public GUIStyle centeredStyle;
 
-        public H_Waypoints() : base(new Rect(800, 420, 350, 210), "Waypoints menu", 9, false) { }
+        public H_Waypoints() : base(new Rect(870, 420, 350, 210), "Waypoints menu", 9, false) { }
 
         public void Update()
         {
@@ -50,6 +50,7 @@ namespace test.CT_Hacks
         }
         public override void runWin(int id)
         {
+            GUILayout.Label("");
             GUI.Box(new Rect(10, 25, 155, 55), "Mode");
             toolbarIntWaypoints = GUI.Toolbar(new Rect(15, 50, 145, 23), toolbarIntWaypoints, toolbarStringsWaypoints);
             GUI.Box(new Rect(170, 25, 150, 145), "Waypoints list");
