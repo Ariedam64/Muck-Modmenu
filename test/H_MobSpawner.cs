@@ -27,6 +27,7 @@ namespace test.CT_Hacks
         public List<mobList> mobListTab = new List<mobList>();
         public string[] playerList;
 
+        public readonly Color GUIOriginalColor = GUI.color;
         public string[] toolbarStringsAdvMenuCurrent;
         public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
         public string[] toolbarStringsOthersMode = { "Look at"};
@@ -187,18 +188,36 @@ namespace test.CT_Hacks
                             //Position menu
                             if (tolbarIntPosition == 1)
                             {
-                                tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
-                                GUI.Box(new Rect(10, 50, 134, 230), "");
-                                GUI.Box(new Rect(148, 50, 134, 230), "");
-                                GUI.Box(new Rect(286, 50, 134, 230), "");
+                                tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);    
+                                
+                                switch (tolbarIntPositionMode)
+                                {
+                                    case 0:
+                                        
+                                        showPositionPlayer();
+                                        GUI.color = Color.black;                                     
+                                        showPositionWaypoint();
+                                        showPositionOther();
+                                        GUI.color = GUIOriginalColor;
+                                        break;
+                                    case 1:
+                                        GUI.color = Color.black;
+                                        showPositionPlayer();
+                                        GUI.color = GUIOriginalColor;
+                                        showPositionWaypoint();
+                                        GUI.color = Color.black;
+                                        showPositionOther();
+                                        GUI.color = GUIOriginalColor;
+                                        break;
+                                    case 2:
+                                        GUI.color = Color.black;
+                                        showPositionPlayer();                                     
+                                        showPositionWaypoint();
+                                        GUI.color = GUIOriginalColor;
+                                        showPositionOther();  
+                                        break;
+                                }
                                 tolbarIntPositionMode = GUI.Toolbar(new Rect(10, 50, 410, 23), tolbarIntPositionMode, toolbarStringsPositionMode);
-                                playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 80, 129, 190), playerListScrollPosition, new Rect(10, 80, 50, yPlayer), false, true);
-                                    tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 105, yPlayer), tolbarPlayerSelected, playersListString, 1);
-                                GUI.EndScrollView();
-                                waypointListScrollView = GUI.BeginScrollView(new Rect(148, 80, 129, 190), waypointListScrollView, new Rect(148, 80, 50, yWaypoints), false, true);
-                                    tolbarWaypointSelected = GUI.SelectionGrid(new Rect(153, 80, 105, yWaypoints), tolbarWaypointSelected, waypointsListString, 1);
-                                GUI.EndScrollView();
-                                    tolbarOthersSelected = GUI.SelectionGrid(new Rect(291, 80, 125, 25), tolbarOthersSelected, toolbarStringsOthersMode, 1);
                                 break;
                             }
                             // List menu
@@ -240,6 +259,42 @@ namespace test.CT_Hacks
                     break;
             }
         }
+
+        void showPositionPlayer() {
+            GUI.Box(new Rect(10, 50, 134, 230), "");
+            playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 80, 134, 190), playerListScrollPosition, new Rect(10, 80, 50, yPlayer), false, false);
+            if (yPlayer < 190)
+            {
+                tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 125, yPlayer), tolbarPlayerSelected, playersListString, 1);
+            }
+            else
+            {
+                tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 110, yPlayer), tolbarPlayerSelected, playersListString, 1);
+            }
+            GUI.EndScrollView();
+        }
+
+        void showPositionWaypoint()
+        {
+            GUI.Box(new Rect(148, 50, 134, 230), "");
+            waypointListScrollView = GUI.BeginScrollView(new Rect(148, 80, 134, 190), waypointListScrollView, new Rect(148, 80, 50, yWaypoints), false, false);
+            if (yWaypoints < 190)
+            {
+                tolbarWaypointSelected = GUI.SelectionGrid(new Rect(153, 80, 125, yWaypoints), tolbarWaypointSelected, waypointsListString, 1);
+            }
+            else
+            {
+                tolbarWaypointSelected = GUI.SelectionGrid(new Rect(153, 80, 110, yWaypoints), tolbarWaypointSelected, waypointsListString, 1);
+            }
+            GUI.EndScrollView();
+        }
+
+        void showPositionOther()
+        {
+            GUI.Box(new Rect(286, 50, 134, 230), "");
+            tolbarOthersSelected = GUI.SelectionGrid(new Rect(291, 80, 125, 25), tolbarOthersSelected, toolbarStringsOthersMode, 1);
+        }
+
         void showListMenu()
         {
             tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
