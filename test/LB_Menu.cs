@@ -30,6 +30,8 @@ namespace test.CT_System
 
         public void Update()
         {
+
+
             if (UnityEngine.Object.FindObjectsOfType<Tutorial>().Length >= 1)
             {
                 UnityEngine.Object.Destroy(Tutorial.Instance.gameObject);
@@ -48,7 +50,15 @@ namespace test.CT_System
             {
                 listeJoueur = UnityEngine.Object.FindObjectsOfType<PlayerManager>();
             }
-            
+
+            if (listeMenu.Length == 0)
+            {
+                PlayerManager trouve = Array.Find(listeJoueur, x => x.transform == PlayerMovement.Instance.transform);
+                int indice = Array.IndexOf(listeJoueur, trouve);
+                listeJoueur[indice].username = "YOURSELF";
+            }
+
+
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 if (listeMenu.Length != 0)

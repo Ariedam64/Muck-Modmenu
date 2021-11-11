@@ -15,7 +15,7 @@ namespace test.CT_Hacks
     {
         public static Vector2 waypointsListScrollPosition { get; set; } = Vector2.zero;
         public Map.MapMarker mapMarker;
-        public List<waypoint> waypointsList = new List<waypoint>();
+        public static List<waypoint> waypointsList = new List<waypoint>();
         public string[] toolbarStringsWaypoints = { "Add", "Tp", "Del" };
         public int toolbarIntWaypoints = 0;
         public string waypointName = "";

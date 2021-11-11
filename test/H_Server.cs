@@ -22,7 +22,8 @@ namespace test.CT_Hacks
 		public static bool follow = false;
 		public static bool spectate = false;
 		public static int playersInt = 0;
-		public string[] selStrings= new string[10];
+		public int yPlayer;
+		public string[] selStrings;
 		public bool green = true;
 		public static Vector3 PrevVelocity;
 		public static PlayerManager[] array = new PlayerManager[0];
@@ -33,6 +34,9 @@ namespace test.CT_Hacks
 
 		public void Update()
         {
+			selStrings = LB_Menu.listeJoueur.Select(x => x.username).ToArray();
+			yPlayer = (15 * selStrings.Length) + 10 * selStrings.Length - 1;
+
 			if (follow)
             {
 				var pos = LB_Menu.listeJoueur[joueurSelectionne].transform.position;
@@ -58,26 +62,7 @@ namespace test.CT_Hacks
 		{
 
 			GUI.Box(new Rect(10, 25, 120, 365), LB_Menu.listeJoueur.Length.ToString() + "/10 Players");
-			joueurSelectionne = GUI.SelectionGrid(new Rect(20, 60, 100, 320), joueurSelectionne, selStrings, 1);
-			for (int i = 0; i < LB_Menu.listeJoueur.Length; i++)
-			{
-				if (LB_Menu.listeJoueur[i].transform.position == PlayerMovement.Instance.transform.position)
-                {
-					selStrings[i] = "YOURSELF";
-				}
-                else
-                {
-					selStrings[i] = LB_Menu.listeJoueur[i].username;
-				}	
-			}
-
-			for (int i= 0; i < selStrings.Length; i++)
-            {
-				if (selStrings[i] is null)
-                {
-					selStrings[i] = "[empty]";
-				}
-            }
+			joueurSelectionne = GUI.SelectionGrid(new Rect(20, 60, 100, yPlayer), joueurSelectionne, selStrings, 1);
 
 			toolbarInt = GUI.Toolbar(new Rect(140, 25, 450, 23), toolbarInt, toolbarStrings);
 			switch (toolbarInt)

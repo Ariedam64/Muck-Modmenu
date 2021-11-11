@@ -17,6 +17,7 @@ namespace test.CT_Hacks
         public static Vector2 mobListScrollPositition { get; set; } = Vector2.zero;
         public static Vector2 mobListinListScrollPosition { get; set; } = Vector2.zero;
         public static Vector2 playerListScrollPosition { get; set; } = Vector2.zero;
+        public static Vector2 waypointListScrollView { get; set; } = Vector2.zero;
         public int ItemSpawnerAmount = 1;
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
@@ -24,16 +25,24 @@ namespace test.CT_Hacks
         public int yScroll = 20;
         public bool isList = false;
         public List<mobList> mobListTab = new List<mobList>();
-        public string[] playerList = new string[10];
+        public string[] playerList;
 
         public string[] toolbarStringsAdvMenuCurrent;
         public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
+        public string[] toolbarStringsOthersMode = { "Look at"};
         public string[] toolbarStringsSpawnMode = { "Normal", "List" };
         public string[] toolbarStringsListMode = { "Show", "Delete" };
-        public string[] toolbarStringsPositionMode = { "Player", "Waypoints", "Others" };
+        public string[] toolbarStringsPositionMode = { "Players", "Waypoints", "Others" };
+        public string[] waypointsListString;
+        public string[] playersListString;
         public GUIStyle centeredStyle, centeredStyle2;
+        public Vector3 spawnPosition;
         public int tolbarIntMenu = 0;
+        public int yWaypoints;
+        public int yPlayer;
         public int tolbarPlayerSelected = 0;
+        public int tolbarOthersSelected = 0;
+        public int tolbarWaypointSelected = 0;
         public int tolbarListMode = 0;
         public int tolbarIntAdvancedMode = 0;
         public int tolbarIntPosition = 0;
@@ -50,26 +59,41 @@ namespace test.CT_Hacks
 
         public void Update()
         {
+
+
+
+
+
             //Position
-            for (int i=0; i < LB_Menu.listeJoueur.Length; i++)
+            waypointsListString = H_Waypoints.waypointsList.Select(x => x.name).ToArray();
+            playersListString = LB_Menu.listeJoueur.Select(x => x.username).ToArray();
+
+            yPlayer = (15 * playersListString.Length) + 10 * playersListString.Length - 1;
+            yWaypoints = (15 * waypointsListString.Length) + 10 * waypointsListString.Length - 1;
+
+            if (tolbarIntPosition == 0)
             {
-                if (LB_Menu.listeJoueur[i].transform.position == PlayerMovement.Instance.transform.position)
+                spawnPosition = PlayerMovement.Instance.transform.position;
+            }
+            else
+            {
+                switch (tolbarIntPositionMode)
                 {
-                    playerList[i] = "YOURSELF";
-                }
-                else
-                {
-                    playerList[i] = LB_Menu.listeJoueur[i].username;
+                    //Players
+                    case 0:
+                        spawnPosition = LB_Menu.listeJoueur[tolbarPlayerSelected].transform.position;
+                        break;
+                    //Waypoints
+                    case 1:
+                        spawnPosition = H_Waypoints.waypointsList[tolbarWaypointSelected].position;
+                        break;
+                    //Other
+                    case 2:
+                        spawnPosition = Variables.FindTpPos();
+                        break;
                 }
             }
-        
-            for (int i = 0; i < playerList.Length; i++)
-            {
-                if (playerList[i] is null)
-                {
-                    playerList[i] = "[empty]";
-                }
-            }
+
             //-------
 
             //List
@@ -168,10 +192,13 @@ namespace test.CT_Hacks
                                 GUI.Box(new Rect(148, 50, 134, 230), "");
                                 GUI.Box(new Rect(286, 50, 134, 230), "");
                                 tolbarIntPositionMode = GUI.Toolbar(new Rect(10, 50, 410, 23), tolbarIntPositionMode, toolbarStringsPositionMode);
-                                playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 80, 129, 190), playerListScrollPosition, new Rect(10, 80, 50, 250), false, true);
-                                    tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 105, 250), tolbarPlayerSelected, playerList, 1);
+                                playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 80, 129, 190), playerListScrollPosition, new Rect(10, 80, 50, yPlayer), false, true);
+                                    tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 105, yPlayer), tolbarPlayerSelected, playersListString, 1);
                                 GUI.EndScrollView();
-
+                                waypointListScrollView = GUI.BeginScrollView(new Rect(148, 80, 129, 190), waypointListScrollView, new Rect(148, 80, 50, yWaypoints), false, true);
+                                    tolbarWaypointSelected = GUI.SelectionGrid(new Rect(153, 80, 105, yWaypoints), tolbarWaypointSelected, waypointsListString, 1);
+                                GUI.EndScrollView();
+                                    tolbarOthersSelected = GUI.SelectionGrid(new Rect(291, 80, 125, 25), tolbarOthersSelected, toolbarStringsOthersMode, 1);
                                 break;
                             }
                             // List menu
@@ -221,14 +248,7 @@ namespace test.CT_Hacks
             GUI.Box(new Rect(10, 110, 135, 90), "Actions");
             if (GUI.Button(new Rect(15, 135, 125, 25), "Spawn all"))
             {
-                foreach (mobList mob in mobListTab)
-                {
-                    for (int j = 0; j < mob.quantity; j++)
-                    {
-                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, mob.multiplier, 1, Mob.BossType.None, -1);
-                    }
-                }
-                mobListTab.Clear();
+                spawnAllMobsInList();
                 yScroll = 20;
             }
             if (GUI.Button(new Rect(15, 165, 125, 25), "Clear list"))
@@ -302,7 +322,7 @@ namespace test.CT_Hacks
                     {
                         for (int j = 0; j < ItemSpawnerAmount; j++)
                         {
-                            MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                            MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
                         }
                     }
                 }
@@ -328,7 +348,7 @@ namespace test.CT_Hacks
                 {
                     for (int j = 0; j < ItemSpawnerAmount; j++)
                     {
-                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, PlayerMovement.Instance.GetRb().position, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
+                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, powerMultiplierAmount, multiBossAmount, Mob.BossType.None, -1);
                     }
                 }
                 if (x == 260)
@@ -340,6 +360,19 @@ namespace test.CT_Hacks
             }
             GUI.EndScrollView();
         }
+
+        void spawnAllMobsInList()
+        {
+            foreach (mobList mob in mobListTab)
+            {
+                for (int j = 0; j < mob.quantity; j++)
+                {
+                    MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, mob.multiplier, 1, Mob.BossType.None, -1);
+                }
+            }
+            mobListTab.Clear();
+        }
+
     }
 
     public class mobList
