@@ -16,6 +16,7 @@ namespace test.CT_Hacks
 
         public static Vector2 mobListScrollPositition { get; set; } = Vector2.zero;
         public static Vector2 mobListinListScrollPosition { get; set; } = Vector2.zero;
+        public static Vector2 playerListScrollPosition { get; set; } = Vector2.zero;
         public int ItemSpawnerAmount = 1;
         public int powerMultiplierAmount = 1;
         public int multiBossAmount = 1;
@@ -23,17 +24,21 @@ namespace test.CT_Hacks
         public int yScroll = 20;
         public bool isList = false;
         public List<mobList> mobListTab = new List<mobList>();
+        public string[] playerList = new string[10];
 
         public string[] toolbarStringsAdvMenuCurrent;
         public string[] toolbarStringsSelectionMode = {"Normal", "Adv."};
         public string[] toolbarStringsSpawnMode = { "Normal", "List" };
         public string[] toolbarStringsListMode = { "Show", "Delete" };
+        public string[] toolbarStringsPositionMode = { "Player", "Waypoints", "Others" };
         public GUIStyle centeredStyle, centeredStyle2;
         public int tolbarIntMenu = 0;
+        public int tolbarPlayerSelected = 0;
         public int tolbarListMode = 0;
         public int tolbarIntAdvancedMode = 0;
         public int tolbarIntPosition = 0;
         public int tolbarIntList = 0;
+        public int tolbarIntPositionMode = 0;
         public string prevTooltip = "";
         public string mobStats;
         public string prevMobSpeed, mobSpeed;
@@ -45,6 +50,29 @@ namespace test.CT_Hacks
 
         public void Update()
         {
+            //Position
+            for (int i=0; i < LB_Menu.listeJoueur.Length; i++)
+            {
+                if (LB_Menu.listeJoueur[i].transform.position == PlayerMovement.Instance.transform.position)
+                {
+                    playerList[i] = "YOURSELF";
+                }
+                else
+                {
+                    playerList[i] = LB_Menu.listeJoueur[i].username;
+                }
+            }
+        
+            for (int i = 0; i < playerList.Length; i++)
+            {
+                if (playerList[i] is null)
+                {
+                    playerList[i] = "[empty]";
+                }
+            }
+            //-------
+
+            //List
             centeredStyle.alignment = TextAnchor.UpperCenter;
             centeredStyle.normal.textColor = Color.white;
             centeredStyle.normal.background = Texture2D.grayTexture;
@@ -86,7 +114,7 @@ namespace test.CT_Hacks
                 toolbarStringsAdvMenuCurrent[1] = "Stats";
                 toolbarStringsAdvMenuCurrent[2] = "List";
             }
-
+            ///-------
         }
         public override void runWin(int id)
         {
@@ -130,46 +158,32 @@ namespace test.CT_Hacks
                             showMobsAdvanced();
                             break;
 
-                        //Position menu / List menu
+                         
                         case 2:
-                            if(tolbarIntPosition == 1)
+                            //Position menu
+                            if (tolbarIntPosition == 1)
                             {
                                 tolbarIntMenu = GUI.Toolbar(new Rect(10, 22, 410, 23), tolbarIntMenu, toolbarStringsAdvMenuCurrent);
+                                GUI.Box(new Rect(10, 50, 134, 230), "");
+                                GUI.Box(new Rect(148, 50, 134, 230), "");
+                                GUI.Box(new Rect(286, 50, 134, 230), "");
+                                tolbarIntPositionMode = GUI.Toolbar(new Rect(10, 50, 410, 23), tolbarIntPositionMode, toolbarStringsPositionMode);
+                                playerListScrollPosition = GUI.BeginScrollView(new Rect(10, 80, 129, 190), playerListScrollPosition, new Rect(10, 80, 50, 250), false, true);
+                                    tolbarPlayerSelected = GUI.SelectionGrid(new Rect(15, 80, 105, 250), tolbarPlayerSelected, playerList, 1);
+                                GUI.EndScrollView();
+
                                 break;
                             }
+                            // List menu
                             else
                             {
-                                showListMenu();
-                                switch (tolbarListMode)
-                                {
-                                    //Show
-                                    case 0:
-                                        showMobsListLabel();
-                                        break;
-
-                                    //Delete
-                                    case 1:
-                                        showMobsListButton();
-                                        break;
-                                }
+                                showLIST();
                                 break;
                             }
                             
                         //List menu
                         case 3:
-                            showListMenu();
-                            switch (tolbarListMode)
-                            {
-                                //Show
-                                case 0:
-                                    showMobsListLabel();
-                                    break;
-
-                                //Delete
-                                case 1:
-                                    showMobsListButton();
-                                    break;
-                            }
+                            showLIST();
                             break;
                     }
                     break;
@@ -181,6 +195,23 @@ namespace test.CT_Hacks
             }
 
             base.runWin(id);
+        }
+
+        void showLIST()
+        {
+            showListMenu();
+            switch (tolbarListMode)
+            {
+                //Show
+                case 0:
+                    showMobsListLabel();
+                    break;
+
+                //Delete
+                case 1:
+                    showMobsListButton();
+                    break;
+            }
         }
         void showListMenu()
         {
@@ -198,10 +229,12 @@ namespace test.CT_Hacks
                     }
                 }
                 mobListTab.Clear();
+                yScroll = 20;
             }
             if (GUI.Button(new Rect(15, 165, 125, 25), "Clear list"))
             {
                 mobListTab.Clear();
+                yScroll = 20;
             }
         }
 
@@ -220,6 +253,7 @@ namespace test.CT_Hacks
             GUI.EndScrollView();
         }
 
+
         void showMobsListButton()
         {
             GUI.Box(new Rect(150, 50, 250, 230), "Mobs added");
@@ -229,9 +263,10 @@ namespace test.CT_Hacks
             y += 20;
             foreach (mobList mob in mobListTab)
             {
-                if(GUI.Button(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
+                if(GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
                 {
                     mobListTab.Remove(mob);
+                    yScroll -= 20;
                 }
                 y += 20;
             }
