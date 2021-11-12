@@ -90,6 +90,8 @@ namespace test.CT_System
             {
                 if (menu.isOpen)
                 {
+                    GUI.backgroundColor = H_GUIColors.MenuBackgroundColor;
+                    GUI.contentColor = H_GUIColors.MenuFrontColor;
                     menu.window = GUILayout.Window(menu.wID, menu.window, menu.runWin, menu.title);
                 }
             }

@@ -27,7 +27,6 @@ namespace test
 
         public static void injHacks(GameObject go)
         {
-            
             hk_Main = go.AddComponent<H_Main>();
             hk_Player = go.AddComponent<H_Player>();
             hk_itemSpawner = go.AddComponent<H_ItemSpawner>();

@@ -18,7 +18,6 @@ namespace test
 
             DontDestroyOnLoad(go_Hacks);
             DontDestroyOnLoad(go_System);
-
             CManager.injSystem(go_System);
             CManager.injHacks(go_Hacks);
 

@@ -15,22 +15,26 @@ namespace test.CT_Hacks
     {
 		public static Vector2 GUIColorsScrollPosition { get; set; } = Vector2.zero;
 
+		public int toolbarIntModeSelected = 0;
 		public int toolbarIntGUIContent = 0;
 		public int toolbarIntGUIBackgroundColor = 0;
 		public int toolbarIntGUIContentColor = 0;
-		public int toolbarIntGUISelect = 0;
-		public int toolbarIntGUISelectColor = 0;
-		public int toolbarIntGUIUnselectColor = 0;
+		public int toolbarIntGUIMenu = 0;
+		public int toolbarIntGUIBackgroundMenu = 0;
+		public int toolbarIntGUIContentMenu = 0;
 		public static Color GUIBackgroundColor;
 		public static Color GUIFrontColor;
+		public static Color MenuBackgroundColor;
+		public static Color MenuFrontColor;
 		public static Color GUIOriginalbackgroundColor = GUI.backgroundColor;
 		public static Color GUIOriginalContentColor = GUI.contentColor;
-		public string[] toolbarStringGUI = { "Background", "Content" };
-		public string[] toolbarStringGUIBackgroundColors = { "Original", "Black", "Red", "Green", "Blue", "Cyan", "Gray", "Grey", "Magenta", "Yellow" };
-		public string[] toolbarStringGUIContentColors = { "Original", "Black", "Red", "Green", "Blue", "Cyan", "Gray", "Grey", "Magenta", "Yellow" };
+		public string[] toolbarStringModeSelected= { "Menus", "Contents" };
+		public string[] toolbarStringGUI = { "Objects", "Labels" };
+		public string[] toolbarStringMenu = { "Border", "Labels" };
+		public string[] toolbarStringGUIColors = { "Original", "Black", "Red", "Green", "Blue", "Cyan", "Gray", "Grey", "Magenta", "Yellow" };
 
 
-		public H_GUIColors() : base(new Rect(1680, 10, 230, 400), "GUI Colors Menu", 8, false) { }
+		public H_GUIColors() : base(new Rect(1680, 10, 230, 335), "Customize your cheat!", 8, false) { }
 
 		public void Update()
         {
@@ -100,29 +104,130 @@ namespace test.CT_Hacks
 					GUIFrontColor = Color.yellow;
 					break;
 			}
+			switch (toolbarIntGUIBackgroundMenu)
+			{
+				case 0:
+					MenuBackgroundColor = GUIOriginalbackgroundColor;
+					break;
+				case 1:
+					MenuBackgroundColor = Color.black;
+					break;
+				case 2:
+					MenuBackgroundColor = Color.red;
+					break;
+				case 3:
+					MenuBackgroundColor = Color.green;
+					break;
+				case 4:
+					MenuBackgroundColor = Color.blue;
+					break;
+				case 5:
+					MenuBackgroundColor = Color.cyan;
+					break;
+				case 6:
+					MenuBackgroundColor = Color.gray;
+					break;
+				case 7:
+					MenuBackgroundColor = Color.grey;
+					break;
+				case 8:
+					MenuBackgroundColor = Color.magenta;
+					break;
+				case 9:
+					MenuBackgroundColor = Color.yellow;
+					break;
+			}
+			switch (toolbarIntGUIContentMenu)
+			{
+				case 0:
+					MenuFrontColor = GUIOriginalContentColor;
+					break;
+				case 1:
+					MenuFrontColor = Color.black;
+					break;
+				case 2:
+					MenuFrontColor = Color.red;
+					break;
+				case 3:
+					MenuFrontColor = Color.green;
+					break;
+				case 4:
+					MenuFrontColor = Color.blue;
+					break;
+				case 5:
+					MenuFrontColor = Color.cyan;
+					break;
+				case 6:
+					MenuFrontColor = Color.gray;
+					break;
+				case 7:
+					MenuFrontColor = Color.grey;
+					break;
+				case 8:
+					MenuFrontColor = Color.magenta;
+					break;
+				case 9:
+					MenuFrontColor = Color.yellow;
+					break;
+			}
 		}
 		public override void runWin(int id)
 		{
 			GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
 			GUI.contentColor = H_GUIColors.GUIFrontColor;
 			GUILayout.Label("");
-			GUI.Box(new Rect(10, 25, 210, 55), "GUI");
-			toolbarIntGUIContent = GUI.Toolbar(new Rect(15, 50, 200, 23), toolbarIntGUIContent, toolbarStringGUI);
-			GUI.Box(new Rect(10, 85, 210, 160), toolbarStringGUI[toolbarIntGUIContent].ToString() + " colors");
-			GUIColorsScrollPosition = GUI.BeginScrollView(new Rect(10, 110, 205, 130), GUIColorsScrollPosition, new Rect(10, 95, 50, 320), false, true);
-			switch (toolbarIntGUIContent)
+			toolbarIntModeSelected = GUI.Toolbar(new Rect(10, 25, 210, 23), toolbarIntModeSelected, toolbarStringModeSelected);
+			GUI.Box(new Rect(10, 60, 210, 55), toolbarStringModeSelected[toolbarIntModeSelected].ToString());
+			switch (toolbarIntModeSelected)
             {
 				case 0:
-					toolbarIntGUIBackgroundColor = GUI.SelectionGrid(new Rect(15, 100, 180, 310), toolbarIntGUIBackgroundColor, toolbarStringGUIBackgroundColors, 1);               
+					toolbarIntGUIMenu = GUI.Toolbar(new Rect(15, 85, 200, 23), toolbarIntGUIMenu, toolbarStringMenu);
 					break;
 				case 1:
-					toolbarIntGUIContentColor = GUI.SelectionGrid(new Rect(15, 100, 180, 310), toolbarIntGUIContentColor, toolbarStringGUIContentColors, 1);
-					
+					toolbarIntGUIContent = GUI.Toolbar(new Rect(15, 85, 200, 23), toolbarIntGUIContent, toolbarStringGUI);
 					break;
             }
+
+			GUI.Box(new Rect(10, 125, 210, 160), "Colors");
+			GUIColorsScrollPosition = GUI.BeginScrollView(new Rect(10, 145, 205, 130), GUIColorsScrollPosition, new Rect(10, 130, 50, 320), false, true);
+			switch (toolbarIntModeSelected)
+            {
+				case 0:
+                    switch (toolbarIntGUIMenu)
+                    {
+						case 0:
+							toolbarIntGUIBackgroundMenu = GUI.SelectionGrid(new Rect(15, 135, 180, 310), toolbarIntGUIBackgroundMenu, toolbarStringGUIColors, 1);
+							break;
+						case 1:
+							toolbarIntGUIContentMenu = GUI.SelectionGrid(new Rect(15, 135, 180, 310), toolbarIntGUIContentMenu, toolbarStringGUIColors, 1);
+							break;
+					}
+					break;
+				case 1:
+					switch (toolbarIntGUIContent)
+					{
+						case 0:
+							toolbarIntGUIBackgroundColor = GUI.SelectionGrid(new Rect(15, 135, 180, 310), toolbarIntGUIBackgroundColor, toolbarStringGUIColors, 1);
+							break;
+						case 1:
+							toolbarIntGUIContentColor = GUI.SelectionGrid(new Rect(15, 135, 180, 310), toolbarIntGUIContentColor, toolbarStringGUIColors, 1);
+							break;
+					}
+					break;
+            }
+			
 			GUI.EndScrollView();
+
+			if (GUI.Button(new Rect(10, 295, 210, 30), "Reset default"))
+			{
+				toolbarIntGUIBackgroundColor = 0;
+				toolbarIntGUIContentColor = 0;
+				toolbarIntGUIBackgroundMenu = 0;
+				toolbarIntGUIContentMenu = 0;
+			}
+
 			base.runWin(id);
-        }
+		}
 
 	}
 }

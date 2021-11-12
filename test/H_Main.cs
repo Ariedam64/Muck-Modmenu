@@ -7,7 +7,9 @@ namespace test.CT_Hacks
 {
     public class H_Main : Menu
     {
+        
         public H_Main() : base(new Rect(10, 10, 200, 100), "MAH v0.2", 0, true) { }
+
 
         public override void runWin(int id)
         {
