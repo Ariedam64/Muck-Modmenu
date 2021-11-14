@@ -150,7 +150,7 @@ namespace test.CT_Hacks
             GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
             GUI.contentColor = H_GUIColors.GUIFrontColor;
             invincible = GUILayout.Toggle(invincible, "Godmode");
-            stamina = GUILayout.Toggle(stamina, "Ininite stamina");
+            stamina = GUILayout.Toggle(stamina, "Infinite stamina");
             hunger = GUILayout.Toggle(hunger, "Infinite hunger");
             instantKill = GUILayout.Toggle(instantKill, "Instant kill");
             clicktp = GUILayout.Toggle(clicktp, "Click Tp");

@@ -246,18 +246,78 @@ namespace test.CT_Hacks
                             {
                                 if (mobSelected != null)
                                 {
+                                    mobStatsEdit();
                                     if (GUI.Button(new Rect(10, 245, 135, 35), "Add to list \n" + mobSelected.name))
                                     {
-                                        if (mobListTab.Exists(x => x.id == mobSelected.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
+                                        if (mobListTab.Exists(x => x.id == mobSelected.id) &&
+                                            mobListTab.Exists(x => x.multiplier == powerMultiplierAmount) &&
+                                            mobListTab.Exists(x => x.ranged == mobSelected.ranged) &&
+                                            mobListTab.Exists(x => x.rangedCooldown == mobSelected.rangedCooldown) &&
+                                            mobListTab.Exists(x => x.startAttackDistance == mobSelected.startAttackDistance) &&
+                                            mobListTab.Exists(x => x.startRangedAttackDistance == mobSelected.startRangedAttackDistance) &&
+                                            mobListTab.Exists(x => x.maxAttackDistance == mobSelected.maxAttackDistance) &&
+                                            mobListTab.Exists(x => x.speed == mobSelected.speed) &&
+                                            mobListTab.Exists(x => x.minAttackAngle == mobSelected.minAttackAngle) &&
+                                            mobListTab.Exists(x => x.sharpDefense == mobSelected.sharpDefense) &&
+                                            mobListTab.Exists(x => x.defense == mobSelected.defense) &&
+                                            mobListTab.Exists(x => x.knockbackThreshold == mobSelected.knockbackThreshold) &&
+                                            mobListTab.Exists(x => x.ignoreBuilds == mobSelected.ignoreBuilds) &&
+                                            mobListTab.Exists(x => x.followPlayerDistance == mobSelected.followPlayerDistance) &&
+                                            mobListTab.Exists(x => x.followPlayerAccuracy == mobSelected.followPlayerAccuracy) &&
+                                            mobListTab.Exists(x => x.onlyRangedInRangedPattern == mobSelected.onlyRangedInRangedPattern) &&
+                                            mobListTab.Exists(x => x.boss == mobSelected.boss) &&
+                                            mobListTab.Exists(x => x.statsEdited == true))
+                                            
                                         {
-                                            var sameMob = mobListTab.Find(x => (x.id == mobSelected.id) && (x.multiplier == powerMultiplierAmount));
+                                            var sameMob = mobListTab.Find(x => (x.id == mobSelected.id) &&
+                                                                               (x.multiplier == powerMultiplierAmount) &&
+                                                                               (x.ranged == mobSelected.ranged) &&
+                                                                               (x.rangedCooldown == mobSelected.rangedCooldown) &&
+                                                                               (x.startAttackDistance == mobSelected.startAttackDistance) &&
+                                                                               (x.startRangedAttackDistance == mobSelected.startRangedAttackDistance) &&
+                                                                               (x.maxAttackDistance == mobSelected.maxAttackDistance) &&
+                                                                               (x.speed == mobSelected.speed) &&
+                                                                               (x.minAttackAngle == mobSelected.minAttackAngle) &&
+                                                                               (x.sharpDefense == mobSelected.sharpDefense) &&
+                                                                               (x.defense == mobSelected.defense) &&
+                                                                               (x.knockbackThreshold == mobSelected.knockbackThreshold) &&
+                                                                               (x.ignoreBuilds == mobSelected.ignoreBuilds) &&
+                                                                               (x.followPlayerDistance == mobSelected.followPlayerDistance) &&
+                                                                               (x.followPlayerAccuracy == mobSelected.followPlayerAccuracy) &&
+                                                                               (x.onlyRangedInRangedPattern == mobSelected.onlyRangedInRangedPattern) &&
+                                                                               (x.boss == mobSelected.boss) &&
+                                                                               (x.statsEdited == true));
+
                                             sameMob.quantity += ItemSpawnerAmount;
                                         }
                                         else
-                                        {
-                                            mobListTab.Add(new mobList() { name = mobSelected.name, id = mobSelected.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount });
+                                        {                                              
+                                            mobListTab.Add(new mobList()
+                                            {
+                                                name = mobSelected.name,
+                                                id = mobSelected.id,
+                                                multiplier = powerMultiplierAmount,
+                                                quantity = ItemSpawnerAmount,
+                                                statsEdited = true,
+                                                ranged = mobSelected.ranged,
+                                                rangedCooldown = mobSelected.rangedCooldown,
+                                                startAttackDistance = mobSelected.startAttackDistance,
+                                                startRangedAttackDistance = mobSelected.startRangedAttackDistance,
+                                                maxAttackDistance = mobSelected.maxAttackDistance,
+                                                speed = mobSelected.speed,
+                                                minAttackAngle = mobSelected.minAttackAngle,
+                                                sharpDefense = mobSelected.sharpDefense,
+                                                defense = mobSelected.defense,
+                                                knockbackThreshold = mobSelected.knockbackThreshold,
+                                                ignoreBuilds = mobSelected.ignoreBuilds,
+                                                followPlayerDistance = mobSelected.followPlayerDistance,
+                                                followPlayerAccuracy = mobSelected.followPlayerAccuracy,
+                                                onlyRangedInRangedPattern = mobSelected.onlyRangedInRangedPattern,
+                                                boss = mobSelected.boss
+
+                                            }); 
                                         }
-                                        
+                                        resetMobStats();
                                         mobSelected = null;
                                         yScroll += 20;
                                     }
@@ -422,7 +482,15 @@ namespace test.CT_Hacks
             y += 20;
             foreach (mobList mob in mobListTab)
             {
-                GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity, centeredStyle);     
+                if (mob.statsEdited)
+                {
+                    GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity + " | stats edited", centeredStyle);
+                }
+                else
+                {
+                    GUI.Label(new Rect(160, y, 230, 17), mob.name + " | x" + mob.multiplier + " | x" + mob.quantity, centeredStyle);
+                }
+                  
                 y += 20;
             }
             GUI.EndScrollView();
@@ -438,13 +506,21 @@ namespace test.CT_Hacks
             y += 20;
             foreach (mobList mob in mobListTab)
             {
-
-                if (GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
+                if (mob.statsEdited)
                 {
-                    mobListTab.Remove(mob);
-                    yScroll -= 20;
+                    if (GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity + " | stats edited"))
+                    {
+                        mobListTab.Remove(mob);
+                        yScroll -= 20;
+                    }
                 }
-                
+                else {
+                    if (GUI.Button(new Rect(160, y, 230, 20), mob.name + " | x" + mob.multiplier + " |  x" + mob.quantity))
+                    {
+                        mobListTab.Remove(mob);
+                        yScroll -= 20;
+                    }
+                }                     
                 y += 20;
             }
             GUI.EndScrollView();
@@ -470,16 +546,16 @@ namespace test.CT_Hacks
                 //if in first menu
                 else
                 {
-                    //If mob is already in list modify it quantity
-                    if (mobListTab.Exists(x => x.id == mob.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount))
+                    //If mob is already in list modify it quantity                   
+                    if (mobListTab.Exists(x => x.id == mob.id) && mobListTab.Exists(x => x.multiplier == powerMultiplierAmount) && mobListTab.Exists(x => x.statsEdited == false))
                     {
-                        var sameMob = mobListTab.Find(x => (x.id == mob.id) && (x.multiplier == powerMultiplierAmount));
+                        var sameMob = mobListTab.Find(x => (x.id == mob.id) && (x.multiplier == powerMultiplierAmount) && (x.statsEdited == false));
                         sameMob.quantity += ItemSpawnerAmount;
                     }
                     //if is not already in list add it
                     else
                     {
-                        mobListTab.Add(new mobList() { name = mob.name, id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount }); ;
+                        mobListTab.Add(new mobList() { name = mob.name, id = mob.id, multiplier = powerMultiplierAmount, quantity = ItemSpawnerAmount, statsEdited = false }); ;
                         yScroll += 20;
                     }
                 }
@@ -662,7 +738,7 @@ namespace test.CT_Hacks
             }
 
             mobStatsListScrollPosition = GUI.BeginScrollView(new Rect(15, 80, 125, 155), mobStatsListScrollPosition, new Rect(15, 80, 100, 415), false, true);
-            if (tolbarIntList == 1)
+            /*if (tolbarIntList == 1)
             {
                 GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
                 GUI.Toggle(new Rect(15, 100, 105, 23), prevOnlyRangedInRangedPattern, "Ranged Pattern");
@@ -692,7 +768,7 @@ namespace test.CT_Hacks
                 GUI.HorizontalSlider(new Rect(15, 480, 105, 23), prevFollowPlayerAccuracy, 0f, 100f);
             }
             else
-            {
+            {*/
                 if (mobSelected == null)
                 {
                     GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
@@ -723,7 +799,7 @@ namespace test.CT_Hacks
                     GUI.HorizontalSlider(new Rect(15, 480, 105, 23), prevFollowPlayerAccuracy, 0f, 100f);
 
                 }
-            }
+           // }
             
             GUI.EndScrollView();
         }
@@ -778,10 +854,21 @@ namespace test.CT_Hacks
         {
             foreach (mobList mob in mobListTab)
             {
-                for (int j = 0; j < mob.quantity; j++)
+                if (mob.statsEdited)
                 {
-                    MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, mob.multiplier, 1, Mob.BossType.None, -1);
+                    Array.Find(MobSpawner.Instance.allMobs, x => x.id == mob.id).speed = mob.speed;
+                    for (int j = 0; j < mob.quantity; j++)
+                    {
+                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, mob.multiplier, 1, Mob.BossType.None, -1);
+                    }
                 }
+                else
+                {
+                    for (int j = 0; j < mob.quantity; j++)
+                    {
+                        MobSpawner.Instance.ServerSpawnNewMob(MobManager.Instance.GetNextId(), mob.id, spawnPosition, mob.multiplier, 1, Mob.BossType.None, -1);
+                    }
+                } 
             }
             mobListTab.Clear();
         }
