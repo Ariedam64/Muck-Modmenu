@@ -47,7 +47,9 @@ namespace test.CT_Hacks
 
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description))){
                     for (int j = 0; j < PowerUpSpawnerAmount; j++){
-                        PowerupInventory.Instance.AddPowerup(powerup.name, powerup.id, ItemManager.GetNextId());
+                        UiEvents.Instance.AddPowerup(ItemManager.Instance.allPowerups[powerup.id]);
+                        PlayerStatus.Instance.UpdateStats();
+                        PowerupUI.Instance.AddPowerup(powerup.id);
                     }
                 }          
                 if (x == 145)
