@@ -45,13 +45,17 @@ namespace test.CT_Hacks
             {
                 Powerup powerup = ItemManager.allPowerups[i];
 
+                GUI.backgroundColor = H_GUIColors.GUIOriginalbackgroundColor;
+                GUI.contentColor = H_GUIColors.GUIOriginalContentColor;
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description))){
                     for (int j = 0; j < PowerUpSpawnerAmount; j++){
                         UiEvents.Instance.AddPowerup(ItemManager.Instance.allPowerups[powerup.id]);
                         PlayerStatus.Instance.UpdateStats();
                         PowerupUI.Instance.AddPowerup(powerup.id);
                     }
-                }          
+                }
+                GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
+                GUI.contentColor = H_GUIColors.GUIFrontColor;
                 if (x == 145)
                 {
                     x = 25; y += 60;

@@ -24,7 +24,7 @@ namespace test.CT_Hacks
         private bool freecam = false;
         private float speedhack = 1.0f;
         private float prevSpeedhack = 1.0f;
-        private float gravity = 1.0f;
+        private float gravity = 25.0f;
         private float prevGravity = 1.0f;
         private float jumpforce = 1.0f;
         private float prevJumpforce = 1.0f;
@@ -121,9 +121,8 @@ namespace test.CT_Hacks
             }
 
             if (gravity != prevGravity)
-            {
-                float grav = 4 + gravity;
-                PlayerMovement.Instance.extraGravity = grav;
+            {              
+                PlayerMovement.Instance.extraGravity = gravity;
                 prevGravity = gravity;
             }
 
@@ -159,11 +158,11 @@ namespace test.CT_Hacks
             fly = GUILayout.Toggle(fly, "Fly");
             instarevive = GUILayout.Toggle(instarevive, "Instant revive");
             GUILayout.Label("Gravity: " + gravity);
-            gravity = (float)Math.Round(GUILayout.HorizontalSlider(gravity, -50, 50), 1);
+            gravity = (int)Math.Round(GUILayout.HorizontalSlider(gravity, 0, 50), 1);
             GUILayout.Label("Speed hack: " + speedhack);
-            speedhack = (float)Math.Round(GUILayout.HorizontalSlider(speedhack, 1, 100), 1);
+            speedhack = (int)Math.Round(GUILayout.HorizontalSlider(speedhack, 1, 100), 1);
             GUILayout.Label("Jump force: " + jumpforce);
-            jumpforce = (float)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1, 50), 1);
+            jumpforce = (int)Math.Round(GUILayout.HorizontalSlider(jumpforce, 1, 50), 1);
             base.runWin(id);
         }
     }
