@@ -738,37 +738,6 @@ namespace test.CT_Hacks
             }
 
             mobStatsListScrollPosition = GUI.BeginScrollView(new Rect(15, 80, 125, 155), mobStatsListScrollPosition, new Rect(15, 80, 100, 415), false, true);
-            /*if (tolbarIntList == 1)
-            {
-                GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
-                GUI.Toggle(new Rect(15, 100, 105, 23), prevOnlyRangedInRangedPattern, "Ranged Pattern");
-                GUI.Toggle(new Rect(15, 120, 105, 23), prevBoss, "Boss");
-                GUI.Toggle(new Rect(15, 140, 105, 23), prevIgnoreBuilds, "Ignore build");
-                GUI.Label(new Rect(15, 166, 100, 23), "Ranged cooldown: " + prevRangedCooldown, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 180, 100, 23), prevRangedCooldown, 0f, 100f);
-                GUI.Label(new Rect(15, 196, 100, 23), "Start atk. dist: " + prevStartAttackDistance, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 210, 100, 23), prevStartAttackDistance, 0f, 100f);
-                GUI.Label(new Rect(15, 226, 100, 23), "Start rang. atk. dist: " + prevStartRangedAttackDistance, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 240, 100, 23), prevStartRangedAttackDistance, 0f, 100f);
-                GUI.Label(new Rect(15, 256, 100, 23), "Max atk dist: " + prevMaxAttackDistance, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 270, 100, 23), prevMaxAttackDistance, 0f, 300f);
-                GUI.Label(new Rect(15, 286, 100, 23), "Speed: " + prevSpeed, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 300, 100, 23), prevSpeed, 0f, 100f);
-                GUI.Label(new Rect(15, 316, 100, 23), "Min atk angle: " + prevMinAttackAngle, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 330, 100, 23), prevMinAttackAngle, 0f, 300f);
-                GUI.Label(new Rect(15, 346, 100, 23), "Sharp defense: " + prevSharpDefense, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 360, 100, 23), prevSharpDefense, 0f, 100f);
-                GUI.Label(new Rect(15, 376, 100, 23), "Defense: " + prevDefense, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 390, 100, 23), prevDefense, 0f, 100f);
-                GUI.Label(new Rect(15, 406, 100, 23), "KB Treshold: " + prevKnockbackThreshold, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 420, 105, 23), prevKnockbackThreshold, 0f, 100f);
-                GUI.Label(new Rect(15, 436, 100, 23), "Follow player Dist: " + prevFollowPlayerDistance, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 450, 105, 23), prevFollowPlayerDistance, 0f, 100f);
-                GUI.Label(new Rect(15, 466, 100, 23), "Follow player Acc: " + prevFollowPlayerAccuracy, styleForStats);
-                GUI.HorizontalSlider(new Rect(15, 480, 105, 23), prevFollowPlayerAccuracy, 0f, 100f);
-            }
-            else
-            {*/
                 if (mobSelected == null)
                 {
                     GUI.Toggle(new Rect(15, 80, 105, 23), prevRanged, "Ranged");
