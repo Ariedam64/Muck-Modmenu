@@ -62,8 +62,7 @@ namespace test.CT_Hacks
                 Application.OpenURL("https://discord.gg/ccysRb2dgt");
             }
 
-            
-
+           
             GUI.Box(new Rect(10, 280, 180, 60), "Version");
             GUI.Label(new Rect(20, 300, 160, 20), "Current: v0.2");
             GUI.Label(new Rect(20, 318, 160, 20), "Lastest: " + LB_Menu.MAHversion);
@@ -73,7 +72,5 @@ namespace test.CT_Hacks
             GUILayout.Label("Created by Ariedam");
             base.runWin(id); 
         }
-
-
     }
 }

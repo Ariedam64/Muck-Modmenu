@@ -112,7 +112,7 @@ namespace test.CT_Hacks
 				{
 					PlayerMovement.Instance.GetRb().position = LB_Menu.listeJoueur[joueurSelectionne].transform.position;
 				}
-				if (GUI.Button(new Rect(150, 130, 130, 30), "Tp player [HOST]"))
+				if (GUI.Button(new Rect(150, 130, 130, 30), "Tp player[HOST]"))
 				{
 					ServerSend.PlayerDied(LB_Menu.listeJoueur[joueurSelectionne].id, PlayerMovement.Instance.transform.position, PlayerMovement.Instance.transform.position, 0);
 					ClientSend.RevivePlayer(LB_Menu.listeJoueur[joueurSelectionne].id, LB_Menu.listeJoueur[joueurSelectionne].graveId, false);
