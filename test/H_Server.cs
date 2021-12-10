@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using test.CT_System;
+using Steamworks;
 
 namespace test.CT_Hacks
 {
@@ -22,6 +23,7 @@ namespace test.CT_Hacks
 		public static bool spectate = false;
 		public int yPlayer;
 		public string[] selStrings;
+		public string test = "start";
 		public static Vector2 playerListScrollPosition { get; set; } = Vector2.zero;
 		public bool green = true;
 		public static Vector3 PrevVelocity;
@@ -69,7 +71,18 @@ namespace test.CT_Hacks
             {
 				if (GUI.Button(new Rect(150, 25, 130, 30), "Kill[HOST]"))
 				{
+
+					/*DayUi[] test = UnityEngine.Object.FindObjectsOfType<DayUi>();
+                    foreach (DayUi d in test)
+                    {
+						//d.Invoke("StartFade", 2f)
+
+						d.dayText.text = string.Format("Niktamer pd");
+						typeof(DayUi).GetMethod("SetDay", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { 0 });
+						d.dayText.text = string.Format("Niktamer pd");
+					}*/
 					ServerSend.HitPlayer(LocalClient.instance.myId, 69420, 0f, LB_Menu.listeJoueur[joueurSelectionne].id, 1, LB_Menu.listeJoueur[joueurSelectionne].transform.position);
+
 				}
 				if (GUI.Button(new Rect(150, 60, 130, 30), "Kick[HOST]"))
 				{
@@ -99,9 +112,10 @@ namespace test.CT_Hacks
 				{
 					PlayerMovement.Instance.GetRb().position = LB_Menu.listeJoueur[joueurSelectionne].transform.position;
 				}
-				if (GUI.Button(new Rect(150, 130, 130, 30), "Tp player to boat"))
+				if (GUI.Button(new Rect(150, 130, 130, 30), "Tp player [HOST]"))
 				{
-					ServerSend.RevivePlayer(Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].id, LB_Menu.listeJoueur[joueurSelectionne].id, false, -1);
+					ServerSend.PlayerDied(LB_Menu.listeJoueur[joueurSelectionne].id, PlayerMovement.Instance.transform.position, PlayerMovement.Instance.transform.position, 0);
+					ClientSend.RevivePlayer(LB_Menu.listeJoueur[joueurSelectionne].id, LB_Menu.listeJoueur[joueurSelectionne].graveId, false);
 				}
 				if (GUI.Button(new Rect(150, 165, 130, 30), "Instant revive"))
 				{
@@ -113,7 +127,6 @@ namespace test.CT_Hacks
 				}
 				follow = GUI.Toggle(new Rect(150, 235, 130, 20), follow, "Follow player");
 				spectate = GUI.Toggle(new Rect(150, 255, 130, 20), spectate, "Spectate player");
-				GUI.Label(new Rect(154, 275, 130, 23), "What I should add? Make suggestion on Discord!");
 			}
 		
 			base.runWin(id);
@@ -142,5 +155,41 @@ namespace test.CT_Hacks
 			ClientSend.RequestBuild(41, vector2, 180);
 			ClientSend.RequestBuild(41, pos2, 180);
 		}
+
+		void packetSenderServer(Packet packet)
+        {
+			Steamworks.P2PSend tcpVariant = (Steamworks.P2PSend)typeof(ServerSend).GetField("TCPvariant", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+			packet.WriteLength();
+			if (NetworkController.Instance.networkType == NetworkController.NetworkType.Classic)
+			{
+				for (int i = 0; i < LB_Menu.listeJoueur.Length; i++)
+				{
+					Server.clients[i].tcp.SendData(packet);
+					test = Server.clients[i].player.username + ", " + i;
+				}
+			}
+			foreach (Client client in Server.clients.Values)
+			{
+				if (((client != null) ? client.player : null) != null)
+				{
+					SteamPacketManager.SendPacket(client.player.steamId.Value, packet, tcpVariant, SteamPacketManager.NetworkChannel.ToClient);
+				}
+			}
+		}
+
+		void packetSenderClient(Packet packet)
+        {
+			ClientSend.bytesSent += packet.Length();
+			ClientSend.packetsSent++;
+			packet.WriteLength();
+			if (NetworkController.Instance.networkType == NetworkController.NetworkType.Classic)
+			{
+				Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].udp.SendData(packet);
+				return;
+			}
+			SteamPacketManager.SendPacket(Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].player.steamId.Value, packet, P2PSend.Unreliable, SteamPacketManager.NetworkChannel.ToServer);
+			test = "end packet";
+		}
+					
     }
 }

@@ -33,7 +33,6 @@ namespace test.CT_Hacks
         {
             GUI.backgroundColor = H_GUIColors.GUIBackgroundColor;
             GUI.contentColor = H_GUIColors.GUIFrontColor;
-
             GUILayout.Label("");
             //Bouton de spawn
             int x = 25;
@@ -49,10 +48,8 @@ namespace test.CT_Hacks
                 GUI.contentColor = H_GUIColors.GUIOriginalContentColor;
                 if (GUI.Button(new Rect(x, y, 50, 50), new GUIContent(powerup.sprite.texture, powerup.name + "\n $" + powerup.description))){
                     for (int j = 0; j < PowerUpSpawnerAmount; j++){
-                        int[] test = (int[])typeof(PowerupInventory).GetField("powerups", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(PowerupInventory.Instance);
-                        test[powerup.id]++;
-                        
-                        UiEvents.Instance.AddPowerup(ItemManager.Instance.allPowerups[powerup.id]);
+                        int[] arrayOfPowerUps = (int[])typeof(PowerupInventory).GetField("powerups", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(PowerupInventory.Instance);
+                        arrayOfPowerUps[powerup.id]++;                 
                         PlayerStatus.Instance.UpdateStats();
                         PowerupUI.Instance.AddPowerup(powerup.id);
                     }

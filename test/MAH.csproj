@@ -109,6 +109,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="CManager.cs" />
     <Compile Include="H_DayCycle.cs" />
+    <Compile Include="SYS_Update.cs" />
     <Compile Include="H_Waypoints.cs" />
     <Compile Include="H_MobSpawner.cs" />
     <Compile Include="H_GUIColors.cs" />

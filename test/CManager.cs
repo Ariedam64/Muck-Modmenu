@@ -43,5 +43,7 @@ namespace test
         {
             lib_Menu = go.AddComponent<LB_Menu>();
         }
+
+
     }
 }

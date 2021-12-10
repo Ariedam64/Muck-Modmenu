@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using test.CT_Hacks;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace test.CT_System
         private List<Menu> menus = new List<Menu>();
         public static PlayerManager[] listeJoueur = new PlayerManager[0];
         public static MenuUI[] listeMenu = new MenuUI[0];
+        public static string MAHversion;
 
         public void Start()
         {
@@ -26,6 +28,7 @@ namespace test.CT_System
             menus.Add(CManager.hk_mobspawner);
             menus.Add(CManager.hk_guicolors);
             menus.Add(CManager.hk_waypoints);
+            updateCheck();
         }
 
         public void Update()
@@ -95,6 +98,15 @@ namespace test.CT_System
                     menu.window = GUILayout.Window(menu.wID, menu.window, menu.runWin, menu.title);
                 }
             }
+        }
+        public static void updateCheck()
+        {
+            WebClient client = new WebClient();
+            string reply = client.DownloadString("https://docs.google.com/document/d/1_xnvb8HyLcy70HIe5o1TZ971YNR2Xubfnf7qhnHyR8k/edit?usp=sharing");
+            string reply2 = Variables.deleteAllBefore(reply, "é");
+            int index = reply2.IndexOf("è");
+            if (index >= 0)
+                MAHversion = reply2.Substring(0, index);
         }
     }
 }
