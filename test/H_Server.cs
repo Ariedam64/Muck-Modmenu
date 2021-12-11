@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using test.CT_System;
 using Steamworks;
+using DebugStuff;
 
 namespace test.CT_Hacks
 {
@@ -71,18 +72,7 @@ namespace test.CT_Hacks
             {
 				if (GUI.Button(new Rect(150, 25, 130, 30), "Kill[HOST]"))
 				{
-
-					/*DayUi[] test = UnityEngine.Object.FindObjectsOfType<DayUi>();
-                    foreach (DayUi d in test)
-                    {
-						//d.Invoke("StartFade", 2f)
-
-						d.dayText.text = string.Format("Niktamer pd");
-						typeof(DayUi).GetMethod("SetDay", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { 0 });
-						d.dayText.text = string.Format("Niktamer pd");
-					}*/
 					ServerSend.HitPlayer(LocalClient.instance.myId, 69420, 0f, LB_Menu.listeJoueur[joueurSelectionne].id, 1, LB_Menu.listeJoueur[joueurSelectionne].transform.position);
-
 				}
 				if (GUI.Button(new Rect(150, 60, 130, 30), "Kick[HOST]"))
 				{
@@ -106,7 +96,7 @@ namespace test.CT_Hacks
 				}
 				if (GUI.Button(new Rect(150, 60, 130, 30), "Kick[HOST]"))
 				{
-					ServerSend.DisconnectPlayer(LB_Menu.listeJoueur[joueurSelectionne].id);
+					ServerSend.DisconnectPlayer(LB_Menu.listeJoueur[joueurSelectionne].id); 
 				}
 				if (GUI.Button(new Rect(150, 95, 130, 30), "Tp to player"))
 				{
@@ -189,7 +179,6 @@ namespace test.CT_Hacks
 			}
 			SteamPacketManager.SendPacket(Server.clients[LB_Menu.listeJoueur[joueurSelectionne].id].player.steamId.Value, packet, P2PSend.Unreliable, SteamPacketManager.NetworkChannel.ToServer);
 			test = "end packet";
-		}
-					
+		}		
     }
 }

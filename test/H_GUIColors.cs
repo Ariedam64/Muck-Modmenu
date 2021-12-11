@@ -34,7 +34,7 @@ namespace test.CT_Hacks
 		public string[] toolbarStringGUIColors = { "Original", "Black", "Red", "Green", "Blue", "Cyan", "Gray", "Grey", "Magenta", "Yellow" };
 
 
-		public H_GUIColors() : base(new Rect(1680, 10, 230, 335), "Customize your cheat!", 8, false) { }
+		public H_GUIColors() : base(new Rect(1680, 10, 230, 360), "Customize your cheat!", 8, false) { }
 
 		public void Update()
         {
@@ -224,6 +224,11 @@ namespace test.CT_Hacks
 				toolbarIntGUIContentColor = 0;
 				toolbarIntGUIBackgroundMenu = 0;
 				toolbarIntGUIContentMenu = 0;
+			}
+
+			if (GUI.Button(new Rect(10, 330, 210, 20), "Exit"))
+			{
+				this.isOpen = false;
 			}
 
 			base.runWin(id);

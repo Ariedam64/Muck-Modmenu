@@ -11,7 +11,7 @@ namespace test.CT_Hacks
     public class H_Main : Menu
     {
         
-        public H_Main() : base(new Rect(10, 10, 200, 100), "MAH v0.2", 0, true) { }
+        public H_Main() : base(new Rect(10, 10, 200, 100), "MAH v0.3", 0, true) { }
 
 
         public override void runWin(int id)
@@ -64,7 +64,7 @@ namespace test.CT_Hacks
 
            
             GUI.Box(new Rect(10, 280, 180, 60), "Version");
-            GUI.Label(new Rect(20, 300, 160, 20), "Current: v0.2");
+            GUI.Label(new Rect(20, 300, 160, 20), "Current: v0.3");
             GUI.Label(new Rect(20, 318, 160, 20), "Lastest: " + LB_Menu.MAHversion);
             GUILayout.Label("");
             GUILayout.Label("");
