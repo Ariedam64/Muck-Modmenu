@@ -16,16 +16,15 @@ Player:
    - Speed hack
    - Jump force
 
-Server:
-   Actions menu :
-      - Kill [HOST]
-      - Kick [HOST]
-      - TP to player
-      - TP player to boat
-      - Instant revive
-      - Follow player
-      - Spectate player
-      - Cage player
+Server :
+   - Kill [HOST]
+   - Kick [HOST]
+   - TP to player
+   - TP player to boat
+   - Instant revive
+   - Follow player
+   - Spectate player
+   - Cage player
 
 Mob Spawner:
    - Show mob stats
@@ -36,12 +35,12 @@ Mob Spawner:
    - Mob spawn manager (spawn on players, waypoints, others)
 
 Item spawer:
-   Main:
+   - Main:
       - Item filters
       - Drop (floor/inventory)
       - Item quantity
       - Spawn item on click
-   Stats:
+   - Stats:
       - Show item stats
       - Select item to edit stats
       - Spawn item selected
@@ -66,17 +65,17 @@ Waypoints:
    - Waypoints show on map
 
 Misc: 
-   Break: 
+   - Break: 
       - all trees
       - all rocks
       - all ressources
       - user chests
-   Kill: 
+   - Kill: 
       - all mobs
-   Use: 
+   - Use: 
       - all shrines
       - all chests
-   Others: 
+   - Others: 
       - Break/kill everything
       - Unlock all achievements
       - Reset all achievements
