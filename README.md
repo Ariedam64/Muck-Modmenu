@@ -86,4 +86,4 @@ GUI Colors:
 
 # Demonstration
 
-https://www.youtube.com/watch?v=Ynt5cI1-O4U
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Ynt5cI1-O4U/0.jpg)](https://www.youtube.com/watch?v=Ynt5cI1-O4U)   
