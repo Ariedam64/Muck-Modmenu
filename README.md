@@ -35,12 +35,12 @@
    - Mob spawn manager (spawn on players, waypoints, others)
 
 **Item spawer:**
-   *- Main:*
+   - Main:
       - Item filters
       - Drop (floor/inventory)
       - Item quantity
       - Spawn item on click
-   *- Stats:*
+   - Stats:
       - Show item stats
       - Select item to edit stats
       - Spawn item selected
