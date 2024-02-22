@@ -3,7 +3,7 @@
 
 # Features
 
-Player:
+**Player:**
    - GodMode
    - Infinite stamina
    - Infinite hunger
@@ -16,7 +16,7 @@ Player:
    - Speed hack
    - Jump force
 
-Server :
+**Server :**
    - Kill [HOST]
    - Kick [HOST]
    - TP to player
@@ -26,7 +26,7 @@ Server :
    - Spectate player
    - Cage player
 
-Mob Spawner:
+**Mob Spawner:**
    - Show mob stats
    - Edit mob stats
    - Mob quantity
@@ -34,23 +34,23 @@ Mob Spawner:
    - Mob list manager
    - Mob spawn manager (spawn on players, waypoints, others)
 
-Item spawer:
-   - Main:
+**Item spawer:**
+   *- Main:*
       - Item filters
       - Drop (floor/inventory)
       - Item quantity
       - Spawn item on click
-   - Stats:
+   *- Stats:*
       - Show item stats
       - Select item to edit stats
       - Spawn item selected
 
-PowerUp spawner:
+**PowerUp spawner:**
    - Show powerUp stats
    - PowerUp quantity
    - Spawn powerUp on click
 
-DayCycle:
+**DayCycle:**
    - Start day
    - Middle day
    - Start night
@@ -59,12 +59,12 @@ DayCycle:
    - Time multiplier
    - Freeze time
 
-Waypoints:
+**Waypoints:**
    - Waypoints manager (create, edit, delete)
    - Click waypoint to TP
    - Waypoints show on map
 
-Misc: 
+**Misc:**
    - Break: 
       - all trees
       - all rocks
@@ -80,7 +80,7 @@ Misc:
       - Unlock all achievements
       - Reset all achievements
 
-GUI Colors:
+**GUI Colors:**
    - Change colors of menus
    - Change colors of content
 
