@@ -1,88 +1,40 @@
 # Muck-Modmenu
 ![image](https://user-images.githubusercontent.com/75644109/222148114-d960ee2d-a1fc-440e-b40f-b13be35fd439.png)
 
-# Features
 
-**Player:**
-   - GodMode
-   - Infinite stamina
-   - Infinite hunger
-   - Instant kill
-   - Click TP
-   - No Clip
-   - Fly
-   - Instant revive
-   - Gravity
-   - Speed hack
-   - Jump force
+## Fichiers principaux
 
-**Server :**
-   - Kill [HOST]
-   - Kick [HOST]
-   - TP to player
-   - TP player to boat
-   - Instant revive
-   - Follow player
-   - Spectate player
-   - Cage player
+- **CManager.cs**: Gestionnaire principal du projet.
+- **Controller.cs**: Contrôleur principal pour les interactions du jeu.
+- **CT_Hacks/**: Contient des scripts pour diverses fonctionnalités de hack.
+- **CT_System/**: Contient des scripts pour le système de jeu.
+- **Hook.cs**: Script de hook.
+- **Variables.cs**: Variables globales du projet.
 
-**Mob Spawner:**
-   - Show mob stats
-   - Edit mob stats
-   - Mob quantity
-   - Mob Power
-   - Mob list manager
-   - Mob spawn manager (spawn on players, waypoints, others)
+## Installation
 
-**Item spawer:**
-   - Main:
-      - Item filters
-      - Drop (floor/inventory)
-      - Item quantity
-      - Spawn item on click
-   - Stats:
-      - Show item stats
-      - Select item to edit stats
-      - Spawn item selected
+1. Clonez le dépôt:
+    ```sh
+    git clone <URL_DU_DEPOT>
+    ```
+2. Ouvrez le projet dans Unity.
 
-**PowerUp spawner:**
-   - Show powerUp stats
-   - PowerUp quantity
-   - Spawn powerUp on click
+## Utilisation
 
-**DayCycle:**
-   - Start day
-   - Middle day
-   - Start night
-   - Middle night
-   - Set day
-   - Time multiplier
-   - Freeze time
+- Pour ajouter de nouvelles fonctionnalités, créez de nouveaux scripts dans les dossiers appropriés.
+- Pour modifier les fonctionnalités existantes, éditez les scripts correspondants.
 
-**Waypoints:**
-   - Waypoints manager (create, edit, delete)
-   - Click waypoint to TP
-   - Waypoints show on map
+## Contribuer
 
-**Misc:**
-   - Break: 
-      - all trees
-      - all rocks
-      - all ressources
-      - user chests
-   - Kill: 
-      - all mobs
-   - Use: 
-      - all shrines
-      - all chests
-   - Others: 
-      - Break/kill everything
-      - Unlock all achievements
-      - Reset all achievements
+1. Forkez le projet.
+2. Créez votre branche feature (`git checkout -b feature/AmazingFeature`).
+3. Commitez vos changements (`git commit -m 'Add some AmazingFeature'`).
+4. Poussez votre branche (`git push origin feature/AmazingFeature`).
+5. Ouvrez une Pull Request.
 
-**GUI Colors:**
-   - Change colors of menus
-   - Change colors of content
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 # Demonstration
 
