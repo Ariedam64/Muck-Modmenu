@@ -4,11 +4,12 @@
 
 ## Fichiers principaux
 
-- **CManager.cs**: Gestionnaire principal du projet.
-- **Controller.cs**: Contrôleur principal pour les interactions du jeu.
+- **CManager.cs**: Gestionnaire des différentes fonctionnalités.
+- **Controller.cs**: Contrôleur principal pour l'injection des hacks.
 - **CT_Hacks/**: Contient des scripts pour diverses fonctionnalités de hack.
 - **CT_System/**: Contient des scripts pour le système de jeu.
-- **Hook.cs**: Script de hook.
+- **LB_MENU/**: Contient les script de gestion et fonctionnement des différents menu.
+- **Hook.cs**: Script pour le système de hook et d'injection.
 - **Variables.cs**: Variables globales du projet.
 
 ## Installation
